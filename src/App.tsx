@@ -23,7 +23,6 @@ const router = createBrowserRouter([
 function App() {
   const arcGisApiKey = import.meta.env.VITE_ARCGIS_API_KEY;
   const cesiumAccessToken = import.meta.env.VITE_CESIUM_API_KEY;
-
   Ion.defaultAccessToken = cesiumAccessToken;
   ArcGisMapService.defaultAccessToken = arcGisApiKey;
 

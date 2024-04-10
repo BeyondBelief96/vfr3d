@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ImageryLayer, Viewer } from 'resium';
+import Airports from '../features/Airports/Airports';
 import { useImageryProviders } from '../hooks/useImageryProviders';
 import Sidebar from '../ui/Sidebar';
 import {
@@ -12,6 +13,7 @@ const ViewerPage = () => {
   const [imageryAlpha, setImageryAlpha] = useState(1);
   const [imageryBrightness, setImageryBrightness] = useState(1);
   const [selectedLayer, setSelectedLayer] = useState('vfrImagery');
+
   const imageryLayerOptions = [
     { value: 'vfrImagery', label: 'VFR' },
     { value: 'ifrLowImagery', label: 'IFR Low' },
@@ -38,7 +40,6 @@ const ViewerPage = () => {
   };
 
   const handleAlphaChange = (alpha: number) => {
-    console.log(alpha);
     setImageryAlpha(alpha);
   };
 
@@ -60,7 +61,8 @@ const ViewerPage = () => {
         />
       </div>
       <div className="flex-1">
-        <Viewer className="h-full" timeline={false} animation={false} geocoder={false}>
+        <Viewer className="h-screen">
+          <Airports />
           {selectedLayer === 'vfrImagery' && vfrImagery && (
             <ImageryLayer
               alpha={imageryAlpha ?? 1}

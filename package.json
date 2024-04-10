@@ -12,6 +12,7 @@
   "dependencies": {
     "@esri/arcgis-rest-feature-service": "^4.0.5",
     "@esri/arcgis-rest-request": "^4.2.1",
+    "axios": "^1.6.8",
     "cesium": "^1.116.0",
     "daisyui": "^4.10.1",
     "dotenv": "^16.4.5",

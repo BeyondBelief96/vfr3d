@@ -11,7 +11,6 @@ const ImageryControls: React.FC<ImageryControlsProps> = ({ onAlphaChange, onBrig
 
   const handleAlphaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newAlpha = parseFloat(event.target.value);
-    console.log(newAlpha);
     setAlpha(newAlpha);
     onAlphaChange(newAlpha);
   };
