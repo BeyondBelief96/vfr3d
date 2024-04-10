@@ -1,35 +1,33 @@
-import { ArcGisBaseMapType, ArcGisMapServerImageryProvider, ArcGisMapService, Ion } from "cesium";
-import { useEffect } from "react";
-import { ImageryLayer, Viewer } from "resium";
+import { ArcGisMapService, Ion } from 'cesium';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import AppLayout from './AppLayout';
+import HomePage from './pages/Home';
+import ViewerPage from './pages/ViewerPage';
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        path: '/',
+        element: <HomePage />,
+      },
+      {
+        path: '/Viewer',
+        element: <ViewerPage />,
+      },
+    ],
+  },
+]);
 
 function App() {
-  const arcGisApiKey = import.meta.env.ARCGIS_API_KEY;
-  const cesiumAccessToken = import.meta.env.CESIUM_API_KEY;
+  const arcGisApiKey = import.meta.env.VITE_ARCGIS_API_KEY;
+  const cesiumAccessToken = import.meta.env.VITE_CESIUM_API_KEY;
 
   Ion.defaultAccessToken = cesiumAccessToken;
   ArcGisMapService.defaultAccessToken = arcGisApiKey;
-  let arcGisImagery: ArcGisMapServerImageryProvider;
-  let vfrImagery: ArcGisMapServerImageryProvider;
 
-  useEffect(() => {
-    async function loadImagery() {
-      arcGisImagery = await ArcGisMapServerImageryProvider.fromBasemapType(ArcGisBaseMapType.SATELLITE);
-      vfrImagery = await ArcGisMapServerImageryProvider.fromUrl("https://tiles.arcgis.com/tiles/ssFJjBXIUyZDrSYZ/arcgis/rest/services/VFR_Sectional/MapServer")
-    }
-  }, [])
-  
-  if(!arcGisImagery && !vfrImagery) return null
-
-  return (
-    <Viewer
-    baseLayer={<ImageryLayer imageryProvider={arcGisImagery} />}
-    timeline={false}
-    animation={false}
-    geocoder={false}
-  >
-
-  </Viewer>
-  )
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
