@@ -9,8 +9,23 @@ const FeaturesSection: React.FC = () => {
           {/* Add feature cards */}
           <div className="shadow-xl card bg-base-200">
             <div className="card-body">
-              <h3 className="card-title">VFR Flight Planning</h3>
-              <p>Plan your VFR flights with ease using our intuitive tools.</p>
+              <h3 className="card-title">3D Charts Visualization!</h3>
+              <p>Visualize VFR Sectionals, TAC Charts, and IFR charts in a new way!</p>
+            </div>
+          </div>
+          <div className="shadow-xl card bg-base-200">
+            <div className="card-body">
+              <h3 className="card-title">Google OSM & Bing Maps Integration!</h3>
+              <p>Blend your sectional charts to overlay with our many different map options.</p>
+            </div>
+          </div>
+          <div className="shadow-xl card bg-base-200">
+            <div className="card-body">
+              <h3 className="card-title">Airspace like it was meant to be!</h3>
+              <p>
+                Thanks to <a href="https://3dairspace.org.uk/">https://3dairspace.org.uk/</a> we are
+                able to display airspace like it was meant to be seen!
+              </p>
             </div>
           </div>
           {/* Add more feature cards */}

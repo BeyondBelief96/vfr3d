@@ -34,8 +34,8 @@ const ThemeController: React.FC = () => {
             type="radio"
             name="theme-dropdown"
             className="justify-start theme-controller btn btn-sm btn-block btn-ghost"
-            aria-label="Dark"
-            value="dark"
+            aria-label="business"
+            value="business"
             checked={selectedTheme === 'Dark'}
             onChange={handleThemeChange}
           />

@@ -23,7 +23,7 @@ const ImageryControls: React.FC<ImageryControlsProps> = ({ onAlphaChange, onBrig
   };
 
   return (
-    <div className="absolute z-10 p-4 bg-white rounded shadow top-60 left-4">
+    <div className="p-4 shadow -4 card bg-neutral text-neutral-contentleft-4">
       <div className="mb-4">
         <label htmlFor="alpha-slider" className="block mb-2">
           Alpha: {alpha.toFixed(2)}
