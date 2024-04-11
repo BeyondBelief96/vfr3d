@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ImageryLayer, Viewer as ResiumViewer } from 'resium';
 import ShownAirports from '../features/Airports/Airports';
@@ -7,7 +8,8 @@ import {
   setImageryBrightness,
   setSelectedLayer,
 } from '../redux/slices/ViewerSlice';
-import { RootState } from '../redux/store';
+import { fetchAllAirports } from '../redux/slices/airportsSlice';
+import { AppDispatch, RootState } from '../redux/store';
 import SearchBar from '../ui/SearchBar';
 import Sidebar from '../ui/Sidebar';
 import {
@@ -17,12 +19,16 @@ import {
 } from '../utility/constants';
 
 const ViewerPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { currentImageryAlpha, currentImageryBrightness, selectedImageryLayer } = useSelector(
     (state: RootState) => state.viewer
   );
 
   const { currentRoute } = useSelector((state: RootState) => state.route);
+
+  useEffect(() => {
+    dispatch(fetchAllAirports());
+  });
 
   const imageryLayerOptions = [
     { value: 'vfrImagery', label: 'VFR' },
