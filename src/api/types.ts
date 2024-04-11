@@ -1,15 +1,12 @@
 export interface Airport {
-  GMT: string;
-  airportId: number;
-  codeIataAirport: string;
-  codeIataCity: string;
-  codeIcaoAirport: string;
-  codeIso2Country: string;
-  geonameId: string;
-  latitudeAirport: number;
-  longitudeAirport: number;
-  nameAirport: string;
-  nameCountry: string;
-  phone: string;
-  timezone: string;
+  GLOBAL_ID: string;
+  IDENT: string;
+  NAME: string;
+  LATITUDE: string;
+  LONGITUDE: string;
+  ELEVATION: number;
+  ICAO_ID: string;
+  TYPE_CODE: string;
+  SERVCITY: string;
+  STATE: string;
 }

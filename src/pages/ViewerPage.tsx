@@ -1,7 +1,14 @@
-import { useState } from 'react';
-import { ImageryLayer, Viewer } from 'resium';
-import Airports from '../features/Airports/Airports';
+import { useDispatch, useSelector } from 'react-redux';
+import { ImageryLayer, Viewer as ResiumViewer } from 'resium';
+import ShownAirports from '../features/Airports/Airports';
 import { useImageryProviders } from '../hooks/useImageryProviders';
+import {
+  setImageryAlpha,
+  setImageryBrightness,
+  setSelectedLayer,
+} from '../redux/slices/ViewerSlice';
+import { RootState } from '../redux/store';
+import SearchBar from '../ui/SearchBar';
 import Sidebar from '../ui/Sidebar';
 import {
   ARCGIS_FAA_IFR_HIGH_URL,
@@ -10,9 +17,12 @@ import {
 } from '../utility/constants';
 
 const ViewerPage = () => {
-  const [imageryAlpha, setImageryAlpha] = useState(1);
-  const [imageryBrightness, setImageryBrightness] = useState(1);
-  const [selectedLayer, setSelectedLayer] = useState('vfrImagery');
+  const dispatch = useDispatch();
+  const { currentImageryAlpha, currentImageryBrightness, selectedImageryLayer } = useSelector(
+    (state: RootState) => state.viewer
+  );
+
+  const { currentRoute } = useSelector((state: RootState) => state.route);
 
   const imageryLayerOptions = [
     { value: 'vfrImagery', label: 'VFR' },
@@ -36,15 +46,15 @@ const ViewerPage = () => {
   );
 
   const handleLayerChange = (layer: string) => {
-    setSelectedLayer(layer);
+    dispatch(setSelectedLayer(layer));
   };
 
   const handleAlphaChange = (alpha: number) => {
-    setImageryAlpha(alpha);
+    dispatch(setImageryAlpha(alpha));
   };
 
   const handleBrightnessChange = (brightness: number) => {
-    setImageryBrightness(brightness);
+    dispatch(setImageryBrightness(brightness));
   };
 
   if (!vfrImagery) return null;
@@ -54,40 +64,41 @@ const ViewerPage = () => {
       <div className="flex-none overflow-y-auto w-80 bg-base-100">
         <Sidebar
           imageryLayerOptions={imageryLayerOptions}
-          selectedLayer={selectedLayer}
           onLayerChange={handleLayerChange}
           onAlphaChange={handleAlphaChange}
           onBrightnessChange={handleBrightnessChange}
         />
       </div>
       <div className="flex-1">
-        <Viewer className="h-screen">
-          <Airports />
-          {selectedLayer === 'vfrImagery' && vfrImagery && (
+        <ResiumViewer className="h-screen" geocoder={false}>
+          <ShownAirports />
+          <SearchBar />
+          {/* <RouteComponent fromAirport={routeFromAirport} toAirport={routeToAirport} /> */}
+          {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
             <ImageryLayer
-              alpha={imageryAlpha ?? 1}
-              brightness={imageryBrightness ?? 1}
+              alpha={currentImageryAlpha ?? 1}
+              brightness={currentImageryBrightness ?? 1}
               imageryProvider={vfrImagery}
-              dayAlpha={imageryAlpha}
+              dayAlpha={currentImageryAlpha}
             />
           )}
-          {selectedLayer === 'ifrLowImagery' && ifrLowImagery && (
+          {selectedImageryLayer === 'ifrLowImagery' && ifrLowImagery && (
             <ImageryLayer
-              alpha={imageryAlpha ?? 1}
-              brightness={imageryBrightness ?? 1}
+              alpha={currentImageryAlpha ?? 1}
+              brightness={currentImageryAlpha ?? 1}
               imageryProvider={ifrLowImagery}
-              dayAlpha={imageryAlpha}
+              dayAlpha={currentImageryAlpha}
             />
           )}
-          {selectedLayer === 'ifrHighImagery' && ifrHighImagery && (
+          {selectedImageryLayer === 'ifrHighImagery' && ifrHighImagery && (
             <ImageryLayer
-              alpha={imageryAlpha ?? 1}
-              brightness={imageryBrightness ?? 1}
+              alpha={currentImageryAlpha ?? 1}
+              brightness={currentImageryAlpha ?? 1}
               imageryProvider={ifrHighImagery}
-              dayAlpha={imageryAlpha}
+              dayAlpha={currentImageryAlpha}
             />
           )}
-        </Viewer>
+        </ResiumViewer>
       </div>
     </div>
   );
