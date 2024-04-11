@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ImageryLayer, Viewer as ResiumViewer } from 'resium';
-import ShownAirports from '../features/Airports/Airports';
+import ShownAirports from '../features/Airports/ShownAirports';
 import { useImageryProviders } from '../hooks/useImageryProviders';
 import {
   setImageryAlpha,
@@ -20,6 +20,7 @@ import {
 
 const ViewerPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { airports } = useSelector((state: RootState) => state.airport);
   const { currentImageryAlpha, currentImageryBrightness, selectedImageryLayer } = useSelector(
     (state: RootState) => state.viewer
   );
@@ -27,8 +28,9 @@ const ViewerPage = () => {
   const { currentRoute } = useSelector((state: RootState) => state.route);
 
   useEffect(() => {
+    if (airports.length) return;
     dispatch(fetchAllAirports());
-  });
+  }, [dispatch, airports.length]);
 
   const imageryLayerOptions = [
     { value: 'vfrImagery', label: 'VFR' },
