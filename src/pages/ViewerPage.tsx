@@ -78,7 +78,7 @@ const ViewerPage = () => {
         />
       </div>
       <div className="flex-1">
-        <ResiumViewer className="h-screen" geocoder={false}>
+        <ResiumViewer className="h-screen" geocoder={false} infoBox={false}>
           <VisibleAirports />
           <SearchBar />
           {/* <RouteComponent fromAirport={routeFromAirport} toAirport={routeToAirport} /> */}

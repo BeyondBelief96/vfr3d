@@ -56,7 +56,6 @@ const airportSlice = createSlice({
       state.showAirports = !state.showAirports;
     },
     setSelectedStateAirports: (state, action: PayloadAction<string>) => {
-      console.log(action.payload);
       state.selectedStateAirports = action.payload;
     },
   },
