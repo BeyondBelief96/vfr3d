@@ -1,12 +1,9 @@
 import { useState } from 'react';
 import { getAirportByIcaoCode } from '../../api/faa-airports';
-import { Airport } from '../../api/types';
 
-interface RouteFormProps {
-  onRouteChange: (fromAirport: Airport, toAirport: Airport) => void;
-}
+interface RouteFormProps {}
 
-const RouteForm: React.FC<RouteFormProps> = ({ onRouteChange }) => {
+const RouteForm: React.FC<RouteFormProps> = () => {
   const [fromIcaoCode, setFromIcaoCode] = useState('');
   const [toIcaoCode, setToIcaoCode] = useState('');
   const [fromAirportError, setFromAirportError] = useState(false);
@@ -34,7 +31,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ onRouteChange }) => {
       } else if (!toAirportData) {
         setToAirportError(true);
       } else {
-        onRouteChange(fromAirportData, toAirportData);
+        // onRouteChange(fromAirportData, toAirportData);
       }
     } catch (error) {
       console.error('Error fetching airport data:', error);

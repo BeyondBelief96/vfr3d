@@ -4,6 +4,7 @@ import ImageryControls from '../features/Imagery/ImageryControls';
 import { setSelectedStateAirports, toggleShowAirports } from '../redux/slices/airportsSlice';
 import { RootState } from '../redux/store';
 import { states } from '../utility/states';
+import RouteForm from '../features/Routes/RouteForm';
 
 interface SidebarProps {
   imageryLayerOptions: { value: string; label: string }[];
@@ -74,7 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           className="toggle toggle-primary"
         />
       </div>
-      {/* <RouteForm onRouteChange={onRouteChange} /> */}
+      <RouteForm />
     </div>
   );
 };

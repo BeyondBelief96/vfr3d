@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ImageryLayer, Viewer as ResiumViewer } from 'resium';
-import ShownAirports from '../features/Airports/ShownAirports';
+import ShownAirports from '../features/Airports/VisibleAirports';
 import { useImageryProviders } from '../hooks/useImageryProviders';
 import {
   setImageryAlpha,
