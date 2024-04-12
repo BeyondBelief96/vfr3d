@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { IonResource } from 'cesium';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ImageryLayer, Viewer as ResiumViewer } from 'resium';
 import VisibleAirports from '../features/Airports/VisibleAirports';
+import RouteComponent from '../features/Routes/RouteComponent';
 import { useImageryProviders } from '../hooks/useImageryProviders';
 import {
   setImageryAlpha,
@@ -25,12 +27,24 @@ const ViewerPage = () => {
     (state: RootState) => state.viewer
   );
 
+  const [airspaceDataUrl, setAirspaceDataUrl] = useState('');
+
   const { currentRoute } = useSelector((state: RootState) => state.route);
 
   useEffect(() => {
     if (airports.length) return;
     dispatch(fetchAllAirports());
   }, [dispatch, airports.length]);
+
+  useEffect(() => {
+    async function loadKmlData() {
+      // Replace 'YOUR_ASSET_ID' with the actual ID of your KML asset on Cesium ion
+      const ionKmlResource = await IonResource.fromAssetId(2528900);
+      setAirspaceDataUrl(ionKmlResource.url);
+    }
+
+    loadKmlData();
+  }, []);
 
   const imageryLayerOptions = [
     { value: 'vfrImagery', label: 'VFR' },
@@ -69,7 +83,7 @@ const ViewerPage = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="flex-none overflow-y-auto w-80 bg-base-100">
+      <div className="flex-none overflow-y-auto w-85 bg-base-100">
         <Sidebar
           imageryLayerOptions={imageryLayerOptions}
           onLayerChange={handleLayerChange}
@@ -79,9 +93,10 @@ const ViewerPage = () => {
       </div>
       <div className="flex-1">
         <ResiumViewer className="h-screen" geocoder={false} infoBox={false}>
+          {/* <ResiumKmlDataSource data={airspaceDataUrl} /> */}
           <VisibleAirports />
           <SearchBar />
-          {/* <RouteComponent fromAirport={routeFromAirport} toAirport={routeToAirport} /> */}
+          <RouteComponent />
           {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
             <ImageryLayer
               alpha={currentImageryAlpha ?? 1}

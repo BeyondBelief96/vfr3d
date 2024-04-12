@@ -11,14 +11,6 @@ const store = configureStore({
     viewer: viewerReducer,
     entities: entitiesReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [],
-        ignoredPaths: [],
-        warnAfter: 32,
-      },
-    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

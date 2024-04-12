@@ -1,4 +1,4 @@
-import { Cartesian3 } from 'cesium';
+import { Cartesian3, Color } from 'cesium';
 import { Airport } from '../api/types';
 
 const convertDMSToDecimal = (dms: string): number => {
@@ -31,4 +31,18 @@ export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null 
   }
 
   return Cartesian3.fromDegrees(longitude, latitude, elevation);
+};
+
+export const colorSerializer = {
+  serialize: (color: Color) => {
+    return {
+      red: color.red,
+      green: color.green,
+      blue: color.blue,
+      alpha: color.alpha,
+    };
+  },
+  deserialize: (colorData: Record<string, number>) => {
+    return new Color(colorData.red, colorData.green, colorData.blue, colorData.alpha);
+  },
 };

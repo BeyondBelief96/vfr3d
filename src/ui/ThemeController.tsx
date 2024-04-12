@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const ThemeController: React.FC = () => {
-  const [selectedTheme, setSelectedTheme] = useState('dark');
+  const [selectedTheme, setSelectedTheme] = useState('sunset');
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTheme(event.target.value);
@@ -34,9 +34,9 @@ const ThemeController: React.FC = () => {
             type="radio"
             name="theme-dropdown"
             className="justify-start theme-controller btn btn-sm btn-block btn-ghost"
-            aria-label="business"
-            value="business"
-            checked={selectedTheme === 'Dark'}
+            aria-label="Business"
+            value="Sunset"
+            checked={selectedTheme === 'Business'}
             onChange={handleThemeChange}
           />
         </li>
