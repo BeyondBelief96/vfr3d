@@ -17,7 +17,7 @@ const convertDMSToDecimal = (dms: string): number => {
 export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null => {
   const longitude = convertDMSToDecimal(airport.LONGITUDE);
   const latitude = convertDMSToDecimal(airport.LATITUDE);
-  const elevation = airport.ELEVATION;
+  const elevation = 0;
 
   if (
     longitude === null ||

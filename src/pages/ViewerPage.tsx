@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ImageryLayer, Viewer as ResiumViewer } from 'resium';
-import ShownAirports from '../features/Airports/VisibleAirports';
+import VisibleAirports from '../features/Airports/VisibleAirports';
 import { useImageryProviders } from '../hooks/useImageryProviders';
 import {
   setImageryAlpha,
@@ -79,7 +79,7 @@ const ViewerPage = () => {
       </div>
       <div className="flex-1">
         <ResiumViewer className="h-screen" geocoder={false}>
-          <ShownAirports />
+          <VisibleAirports />
           <SearchBar />
           {/* <RouteComponent fromAirport={routeFromAirport} toAirport={routeToAirport} /> */}
           {selectedImageryLayer === 'vfrImagery' && vfrImagery && (

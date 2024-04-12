@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ImageryControls from '../features/Imagery/ImageryControls';
+import RouteForm from '../features/Routes/RouteForm';
 import { setSelectedStateAirports, toggleShowAirports } from '../redux/slices/airportsSlice';
 import { RootState } from '../redux/store';
 import { states } from '../utility/states';
-import RouteForm from '../features/Routes/RouteForm';
 
 interface SidebarProps {
   imageryLayerOptions: { value: string; label: string }[];
@@ -55,7 +55,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           value={selectedStateAirports}
           onChange={(e) => dispatch(setSelectedStateAirports(e.target.value))}
         >
-          <option value="">All</option>
           {states.map((state) => (
             <option key={state} value={state}>
               {state}

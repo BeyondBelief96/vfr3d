@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getAirportsByState, getAllAirports } from '../../api/faa-airports';
 import { Airport } from '../../api/types';
+import { states } from '../../utility/states';
 
 interface AirportState {
   airports: Airport[];
@@ -15,7 +16,7 @@ const initialState: AirportState = {
   airports: [],
   visibleAirports: [],
   showAirports: false,
-  selectedStateAirports: '',
+  selectedStateAirports: states[0],
   loading: false,
   error: '',
 };
@@ -24,8 +25,7 @@ export const fetchAirportsByState = createAsyncThunk(
   'airport/fetchAirportsByState',
   async (selectedState: string, { rejectWithValue }) => {
     try {
-      const airportsData =
-        selectedState === '' ? await getAllAirports() : await getAirportsByState(selectedState);
+      const airportsData = await getAirportsByState(selectedState);
       return airportsData;
     } catch (error: unknown) {
       return rejectWithValue(error as string);
@@ -56,6 +56,7 @@ const airportSlice = createSlice({
       state.showAirports = !state.showAirports;
     },
     setSelectedStateAirports: (state, action: PayloadAction<string>) => {
+      console.log(action.payload);
       state.selectedStateAirports = action.payload;
     },
   },
@@ -67,7 +68,8 @@ const airportSlice = createSlice({
       })
       .addCase(fetchAirportsByState.fulfilled, (state, action: PayloadAction<Airport[]>) => {
         state.loading = false;
-        state.visibleAirports = action.payload;
+        state.visibleAirports = []; // Clear the visibleAirports array
+        state.visibleAirports = action.payload; // Update with new data
       })
       .addCase(fetchAirportsByState.rejected, (state) => {
         state.loading = false;

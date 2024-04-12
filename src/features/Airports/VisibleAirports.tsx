@@ -6,7 +6,7 @@ import { fetchAirportsByState } from '../../redux/slices/airportsSlice';
 import { AppDispatch, RootState } from '../../redux/store';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
 
-const ShownAirports: React.FC = () => {
+const VisibleAirports: React.FC = () => {
   const { showAirports, visibleAirports, selectedStateAirports } = useSelector(
     (state: RootState) => state.airport
   );
@@ -41,4 +41,4 @@ const ShownAirports: React.FC = () => {
   return null;
 };
 
-export default ShownAirports;
+export default VisibleAirports;

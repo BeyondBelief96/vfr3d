@@ -79,8 +79,6 @@ export const getAllAirports = async (): Promise<Airport[]> => {
       resultOffset += MAX_RECORDS_PER_REQUEST;
       exceededTransferLimit = response.data.exceededTransferLimit;
     } while (exceededTransferLimit);
-
-    console.log(allAirports);
     return allAirports;
   } catch (error) {
     console.error('Error fetching all airports:', error);

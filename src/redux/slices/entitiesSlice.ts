@@ -1,36 +1,31 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Entity } from 'cesium';
 
 interface EntitiesState {
-  airportEntities: Record<string, Entity>;
-  routeEntities: Record<string, Entity>;
+  airportEntityIds: string[];
+  routeEntityIds: string[];
 }
 
 const initialState: EntitiesState = {
-  airportEntities: {},
-  routeEntities: {},
+  airportEntityIds: [],
+  routeEntityIds: [],
 };
 
 const entitiesSlice = createSlice({
   name: 'entities',
   initialState,
   reducers: {
-    addAirportEntity: (state, action: PayloadAction<{ id: string; entity: Entity }>) => {
-      state.airportEntities[action.payload.id] = action.payload.entity;
+    setAirportEntityIds: (state, action: PayloadAction<string[]>) => {
+      state.airportEntityIds = action.payload;
     },
-    removeAirportEntity: (state, action: PayloadAction<string>) => {
-      delete state.airportEntities[action.payload];
-    },
-    addRouteEntity: (state, action: PayloadAction<{ id: string; entity: Entity }>) => {
-      state.airportEntities[action.payload.id] = action.payload.entity;
+    addRouteEntity: (state, action: PayloadAction<string>) => {
+      state.routeEntityIds.push(action.payload);
     },
     removeRouteEntity: (state, action: PayloadAction<string>) => {
-      delete state.airportEntities[action.payload];
+      state.routeEntityIds = state.routeEntityIds.filter((id) => id !== action.payload);
     },
   },
 });
 
-export const { addAirportEntity, removeAirportEntity, addRouteEntity, removeRouteEntity } =
-  entitiesSlice.actions;
+export const { setAirportEntityIds, addRouteEntity, removeRouteEntity } = entitiesSlice.actions;
 
 export default entitiesSlice.reducer;
