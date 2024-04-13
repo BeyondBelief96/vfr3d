@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.3.3",
     "@esri/arcgis-rest-feature-service": "^4.0.5",
     "@esri/arcgis-rest-request": "^4.2.1",
     "@reduxjs/toolkit": "^2.2.3",
@@ -18,11 +19,13 @@
     "daisyui": "^4.10.1",
     "dotenv": "^16.4.5",
     "react": "^18.2.0",
+    "react-awesome-reveal": "^4.2.8",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.3",
     "resium": "^1.17.3",
+    "swiper": "^11.1.1",
     "tailwindcss": "^3.4.3"
   },
   "devDependencies": {

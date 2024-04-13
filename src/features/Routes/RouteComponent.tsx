@@ -1,4 +1,13 @@
-import { Color, Entity } from 'cesium';
+import {
+  Cartesian3,
+  Color,
+  ConstantProperty,
+  Entity,
+  JulianDate,
+  ScreenSpaceEventHandler,
+  ScreenSpaceEventType,
+  defined,
+} from 'cesium';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
@@ -12,17 +21,23 @@ const RouteComponent: React.FC = () => {
   const currentRoute = useSelector((state: RootState) => state.route.currentRoute);
   const { lineColor, endPointColor } = useSelector((state: RootState) => state.route);
   const entityRefs = useRef<Record<string, Entity>>({});
+  const routePointEntityIds = useRef<string[]>([]);
 
   useEffect(() => {
     // Remove existing entities
-    Object.values(entityRefs.current).forEach((entity) => {
+    [
+      ...Object.values(entityRefs.current),
+      ...routePointEntityIds.current.map((id) => viewer?.entities.getById(id)),
+    ].forEach((entity) => {
       if (entity) {
         viewer?.entities.remove(entity);
       }
     });
     entityRefs.current = {};
+    routePointEntityIds.current = [];
 
     if (!viewer || !currentRoute) {
+      routePointEntityIds.current = []; // Clear route entity IDs
       dispatch(setRouteEntityIds([])); // Clear route entity IDs in the store
       return;
     }
@@ -43,6 +58,44 @@ const RouteComponent: React.FC = () => {
       },
     });
 
+    // Add double-click event handler
+    viewer.screenSpaceEventHandler.setInputAction(
+      (event: ScreenSpaceEventHandler.PositionedEvent) => {
+        const pickedObject = viewer.scene.pick(event.position);
+        if (
+          defined(pickedObject) &&
+          defined(pickedObject.id) &&
+          pickedObject.id === polylineEntity
+        ) {
+          const ray = viewer.camera.getPickRay(event.position);
+          if (defined(ray)) {
+            const globe = viewer.scene.globe;
+            const cartesian = globe.pick(ray, viewer.scene);
+            if (defined(cartesian)) {
+              const newPointEntity = viewer.entities.add({
+                position: cartesian,
+                point: { pixelSize: 10, color: Color.fromCssColorString(endPointColor) },
+              });
+
+              // Update polyline positions
+              const positions =
+                polylineEntity.polyline?.positions?.getValue(JulianDate.now()) || [];
+              const newPositions = [...positions];
+              const index = findClosestIndex(cartesian, positions);
+              newPositions.splice(index + 1, 0, cartesian);
+              if (polylineEntity.polyline)
+                polylineEntity.polyline.positions = new ConstantProperty(newPositions);
+
+              // Update route entity IDs and point entity IDs
+              routePointEntityIds.current = [...routePointEntityIds.current, newPointEntity.id];
+              dispatch(setRouteEntityIds([...routePointEntityIds.current]));
+            }
+          }
+        }
+      },
+      ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+    );
+
     // Add start and end point entities
     const fromPointEntity = viewer.entities.add({
       position: fromPosition,
@@ -62,8 +115,40 @@ const RouteComponent: React.FC = () => {
     entityRefs.current[fromAirport.GLOBAL_ID] = fromPointEntity;
     entityRefs.current[toAirport.GLOBAL_ID] = toPointEntity;
 
+    routePointEntityIds.current = newRouteEntityIds;
     dispatch(setRouteEntityIds(newRouteEntityIds));
-  }, [viewer, currentRoute, dispatch, lineColor, endPointColor]);
+
+    // Cleanup function
+    return () => {
+      [
+        ...Object.values(entityRefs.current),
+        ...routePointEntityIds.current.map((id) => viewer?.entities.getById(id)),
+      ].forEach((entity) => {
+        if (entity) {
+          viewer?.entities.remove(entity);
+        }
+      });
+      entityRefs.current = {};
+      routePointEntityIds.current = [];
+
+      // Remove double-click event handler
+      viewer?.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+    };
+  }, [viewer, currentRoute, lineColor, endPointColor, dispatch]);
+
+  // Helper function to find the closest index to insert the new point
+  const findClosestIndex = (cartesian: Cartesian3, positions: Cartesian3[]) => {
+    let closestIndex = -1;
+    let closestDistance = Number.MAX_VALUE;
+    for (let i = 0; i < positions.length - 1; i++) {
+      const distance = Cartesian3.distanceSquared(cartesian, positions[i]);
+      if (distance < closestDistance) {
+        closestIndex = i;
+        closestDistance = distance;
+      }
+    }
+    return closestIndex;
+  };
 
   return null;
 };
