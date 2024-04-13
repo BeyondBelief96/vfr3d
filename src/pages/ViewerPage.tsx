@@ -5,11 +5,6 @@ import VisibleAirports from '../features/Airports/VisibleAirports';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import RouteComponent from '../features/Routes/RouteComponent';
 import { useImageryProviders } from '../hooks/useImageryProviders';
-import {
-  setImageryAlpha,
-  setImageryBrightness,
-  setSelectedLayer,
-} from '../redux/slices/ViewerSlice';
 import { fetchAllAirports } from '../redux/slices/airportsSlice';
 import { AppDispatch, RootState } from '../redux/store';
 import LoadingSpinner from '../ui/LoadingSpinner';
@@ -63,29 +58,12 @@ const ViewerPage = () => {
     ARCGIS_FAA_VFR_TERMINAL_URL
   );
 
-  const handleLayerChange = (layer: string) => {
-    dispatch(setSelectedLayer(layer));
-  };
-
-  const handleAlphaChange = (alpha: number) => {
-    dispatch(setImageryAlpha(alpha));
-  };
-
-  const handleBrightnessChange = (brightness: number) => {
-    dispatch(setImageryBrightness(brightness));
-  };
-
   if (!vfrImagery) return null;
 
   return (
     <div className="flex h-screen">
       <div className="flex-none overflow-x-auto overflow-y-auto w-85 max-w-[23rem] bg-base-100">
-        <Sidebar
-          imageryLayerOptions={imageryLayerOptions}
-          onLayerChange={handleLayerChange}
-          onAlphaChange={handleAlphaChange}
-          onBrightnessChange={handleBrightnessChange}
-        />
+        <Sidebar imageryLayerOptions={imageryLayerOptions} />
       </div>
       <div className="flex-1">
         {airspace3dloading && <LoadingSpinner />}

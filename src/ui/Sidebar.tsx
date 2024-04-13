@@ -2,6 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ImageryControls from '../features/Imagery/ImageryControls';
 import RouteForm from '../features/Routes/RouteForm';
+import {
+  setImageryAlpha,
+  setImageryBrightness,
+  setSelectedLayer,
+} from '../redux/slices/ViewerSlice';
 import { setSelectedStateAirports, toggleShowAirports } from '../redux/slices/airportsSlice';
 import { toggleAirspace3d } from '../redux/slices/airspaceSlice';
 import { RootState } from '../redux/store';
@@ -9,17 +14,9 @@ import { states } from '../utility/states';
 
 interface SidebarProps {
   imageryLayerOptions: { value: string; label: string }[];
-  onLayerChange: (layer: string) => void;
-  onAlphaChange: (alpha: number) => void;
-  onBrightnessChange: (brightness: number) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
-  imageryLayerOptions,
-  onLayerChange,
-  onAlphaChange,
-  onBrightnessChange,
-}) => {
+const Sidebar: React.FC<SidebarProps> = ({ imageryLayerOptions }) => {
   const dispatch = useDispatch();
   const { selectedImageryLayer } = useSelector((state: RootState) => state.viewer);
 
@@ -39,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             id="layer-select"
             className="w-full select select-bordered"
             value={selectedImageryLayer}
-            onChange={(e) => onLayerChange(e.target.value)}
+            onChange={(e) => dispatch(setSelectedLayer(e.target.value))}
           >
             {imageryLayerOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -48,7 +45,10 @@ const Sidebar: React.FC<SidebarProps> = ({
             ))}
           </select>
         </div>
-        <ImageryControls onAlphaChange={onAlphaChange} onBrightnessChange={onBrightnessChange} />
+        <ImageryControls
+          onAlphaChange={(alpha) => dispatch(setImageryAlpha(alpha))}
+          onBrightnessChange={(brightness) => dispatch(setImageryBrightness(brightness))}
+        />
       </div>
 
       {/* State Selection */}
