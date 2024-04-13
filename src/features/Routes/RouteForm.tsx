@@ -19,8 +19,8 @@ const RouteForm: React.FC<RouteFormProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [fromIcaoCode, setFromIcaoCode] = useState('');
   const [toIcaoCode, setToIcaoCode] = useState('');
-  const [fromAirportError, setFromAirportError] = useState(false);
-  const [toAirportError, setToAirportError] = useState(false);
+  const [fromAirportError, setFromAirportError] = useState('');
+  const [toAirportError, setToAirportError] = useState('');
 
   const handleLineColorChange = (color: Color) => {
     const colorString = `rgba(${color.red * 255}, ${color.green * 255}, ${color.blue * 255}, ${color.alpha})`;
@@ -34,12 +34,12 @@ const RouteForm: React.FC<RouteFormProps> = () => {
 
   const handleFromIcaoCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFromIcaoCode(e.target.value);
-    setFromAirportError(false);
+    setFromAirportError('');
   };
 
   const handleToIcaoCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setToIcaoCode(e.target.value);
-    setToAirportError(false);
+    setToAirportError('');
   };
 
   const handleRouteSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
@@ -49,9 +49,9 @@ const RouteForm: React.FC<RouteFormProps> = () => {
       const toAirportData = await getAirportByIcaoCode(toIcaoCode);
 
       if (!fromAirportData) {
-        setFromAirportError(true);
+        setFromAirportError('Invalid ICAO code');
       } else if (!toAirportData) {
-        setToAirportError(true);
+        setToAirportError('Invalid ICAO code');
       } else {
         const newRoute: Route = {
           id: Date.now(), // Generate a unique ID for the new route
@@ -84,10 +84,11 @@ const RouteForm: React.FC<RouteFormProps> = () => {
           id="from-icao-code"
           type="text"
           value={fromIcaoCode}
-          className={`w-full input input-bordered`}
+          className={`w-full input input-bordered ${fromAirportError ? 'input-error' : ''}`}
           onChange={handleFromIcaoCodeChange}
           placeholder="Enter ICAO code"
         />
+        {fromAirportError && <p className="mt-1 text-error">{fromAirportError}</p>}
       </div>
       <div className="mb-4">
         <label htmlFor="to-icao-code" className="block mb-2">
@@ -97,10 +98,11 @@ const RouteForm: React.FC<RouteFormProps> = () => {
           id="to-icao-code"
           type="text"
           value={toIcaoCode}
-          className={`w-full input input-bordered`}
+          className={`w-full input input-bordered ${toAirportError ? 'input-error' : ''}`}
           onChange={handleToIcaoCodeChange}
           placeholder="Enter ICAO code"
         />
+        {toAirportError && <p className="mt-1 text-error">{toAirportError}</p>}
       </div>
       <div className="flex space-x-4">
         <button onClick={handleRouteSubmit} type="submit" className="btn btn-primary">
