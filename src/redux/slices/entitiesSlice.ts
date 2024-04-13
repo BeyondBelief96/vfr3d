@@ -16,19 +16,22 @@ const entitiesSlice = createSlice({
   name: 'entities',
   initialState,
   reducers: {
-    setAirportEntityIds: (state, action: PayloadAction<string[]>) => {
+    updateCurrentAirportEntityIds: (state, action: PayloadAction<string[]>) => {
       state.airportEntityIds = action.payload;
     },
-    setRouteEntityIds: (state, action: PayloadAction<string[]>) => {
+    updateCurrentRouteEntityIds: (state, action: PayloadAction<string[]>) => {
       state.routeEntityIds = action.payload;
     },
-    setAirspaceEntityIds: (state, action: PayloadAction<string[]>) => {
+    updateCurrentAirspaceEntityIds: (state, action: PayloadAction<string[]>) => {
       state.airspaceEntityIds = action.payload;
     },
   },
 });
 
-export const { setAirportEntityIds, setRouteEntityIds, setAirspaceEntityIds } =
-  entitiesSlice.actions;
+export const {
+  updateCurrentAirportEntityIds,
+  updateCurrentRouteEntityIds,
+  updateCurrentAirspaceEntityIds,
+} = entitiesSlice.actions;
 
 export default entitiesSlice.reducer;

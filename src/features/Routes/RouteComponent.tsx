@@ -2,7 +2,7 @@ import { Entity, ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
-import { setRouteEntityIds } from '../../redux/slices/entitiesSlice';
+import { updateCurrentRouteEntityIds } from '../../redux/slices/entitiesSlice';
 import { AppDispatch, RootState } from '../../redux/store';
 import {
   addPointToPolyline,
@@ -25,7 +25,7 @@ const RouteComponent: React.FC = () => {
       removeEntities(viewer, entityRefs.current, routePointEntityIds.current);
       entityRefs.current = {};
       routePointEntityIds.current = [];
-      dispatch(setRouteEntityIds([]));
+      dispatch(updateCurrentRouteEntityIds([]));
     };
 
     if (!viewer || !currentRoute) {
@@ -42,7 +42,7 @@ const RouteComponent: React.FC = () => {
     const polylineEntity = createPolylineEntity(viewer, fromPosition, toPosition, lineColor);
     const fromPointEntity = createPointEntity(viewer, fromPosition, endPointColor);
     const toPointEntity = createPointEntity(viewer, toPosition, endPointColor);
-    
+
     entityRefs.current = {
       [`polyline-${fromAirport.GLOBAL_ID}-${toAirport.GLOBAL_ID}`]: polylineEntity,
       [fromAirport.GLOBAL_ID]: fromPointEntity,
@@ -55,7 +55,7 @@ const RouteComponent: React.FC = () => {
       toAirport.GLOBAL_ID,
     ];
 
-    dispatch(setRouteEntityIds(routePointEntityIds.current));
+    dispatch(updateCurrentRouteEntityIds(routePointEntityIds.current));
 
     const doubleClickHandler = (event: ScreenSpaceEventHandler.PositionedEvent) => {
       addPointToPolyline(

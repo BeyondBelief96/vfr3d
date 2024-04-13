@@ -8,7 +8,7 @@ import {
   Viewer,
   defined,
 } from 'cesium';
-import { setRouteEntityIds } from '../redux/slices/entitiesSlice';
+import { updateCurrentRouteEntityIds } from '../redux/slices/entitiesSlice';
 import { AppDispatch } from '../redux/store';
 
 export const createPolylineEntity = (
@@ -59,7 +59,7 @@ export const addPointToPolyline = (
         }
 
         routePointEntityIds.current = [...routePointEntityIds.current, newPointEntity.id];
-        dispatch(setRouteEntityIds([...routePointEntityIds.current]));
+        dispatch(updateCurrentRouteEntityIds([...routePointEntityIds.current]));
       }
     }
   }

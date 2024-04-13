@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
 import { fetchAirportsByState } from '../../redux/slices/airportsSlice';
-import { setAirportEntityIds } from '../../redux/slices/entitiesSlice';
+import { updateCurrentAirportEntityIds } from '../../redux/slices/entitiesSlice';
 import { AppDispatch, RootState } from '../../redux/store';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
 
@@ -25,7 +25,7 @@ const VisibleAirports: React.FC = () => {
     entityRefs.current = {};
 
     if (!showAirports || !viewer) {
-      dispatch(setAirportEntityIds([])); // Clear airport entity IDs in the store
+      dispatch(updateCurrentAirportEntityIds([])); // Clear airport entity IDs in the store
       return;
     }
 
@@ -43,7 +43,7 @@ const VisibleAirports: React.FC = () => {
       newEntityIds.push(airport.GLOBAL_ID);
     });
 
-    dispatch(setAirportEntityIds(newEntityIds)); // Update airport entity IDs in the store
+    dispatch(updateCurrentAirportEntityIds(newEntityIds)); // Update airport entity IDs in the store
   }, [showAirports, viewer, visibleAirports, dispatch]);
 
   return null;

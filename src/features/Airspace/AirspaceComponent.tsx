@@ -2,7 +2,7 @@ import { Entity, IonResource, KmlDataSource } from 'cesium';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
-import { setAirspaceEntityIds } from '../../redux/slices/entitiesSlice';
+import { updateCurrentAirspaceEntityIds } from '../../redux/slices/entitiesSlice';
 import { AppDispatch, RootState } from '../../redux/store';
 
 interface AirspaceComponentProps {
@@ -17,7 +17,7 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
 
   useEffect(() => {
     if (!viewer) {
-      dispatch(setAirspaceEntityIds([]));
+      dispatch(updateCurrentAirspaceEntityIds([]));
       return;
     }
 
@@ -43,7 +43,7 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
           entity.show = airspace3dEnabled;
         });
 
-        dispatch(setAirspaceEntityIds(newEntityIds));
+        dispatch(updateCurrentAirspaceEntityIds(newEntityIds));
       } catch (error) {
         console.error('Error loading KML file:', error);
       } finally {
