@@ -20,6 +20,9 @@ const routeSlice = createSlice({
     setRoute: (state, action: PayloadAction<Route | undefined>) => {
       state.currentRoute = action.payload;
     },
+    clearRoute: (state) => {
+      state.currentRoute = null;
+    },
     setLineColor: (state, action: PayloadAction<string>) => {
       state.lineColor = action.payload;
     },
@@ -29,5 +32,5 @@ const routeSlice = createSlice({
   },
 });
 
-export const { setRoute, setLineColor, setEndPointColor } = routeSlice.actions;
+export const { setRoute, clearRoute, setLineColor, setEndPointColor } = routeSlice.actions;
 export default routeSlice.reducer;

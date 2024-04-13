@@ -3,7 +3,12 @@ import { useState } from 'react';
 import { HuePicker } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAirportByIcaoCode } from '../../api/faa-airports';
-import { setEndPointColor, setLineColor, setRoute } from '../../redux/slices/routeSlice';
+import {
+  clearRoute,
+  setEndPointColor,
+  setLineColor,
+  setRoute,
+} from '../../redux/slices/routeSlice';
 import { AppDispatch, RootState } from '../../redux/store';
 import { Route } from './Route';
 
@@ -37,9 +42,9 @@ const RouteForm: React.FC<RouteFormProps> = () => {
     setToAirportError(false);
   };
 
-  const handleRouteSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRouteSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
+    console.log('REACHED CODE');
     try {
       const fromAirportData = await getAirportByIcaoCode(fromIcaoCode);
       const toAirportData = await getAirportByIcaoCode(toIcaoCode);
@@ -62,8 +67,13 @@ const RouteForm: React.FC<RouteFormProps> = () => {
     }
   };
 
+  const handleClearRoute = (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(clearRoute());
+  };
+
   return (
-    <form onSubmit={handleRouteSubmit} className="mt-6">
+    <form className="mt-6">
       <h2 className="mb-4 text-lg font-semibold">Route Plotting</h2>
       <div className="mb-4">
         <label htmlFor="from-icao-code" className="block mb-2">
@@ -90,10 +100,10 @@ const RouteForm: React.FC<RouteFormProps> = () => {
         />
       </div>
       <div className="flex space-x-4">
-        <button type="submit" className="btn btn-primary">
+        <button onClick={handleRouteSubmit} type="submit" className="btn btn-primary">
           Plot Route
         </button>
-        <button type="submit" className="btn btn-primary">
+        <button onClick={handleClearRoute} type="submit" className="btn btn-primary">
           Clear Route
         </button>
       </div>

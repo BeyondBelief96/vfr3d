@@ -13,7 +13,7 @@ const ThemeController: React.FC = () => {
 
   return (
     <div className="dropdown">
-      <div tabIndex={0} role="button" className="m-1 btn">
+      <div tabIndex={0} role="button" className="m-1 btn btn-info">
         Theme
         <svg
           width="12px"

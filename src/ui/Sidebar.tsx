@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ImageryControls from '../features/Imagery/ImageryControls';
 import RouteForm from '../features/Routes/RouteForm';
 import { setSelectedStateAirports, toggleShowAirports } from '../redux/slices/airportsSlice';
+import { toggleAirspace3d } from '../redux/slices/airspaceSlice';
 import { RootState } from '../redux/store';
 import { states } from '../utility/states';
 
@@ -23,6 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const { selectedImageryLayer } = useSelector((state: RootState) => state.viewer);
 
   const { showAirports, selectedStateAirports } = useSelector((state: RootState) => state.airport);
+  const { airspace3dEnabled } = useSelector((state: RootState) => state.airspace);
 
   return (
     <div className="p-4 bg-base-100">
@@ -70,20 +72,37 @@ const Sidebar: React.FC<SidebarProps> = ({
           </select>
         </div>
       </div>
+      <div className="flex space-x-4">
+        {/* Show Airports Toggle */}
+        <div className="mb-6">
+          <div className="flex items-center mt-4">
+            <label htmlFor="airport-toggle" className="mr-2">
+              Show Airports
+            </label>
+            <input
+              id="airport-toggle"
+              type="checkbox"
+              checked={showAirports}
+              onChange={() => dispatch(toggleShowAirports())}
+              className="toggle toggle-primary"
+            />
+          </div>
+        </div>
 
-      {/* Show Airports Toggle */}
-      <div className="mb-6">
-        <div className="flex items-center mt-4">
-          <label htmlFor="airport-toggle" className="mr-2">
-            Show Airports
-          </label>
-          <input
-            id="airport-toggle"
-            type="checkbox"
-            checked={showAirports}
-            onChange={() => dispatch(toggleShowAirports())}
-            className="toggle toggle-primary"
-          />
+        {/* Show Airspace Toggle */}
+        <div className="mb-6">
+          <div className="flex items-center mt-4">
+            <label htmlFor="airspace-toggle" className="mr-2">
+              Show 3D Airspace
+            </label>
+            <input
+              id="airport-toggle"
+              type="checkbox"
+              checked={airspace3dEnabled}
+              onChange={() => dispatch(toggleAirspace3d())}
+              className="toggle toggle-primary"
+            />
+          </div>
         </div>
       </div>
 

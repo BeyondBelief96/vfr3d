@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import viewerReducer from './slices/ViewerSlice';
 import airportReducer from './slices/airportsSlice';
+import airspaceReducer from './slices/airspaceSlice';
 import entitiesReducer from './slices/entitiesSlice';
 import routeReducer from './slices/routeSlice';
 
@@ -10,6 +11,7 @@ const store = configureStore({
     route: routeReducer,
     viewer: viewerReducer,
     entities: entitiesReducer,
+    airspace: airspaceReducer,
   },
 });
 

@@ -23,13 +23,12 @@ import {
 const ViewerPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { airports } = useSelector((state: RootState) => state.airport);
+  const { airspace3dEnabled } = useSelector((state: RootState) => state.airspace);
   const { currentImageryAlpha, currentImageryBrightness, selectedImageryLayer } = useSelector(
     (state: RootState) => state.viewer
   );
 
   const [airspaceDataUrl, setAirspaceDataUrl] = useState('');
-
-  const { currentRoute } = useSelector((state: RootState) => state.route);
 
   useEffect(() => {
     if (airports.length) return;
@@ -38,8 +37,7 @@ const ViewerPage = () => {
 
   useEffect(() => {
     async function loadKmlData() {
-      // Replace 'YOUR_ASSET_ID' with the actual ID of your KML asset on Cesium ion
-      const ionKmlResource = await IonResource.fromAssetId(2528900);
+      const ionKmlResource = await IonResource.fromAssetId(2536807);
       setAirspaceDataUrl(ionKmlResource.url);
     }
 
@@ -93,7 +91,6 @@ const ViewerPage = () => {
       </div>
       <div className="flex-1">
         <ResiumViewer className="h-screen" geocoder={false} infoBox={false}>
-          {/* <ResiumKmlDataSource data={airspaceDataUrl} /> */}
           <VisibleAirports />
           <SearchBar />
           <RouteComponent />

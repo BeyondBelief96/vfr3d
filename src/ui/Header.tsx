@@ -16,7 +16,7 @@ const Header: React.FC = () => {
           </Link>
         </ul>
       </div>
-      <div className="navbar-end">
+      <div className="space-x-4 navbar-end">
         <DonationButton />
         <ThemeController />
       </div>
