@@ -38,7 +38,7 @@ const SearchBar = () => {
           />
           <button
             onClick={handleSearch}
-            className="relative rounded-r-lg top-1.5 left-2 btn btn-square"
+            className="relative rounded-lg top-1.5 left-2 btn btn-square"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
