@@ -15,7 +15,7 @@ import { Route } from './Route';
 interface RouteFormProps {}
 
 const RouteForm: React.FC<RouteFormProps> = () => {
-  const { lineColor, endPointColor } = useSelector((state: RootState) => state.route);
+  const { lineColor, pointColor: endPointColor } = useSelector((state: RootState) => state.route);
   const dispatch = useDispatch<AppDispatch>();
   const [fromIcaoCode, setFromIcaoCode] = useState('');
   const [toIcaoCode, setToIcaoCode] = useState('');

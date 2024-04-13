@@ -16,7 +16,7 @@ const RouteComponent: React.FC = () => {
   const { viewer } = useCesium();
   const dispatch = useDispatch<AppDispatch>();
   const currentRoute = useSelector((state: RootState) => state.route.currentRoute);
-  const { lineColor, endPointColor } = useSelector((state: RootState) => state.route);
+  const { lineColor, pointColor: endPointColor } = useSelector((state: RootState) => state.route);
   const entityRefs = useRef<Record<string, Entity>>({});
   const routePointEntityIds = useRef<string[]>([]);
 
@@ -43,17 +43,14 @@ const RouteComponent: React.FC = () => {
     const fromPointEntity = createPointEntity(viewer, fromPosition, endPointColor);
     const toPointEntity = createPointEntity(viewer, toPosition, endPointColor);
 
+    const polylineId = `polyline-${fromAirport.GLOBAL_ID}-${toAirport.GLOBAL_ID}`;
     entityRefs.current = {
-      [`polyline-${fromAirport.GLOBAL_ID}-${toAirport.GLOBAL_ID}`]: polylineEntity,
+      [polylineId]: polylineEntity,
       [fromAirport.GLOBAL_ID]: fromPointEntity,
       [toAirport.GLOBAL_ID]: toPointEntity,
     };
 
-    routePointEntityIds.current = [
-      `polyline-${fromAirport.GLOBAL_ID}-${toAirport.GLOBAL_ID}`,
-      fromAirport.GLOBAL_ID,
-      toAirport.GLOBAL_ID,
-    ];
+    routePointEntityIds.current = [polylineId, fromAirport.GLOBAL_ID, toAirport.GLOBAL_ID];
 
     dispatch(updateCurrentRouteEntityIds(routePointEntityIds.current));
 

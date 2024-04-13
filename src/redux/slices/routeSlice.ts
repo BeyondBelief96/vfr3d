@@ -4,13 +4,13 @@ import { Route } from '../../features/Routes/Route';
 interface RouteState {
   currentRoute: Route | null | undefined;
   lineColor: string;
-  endPointColor: string;
+  pointColor: string;
 }
 
 const initialState: RouteState = {
   currentRoute: null,
   lineColor: 'rgba(0, 255, 255, 1)', // Aqua
-  endPointColor: 'rgba(255, 255, 0, 1)', // Yellow
+  pointColor: 'rgba(255, 255, 0, 1)', // Yellow
 };
 
 const routeSlice = createSlice({
@@ -27,7 +27,7 @@ const routeSlice = createSlice({
       state.lineColor = action.payload;
     },
     setEndPointColor: (state, action: PayloadAction<string>) => {
-      state.endPointColor = action.payload;
+      state.pointColor = action.payload;
     },
   },
 });
