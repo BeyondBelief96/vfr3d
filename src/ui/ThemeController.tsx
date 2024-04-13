@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const ThemeController: React.FC = () => {
-  const [selectedTheme, setSelectedTheme] = useState('sunset');
+  const [selectedTheme, setSelectedTheme] = useState('business');
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTheme(event.target.value);
@@ -13,7 +13,7 @@ const ThemeController: React.FC = () => {
 
   return (
     <div className="dropdown">
-      <div tabIndex={0} role="button" className="m-1 btn btn-info">
+      <div tabIndex={0} role="button" className="m-1 mr-5 btn btn-info">
         Theme
         <svg
           width="12px"
@@ -27,7 +27,7 @@ const ThemeController: React.FC = () => {
       </div>
       <ul
         tabIndex={0}
-        className="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-52"
+        className="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-28"
       >
         <li>
           <input
@@ -35,7 +35,7 @@ const ThemeController: React.FC = () => {
             name="theme-dropdown"
             className="justify-start theme-controller btn btn-sm btn-block btn-ghost"
             aria-label="Business"
-            value="Sunset"
+            value="business"
             checked={selectedTheme === 'Business'}
             onChange={handleThemeChange}
           />
@@ -56,9 +56,9 @@ const ThemeController: React.FC = () => {
             type="radio"
             name="theme-dropdown"
             className="justify-start theme-controller btn btn-sm btn-block btn-ghost"
-            aria-label="Luxury"
-            value="luxury"
-            checked={selectedTheme === 'Luxury'}
+            aria-label="Dim"
+            value="Dim"
+            checked={selectedTheme === 'Dim'}
             onChange={handleThemeChange}
           />
         </li>

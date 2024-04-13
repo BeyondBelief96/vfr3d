@@ -1,8 +1,8 @@
-import { IonResource } from 'cesium';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ImageryLayer, Viewer as ResiumViewer } from 'resium';
 import VisibleAirports from '../features/Airports/VisibleAirports';
+import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import RouteComponent from '../features/Routes/RouteComponent';
 import { useImageryProviders } from '../hooks/useImageryProviders';
 import {
@@ -12,6 +12,7 @@ import {
 } from '../redux/slices/ViewerSlice';
 import { fetchAllAirports } from '../redux/slices/airportsSlice';
 import { AppDispatch, RootState } from '../redux/store';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import SearchBar from '../ui/SearchBar';
 import Sidebar from '../ui/Sidebar';
 import {
@@ -23,26 +24,16 @@ import {
 const ViewerPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { airports } = useSelector((state: RootState) => state.airport);
-  const { airspace3dEnabled } = useSelector((state: RootState) => state.airspace);
   const { currentImageryAlpha, currentImageryBrightness, selectedImageryLayer } = useSelector(
     (state: RootState) => state.viewer
   );
 
-  const [airspaceDataUrl, setAirspaceDataUrl] = useState('');
+  const [airspace3dloading, setAirspace3dloading] = useState(false);
 
   useEffect(() => {
     if (airports.length) return;
     dispatch(fetchAllAirports());
   }, [dispatch, airports.length]);
-
-  useEffect(() => {
-    async function loadKmlData() {
-      const ionKmlResource = await IonResource.fromAssetId(2536807);
-      setAirspaceDataUrl(ionKmlResource.url);
-    }
-
-    loadKmlData();
-  }, []);
 
   const imageryLayerOptions = [
     { value: 'vfrImagery', label: 'VFR' },
@@ -81,7 +72,7 @@ const ViewerPage = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="flex-none overflow-y-auto w-85 bg-base-100">
+      <div className="flex-none overflow-x-auto overflow-y-auto w-85 max-w-[23rem] bg-base-100">
         <Sidebar
           imageryLayerOptions={imageryLayerOptions}
           onLayerChange={handleLayerChange}
@@ -90,7 +81,9 @@ const ViewerPage = () => {
         />
       </div>
       <div className="flex-1">
+        {airspace3dloading && <LoadingSpinner />}
         <ResiumViewer className="h-screen" geocoder={false} infoBox={false}>
+          <AirspaceComponent setIsLoading={setAirspace3dloading} />
           <VisibleAirports />
           <SearchBar />
           <RouteComponent />

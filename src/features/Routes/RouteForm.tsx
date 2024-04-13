@@ -44,7 +44,6 @@ const RouteForm: React.FC<RouteFormProps> = () => {
 
   const handleRouteSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log('REACHED CODE');
     try {
       const fromAirportData = await getAirportByIcaoCode(fromIcaoCode);
       const toAirportData = await getAirportByIcaoCode(toIcaoCode);
@@ -61,6 +60,8 @@ const RouteForm: React.FC<RouteFormProps> = () => {
         };
 
         dispatch(setRoute(newRoute));
+        setFromIcaoCode('');
+        setToIcaoCode('');
       }
     } catch (error) {
       console.error('Error fetching airport data:', error);
@@ -82,6 +83,7 @@ const RouteForm: React.FC<RouteFormProps> = () => {
         <input
           id="from-icao-code"
           type="text"
+          value={fromIcaoCode}
           className={`w-full input input-bordered`}
           onChange={handleFromIcaoCodeChange}
           placeholder="Enter ICAO code"
@@ -94,6 +96,7 @@ const RouteForm: React.FC<RouteFormProps> = () => {
         <input
           id="to-icao-code"
           type="text"
+          value={toIcaoCode}
           className={`w-full input input-bordered`}
           onChange={handleToIcaoCodeChange}
           placeholder="Enter ICAO code"

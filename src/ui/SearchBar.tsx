@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useSearchAndFlyTo from '../hooks/useSearchAndFlyTo';
 
 const SearchBar = () => {
   const [icaoCode, setIcaoCode] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
   const searchAndFlyTo = useSearchAndFlyTo();
 
   const handleSearch = useCallback(async () => {
@@ -11,7 +12,7 @@ const SearchBar = () => {
 
   useEffect(() => {
     const handleKeyDown = async (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' && document.activeElement === inputRef.current) {
         await handleSearch();
       }
     };
@@ -22,13 +23,13 @@ const SearchBar = () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleSearch]);
-
   return (
     <div className="absolute z-10 flex items-center top-3 left-4">
       <label className="mt-2 mr-2 text-white label">Search for Airport (ICAO Code):</label>
       <div className="rounded-lg form-control">
         <div className="input-group">
           <input
+            ref={inputRef}
             type="text"
             placeholder="Enter ICAO code"
             value={icaoCode}
