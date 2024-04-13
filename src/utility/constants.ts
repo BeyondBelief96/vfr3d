@@ -1,5 +1,7 @@
 export const ARCGIS_FAA_VFR_SECTIONAL_URL =
   'https://tiles.arcgis.com/tiles/ssFJjBXIUyZDrSYZ/arcgis/rest/services/VFR_Sectional/MapServer';
+export const ARCGIS_FAA_VFR_TERMINAL_URL =
+  'https://tiles.arcgis.com/tiles/ssFJjBXIUyZDrSYZ/arcgis/rest/services/VFR_Terminal/MapServer';
 export const ARCGIS_FAA_IFR_LOW_URL =
   'https://tiles.arcgis.com/tiles/ssFJjBXIUyZDrSYZ/arcgis/rest/services/IFR_AreaLow/MapServer';
 export const ARCGIS_FAA_IFR_HIGH_URL =

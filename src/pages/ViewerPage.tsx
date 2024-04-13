@@ -19,6 +19,7 @@ import {
   ARCGIS_FAA_IFR_HIGH_URL,
   ARCGIS_FAA_IFR_LOW_URL,
   ARCGIS_FAA_VFR_SECTIONAL_URL,
+  ARCGIS_FAA_VFR_TERMINAL_URL,
 } from '../utility/constants';
 
 const ViewerPage = () => {
@@ -37,6 +38,7 @@ const ViewerPage = () => {
 
   const imageryLayerOptions = [
     { value: 'vfrImagery', label: 'VFR' },
+    { value: 'vfrTerminal', label: 'VFR TAC' },
     { value: 'ifrLowImagery', label: 'IFR Low' },
     { value: 'ifrHighImagery', label: 'IFR High' },
   ];
@@ -54,6 +56,11 @@ const ViewerPage = () => {
   const { imagery: ifrHighImagery } = useImageryProviders(
     import.meta.env.VITE_ARCGIS_API_KEY,
     ARCGIS_FAA_IFR_HIGH_URL
+  );
+
+  const { imagery: vfrTerminal } = useImageryProviders(
+    import.meta.env.VITE_ARCGIS_API_KEY,
+    ARCGIS_FAA_VFR_TERMINAL_URL
   );
 
   const handleLayerChange = (layer: string) => {
@@ -92,6 +99,14 @@ const ViewerPage = () => {
               alpha={currentImageryAlpha ?? 1}
               brightness={currentImageryBrightness ?? 1}
               imageryProvider={vfrImagery}
+              dayAlpha={currentImageryAlpha}
+            />
+          )}
+          {selectedImageryLayer === 'vfrTerminal' && vfrTerminal && (
+            <ImageryLayer
+              alpha={currentImageryAlpha ?? 1}
+              brightness={currentImageryBrightness ?? 1}
+              imageryProvider={vfrTerminal}
               dayAlpha={currentImageryAlpha}
             />
           )}

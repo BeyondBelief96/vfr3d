@@ -7,8 +7,8 @@ export const useImageryProviders = (arcGisApiKey: string, imageryUrl: string) =>
   useEffect(() => {
     const loadImagery = async () => {
       try {
-        const vfrImageryProvider = await ArcGisMapServerImageryProvider.fromUrl(imageryUrl);
-        setImagery(vfrImageryProvider);
+        const imageryProvider = await ArcGisMapServerImageryProvider.fromUrl(imageryUrl);
+        setImagery(imageryProvider);
       } catch (error) {
         console.error('Error loading imagery providers:', error);
       }
