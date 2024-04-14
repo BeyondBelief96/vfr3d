@@ -4,6 +4,7 @@ import airportReducer from './slices/airportsSlice';
 import airspaceReducer from './slices/airspaceSlice';
 import entitiesReducer from './slices/entitiesSlice';
 import routeReducer from './slices/routeSlice';
+import searchReducer from './slices/searchSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     viewer: viewerReducer,
     entities: entitiesReducer,
     airspace: airspaceReducer,
+    search: searchReducer,
   },
 });
 

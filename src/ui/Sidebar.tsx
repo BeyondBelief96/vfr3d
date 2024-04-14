@@ -7,7 +7,7 @@ import {
   setImageryBrightness,
   setSelectedLayer,
 } from '../redux/slices/ViewerSlice';
-import { setSelectedStateAirports, toggleShowAirports } from '../redux/slices/airportsSlice';
+import { setSelectedState, toggleShowAirports } from '../redux/slices/airportsSlice';
 import { toggleAirspace3d } from '../redux/slices/airspaceSlice';
 import { RootState } from '../redux/store';
 import { states } from '../utility/states';
@@ -20,7 +20,9 @@ const Sidebar: React.FC<SidebarProps> = ({ imageryLayerOptions }) => {
   const dispatch = useDispatch();
   const { selectedImageryLayer } = useSelector((state: RootState) => state.viewer);
 
-  const { showAirports, selectedStateAirports } = useSelector((state: RootState) => state.airport);
+  const { showAirports, selectedState: selectedStateAirports } = useSelector(
+    (state: RootState) => state.airport
+  );
   const { airspace3dEnabled } = useSelector((state: RootState) => state.airspace);
 
   return (
@@ -62,7 +64,7 @@ const Sidebar: React.FC<SidebarProps> = ({ imageryLayerOptions }) => {
             id="state-select"
             className="w-full select select-bordered"
             value={selectedStateAirports}
-            onChange={(e) => dispatch(setSelectedStateAirports(e.target.value))}
+            onChange={(e) => dispatch(setSelectedState(e.target.value))}
           >
             {states.map((state) => (
               <option key={state} value={state}>

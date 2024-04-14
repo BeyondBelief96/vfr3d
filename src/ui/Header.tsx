@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import DonationButton from './DonationButton';
+import SearchBar from './SearchBar';
 import ThemeController from './ThemeController';
 
 const Header: React.FC = () => {
@@ -15,6 +16,7 @@ const Header: React.FC = () => {
               VFR3D
             </Link>
           )}
+          {isViewerPage && <SearchBar />}
         </div>
       </div>
 

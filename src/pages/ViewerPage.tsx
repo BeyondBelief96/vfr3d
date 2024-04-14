@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ImageryLayer, Viewer as ResiumViewer } from 'resium';
+import FlyTo from '../features/Airports/FlyTo';
 import VisibleAirports from '../features/Airports/VisibleAirports';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import RouteComponent from '../features/Routes/RouteComponent';
@@ -8,7 +9,6 @@ import { useImageryProviders } from '../hooks/useImageryProviders';
 import { fetchAllAirports } from '../redux/slices/airportsSlice';
 import { AppDispatch, RootState } from '../redux/store';
 import LoadingSpinner from '../ui/LoadingSpinner';
-import SearchBar from '../ui/SearchBar';
 import Sidebar from '../ui/Sidebar';
 import {
   ARCGIS_FAA_IFR_HIGH_URL,
@@ -70,7 +70,7 @@ const ViewerPage = () => {
         <ResiumViewer className="h-screen" geocoder={false} infoBox={false}>
           <AirspaceComponent setIsLoading={setAirspace3dloading} />
           <VisibleAirports />
-          <SearchBar />
+          <FlyTo />
           <RouteComponent />
           {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
             <ImageryLayer

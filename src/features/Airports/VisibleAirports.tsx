@@ -8,9 +8,11 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
 
 const VisibleAirports: React.FC = () => {
-  const { showAirports, visibleAirports, selectedStateAirports } = useSelector(
-    (state: RootState) => state.airport
-  );
+  const {
+    showAirports,
+    visibleAirports,
+    selectedState: selectedStateAirports,
+  } = useSelector((state: RootState) => state.airport);
   const dispatch = useDispatch<AppDispatch>();
   const { viewer } = useCesium();
   const entityRefs = useRef<Record<string, Entity>>({});
