@@ -24,8 +24,10 @@ const SearchBar = () => {
     };
   }, [handleSearch]);
   return (
-    <div className="absolute z-10 flex items-center top-3 left-4">
-      <label className="mt-2 mr-2 text-white label">Search for Airport (ICAO Code):</label>
+    <div className="absolute z-10 flex flex-col items-center sm:flex-row top-3 left-4 right-4 sm:right-auto">
+      <label className="mt-2 mb-2 text-white sm:mb-0 sm:mr-2 label">
+        Search for Airport (ICAO Code):
+      </label>
       <div className="rounded-lg form-control">
         <div className="input-group">
           <input

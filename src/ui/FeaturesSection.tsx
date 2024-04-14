@@ -14,7 +14,11 @@ const FeaturesSection: React.FC = () => {
           spaceBetween={20}
           slidesPerView={1}
           breakpoints={{
-            640: {
+            480: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            768: {
               slidesPerView: 2,
               spaceBetween: 20,
             },
@@ -27,7 +31,7 @@ const FeaturesSection: React.FC = () => {
         >
           <SwiperSlide>
             <Fade direction="left">
-              <div className="shadow-xl card bg-base-200 h-96">
+              <div className="h-full p-4 shadow-xl card bg-base-200 sm:h-96 sm:p-6">
                 <div className="card-body">
                   <h3 className="text-2xl font-semibold card-title">3D Visualization</h3>
                   <p className="mb-4">
@@ -42,7 +46,7 @@ const FeaturesSection: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <Fade direction="right">
-              <div className="shadow-xl card bg-base-200 h-96">
+              <div className="h-full p-4 shadow-xl card bg-base-200 sm:h-96 sm:p-6">
                 <div className="card-body">
                   <h3 className="text-2xl font-semibold card-title">Seamless Map Integration</h3>
                   <p className="mb-4">
@@ -56,8 +60,8 @@ const FeaturesSection: React.FC = () => {
             </Fade>
           </SwiperSlide>
           <SwiperSlide>
-            <Fade direction="left">
-              <div className="shadow-xl card bg-base-200 h-96">
+            <Fade direction="right">
+              <div className="h-full p-4 shadow-xl card bg-base-200 sm:h-96 sm:p-6">
                 <div className="card-body">
                   <h3 className="text-2xl font-semibold card-title">
                     Realistic Airspace Visualization
