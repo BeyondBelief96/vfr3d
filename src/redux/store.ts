@@ -5,6 +5,7 @@ import airspaceReducer from './slices/airspaceSlice';
 import entitiesReducer from './slices/entitiesSlice';
 import routeReducer from './slices/routeSlice';
 import searchReducer from './slices/searchSlice';
+import sidebarReducer from './slices/sidebarSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     entities: entitiesReducer,
     airspace: airspaceReducer,
     search: searchReducer,
+    sidebar: sidebarReducer,
   },
 });
 

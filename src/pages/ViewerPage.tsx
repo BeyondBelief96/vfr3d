@@ -7,6 +7,7 @@ import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import RouteComponent from '../features/Routes/RouteComponent';
 import { useImageryProviders } from '../hooks/useImageryProviders';
 import { fetchAllAirports } from '../redux/slices/airportsSlice';
+import { toggleSidebar } from '../redux/slices/sidebarSlice';
 import { AppDispatch, RootState } from '../redux/store';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import Sidebar from '../ui/Sidebar';
@@ -20,6 +21,7 @@ import {
 const ViewerPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { airports } = useSelector((state: RootState) => state.airport);
+  const { isOpen } = useSelector((state: RootState) => state.sidebar);
   const { currentImageryAlpha, currentImageryBrightness, selectedImageryLayer } = useSelector(
     (state: RootState) => state.viewer
   );
@@ -61,51 +63,60 @@ const ViewerPage = () => {
   if (!vfrImagery) return null;
 
   return (
-    <div className="flex h-screen">
-      <div className="flex-none overflow-x-auto overflow-y-auto w-85 max-w-[23rem] bg-base-100">
-        <Sidebar imageryLayerOptions={imageryLayerOptions} />
+    <div className="flex flex-col h-screen">
+      <div className="flex flex-1 overflow-hidden">
+        <div className="lg:block lg:w-[25rem] lg:overflow-y-auto">
+          <Sidebar imageryLayerOptions={imageryLayerOptions} />
+        </div>
+        <div className="flex-1">
+          {airspace3dloading && <LoadingSpinner />}
+          <ResiumViewer className="h-screen" geocoder={false} infoBox={false}>
+            <AirspaceComponent setIsLoading={setAirspace3dloading} />
+            <VisibleAirports />
+            <FlyTo />
+            <RouteComponent />
+            {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
+              <ImageryLayer
+                alpha={currentImageryAlpha ?? 1}
+                brightness={currentImageryBrightness ?? 1}
+                imageryProvider={vfrImagery}
+                dayAlpha={currentImageryAlpha}
+              />
+            )}
+            {selectedImageryLayer === 'vfrTerminal' && vfrTerminal && (
+              <ImageryLayer
+                alpha={currentImageryAlpha ?? 1}
+                brightness={currentImageryBrightness ?? 1}
+                imageryProvider={vfrTerminal}
+                dayAlpha={currentImageryAlpha}
+              />
+            )}
+            {selectedImageryLayer === 'ifrLowImagery' && ifrLowImagery && (
+              <ImageryLayer
+                alpha={currentImageryAlpha ?? 1}
+                brightness={currentImageryAlpha ?? 1}
+                imageryProvider={ifrLowImagery}
+                dayAlpha={currentImageryAlpha}
+              />
+            )}
+            {selectedImageryLayer === 'ifrHighImagery' && ifrHighImagery && (
+              <ImageryLayer
+                alpha={currentImageryAlpha ?? 1}
+                brightness={currentImageryAlpha ?? 1}
+                imageryProvider={ifrHighImagery}
+                dayAlpha={currentImageryAlpha}
+              />
+            )}
+          </ResiumViewer>
+        </div>
       </div>
-      <div className="flex-1">
-        {airspace3dloading && <LoadingSpinner />}
-        <ResiumViewer className="h-screen" geocoder={false} infoBox={false}>
-          <AirspaceComponent setIsLoading={setAirspace3dloading} />
-          <VisibleAirports />
-          <FlyTo />
-          <RouteComponent />
-          {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
-            <ImageryLayer
-              alpha={currentImageryAlpha ?? 1}
-              brightness={currentImageryBrightness ?? 1}
-              imageryProvider={vfrImagery}
-              dayAlpha={currentImageryAlpha}
-            />
-          )}
-          {selectedImageryLayer === 'vfrTerminal' && vfrTerminal && (
-            <ImageryLayer
-              alpha={currentImageryAlpha ?? 1}
-              brightness={currentImageryBrightness ?? 1}
-              imageryProvider={vfrTerminal}
-              dayAlpha={currentImageryAlpha}
-            />
-          )}
-          {selectedImageryLayer === 'ifrLowImagery' && ifrLowImagery && (
-            <ImageryLayer
-              alpha={currentImageryAlpha ?? 1}
-              brightness={currentImageryAlpha ?? 1}
-              imageryProvider={ifrLowImagery}
-              dayAlpha={currentImageryAlpha}
-            />
-          )}
-          {selectedImageryLayer === 'ifrHighImagery' && ifrHighImagery && (
-            <ImageryLayer
-              alpha={currentImageryAlpha ?? 1}
-              brightness={currentImageryAlpha ?? 1}
-              imageryProvider={ifrHighImagery}
-              dayAlpha={currentImageryAlpha}
-            />
-          )}
-        </ResiumViewer>
-      </div>
+
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-20 bg-black opacity-50 lg:hidden"
+          onClick={() => dispatch(toggleSidebar())}
+        ></div>
+      )}
     </div>
   );
 };
