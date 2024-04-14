@@ -76,7 +76,7 @@ const ViewerPage = () => {
             {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
               <ImageryLayer
                 minimumTerrainLevel={7}
-                maximumTerrainLevel={11}
+                maximumTerrainLevel={13}
                 alpha={currentImageryAlpha ?? 1}
                 brightness={currentImageryBrightness ?? 1}
                 imageryProvider={vfrImagery}
