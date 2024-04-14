@@ -1,15 +1,30 @@
-import { useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSearchAirportQuery } from '../redux/slices/searchSlice';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSearch = useCallback(
-    (searchQuery: string) => {
-      dispatch(setSearchAirportQuery(searchQuery));
+  const handleSearch = useCallback(() => {
+    dispatch(setSearchAirportQuery(searchQuery));
+  }, [dispatch, searchQuery]);
+
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(event.target.value);
     },
-    [dispatch]
+    [setSearchQuery]
+  );
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter' && searchInputRef.current === event.target) {
+        handleSearch();
+      }
+    },
+    [handleSearch]
   );
 
   return (
@@ -19,8 +34,11 @@ const SearchBar = () => {
           <input
             type="text"
             placeholder="Enter ICAO code"
-            onChange={(e) => handleSearch(e.target.value)}
+            value={searchQuery}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
             className="w-full pr-10 input input-bordered"
+            ref={searchInputRef}
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
             <svg

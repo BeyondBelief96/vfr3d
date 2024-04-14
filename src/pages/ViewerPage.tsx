@@ -75,6 +75,8 @@ const ViewerPage = () => {
             <RouteComponent />
             {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
               <ImageryLayer
+                minimumTerrainLevel={7}
+                maximumTerrainLevel={11}
                 alpha={currentImageryAlpha ?? 1}
                 brightness={currentImageryBrightness ?? 1}
                 imageryProvider={vfrImagery}
@@ -83,6 +85,8 @@ const ViewerPage = () => {
             )}
             {selectedImageryLayer === 'vfrTerminal' && vfrTerminal && (
               <ImageryLayer
+                minimumTerrainLevel={9}
+                maximumTerrainLevel={13}
                 alpha={currentImageryAlpha ?? 1}
                 brightness={currentImageryBrightness ?? 1}
                 imageryProvider={vfrTerminal}
@@ -91,6 +95,8 @@ const ViewerPage = () => {
             )}
             {selectedImageryLayer === 'ifrLowImagery' && ifrLowImagery && (
               <ImageryLayer
+                minimumTerrainLevel={5}
+                maximumTerrainLevel={10}
                 alpha={currentImageryAlpha ?? 1}
                 brightness={currentImageryAlpha ?? 1}
                 imageryProvider={ifrLowImagery}
@@ -99,6 +105,8 @@ const ViewerPage = () => {
             )}
             {selectedImageryLayer === 'ifrHighImagery' && ifrHighImagery && (
               <ImageryLayer
+                minimumTerrainLevel={4}
+                maximumTerrainLevel={9}
                 alpha={currentImageryAlpha ?? 1}
                 brightness={currentImageryAlpha ?? 1}
                 imageryProvider={ifrHighImagery}
