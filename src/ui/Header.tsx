@@ -1,6 +1,7 @@
 // Header.tsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import { toggleSidebar } from '../redux/slices/sidebarSlice';
 import { RootState } from '../redux/store';
 import DonationButton from './DonationButton';
@@ -9,7 +10,9 @@ import ThemeController from './ThemeController';
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const isOpen = useSelector((state: RootState) => state.sidebar.isOpen);
+  const isViewerPage = location.pathname === '/viewer';
 
   return (
     <header className="flex items-center justify-between px-4 py-2 bg-neutral text-neutral-content">
@@ -30,14 +33,28 @@ const Header: React.FC = () => {
             />
           </svg>
         </button>
-        <div className="flex-1 lg:mr-4">
-          <SearchBar />
-        </div>
+
+        {isViewerPage && <SearchBar />}
+
+        {!isViewerPage && (
+          <div>
+            <Link to="/">VFR3D</Link>
+          </div>
+        )}
       </div>
+
+      <div className="flex justify-center">
+        {isViewerPage && (
+          <div>
+            <Link to="/">VFR3D</Link>
+          </div>
+        )}
+      </div>
+
       <div className="items-center hidden lg:flex">
-        <a href="/contact" className="mr-4 btn btn-ghost btn-sm">
+        <Link to="/contact" className="mr-4 btn btn-ghost btn-sm">
           Report an Issue
-        </a>
+        </Link>
         <DonationButton />
         <ThemeController />
       </div>
