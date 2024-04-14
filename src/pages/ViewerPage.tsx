@@ -20,7 +20,6 @@ import {
 const ViewerPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { airports } = useSelector((state: RootState) => state.airport);
-  const { isOpen } = useSelector((state: RootState) => state.sidebar);
   const { currentImageryAlpha, currentImageryBrightness, selectedImageryLayer } = useSelector(
     (state: RootState) => state.viewer
   );
