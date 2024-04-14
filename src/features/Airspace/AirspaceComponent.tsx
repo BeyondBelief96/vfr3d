@@ -26,9 +26,10 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
     const loadKML = async () => {
       try {
         setIsLoading(true); // Set loading state to true
-        console.log('REACHED CODE');
 
-        const ionKmlResource = await IonResource.fromAssetId(2528900);
+        const ionKmlResource = await IonResource.fromAssetId(2528900, {
+          accessToken: import.meta.env.VITE_CESIUM_API_KEY,
+        });
         await kmlDataSource.load(ionKmlResource.url);
 
         viewer.dataSources.add(kmlDataSource);
