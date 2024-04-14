@@ -7,7 +7,6 @@ import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import RouteComponent from '../features/Routes/RouteComponent';
 import { useImageryProviders } from '../hooks/useImageryProviders';
 import { fetchAllAirports } from '../redux/slices/airportsSlice';
-import { toggleSidebar } from '../redux/slices/sidebarSlice';
 import { AppDispatch, RootState } from '../redux/store';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import Sidebar from '../ui/Sidebar';
@@ -110,13 +109,6 @@ const ViewerPage = () => {
           </ResiumViewer>
         </div>
       </div>
-
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-20 bg-black opacity-50 lg:hidden"
-          onClick={() => dispatch(toggleSidebar())}
-        ></div>
-      )}
     </div>
   );
 };
