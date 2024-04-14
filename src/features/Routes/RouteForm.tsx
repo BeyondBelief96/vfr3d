@@ -2,7 +2,7 @@ import { Color } from 'cesium';
 import { useState } from 'react';
 import { HuePicker } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAirportByIcaoCode } from '../../api/faa-airports';
+import { getAirportByIcaoCodeOrIdent } from '../../api/faa-airports';
 import {
   clearRoute,
   setEndPointColor,
@@ -45,8 +45,8 @@ const RouteForm: React.FC<RouteFormProps> = () => {
   const handleRouteSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-      const fromAirportData = await getAirportByIcaoCode(fromIcaoCode);
-      const toAirportData = await getAirportByIcaoCode(toIcaoCode);
+      const fromAirportData = await getAirportByIcaoCodeOrIdent(fromIcaoCode);
+      const toAirportData = await getAirportByIcaoCodeOrIdent(toIcaoCode);
 
       if (!fromAirportData) {
         setFromAirportError('Invalid ICAO code');

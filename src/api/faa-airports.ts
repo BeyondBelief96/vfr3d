@@ -71,6 +71,34 @@ export const getAirportByIdent = async (ident: string): Promise<Airport | null> 
   }
 };
 
+export const getAirportByIcaoCodeOrIdent = async (
+  icaoCodeOrIdent: string
+): Promise<Airport | null> => {
+  try {
+    // First, search by ICAO code using the existing function
+    const airportByIcaoCode = await getAirportByIcaoCode(icaoCodeOrIdent);
+
+    if (airportByIcaoCode) {
+      // Airport found by ICAO code
+      return airportByIcaoCode;
+    }
+
+    // If no airport found by ICAO code, search by IDENT using the existing function
+    const airportByIdent = await getAirportByIdent(icaoCodeOrIdent);
+
+    if (airportByIdent) {
+      // Airport found by IDENT
+      return airportByIdent;
+    }
+
+    // No airport found by either ICAO code or IDENT
+    return null;
+  } catch (error) {
+    console.error('Error fetching airport:', error);
+    throw error;
+  }
+};
+
 const MAX_RECORDS_PER_REQUEST = 1000; // Adjust this value based on the API's limit
 
 export const getAllAirports = async (): Promise<Airport[]> => {
