@@ -6,7 +6,7 @@ const HeroSection: React.FC = () => {
     <section
       className="min-h-screen hero"
       style={{
-        backgroundImage: 'url("/public/heroimage_2.png")',
+        backgroundImage: 'url("/heroimage_2.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
