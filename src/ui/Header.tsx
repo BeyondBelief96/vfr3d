@@ -10,10 +10,20 @@ const Header: React.FC = () => {
     <header className="navbar bg-neutral text-neutral-content">
       <div className="navbar-start">
         <div className="flex-1">
+          {!isViewerPage && (
+            <Link to="/" className="text-xl normal-case btn btn-ghost">
+              VFR3D
+            </Link>
+          )}
+        </div>
+      </div>
+
+      <div className="navbar-center">
+        {isViewerPage && (
           <Link to="/" className="text-xl normal-case btn btn-ghost">
             VFR3D
           </Link>
-        </div>
+        )}
       </div>
 
       <div className="navbar-end">
