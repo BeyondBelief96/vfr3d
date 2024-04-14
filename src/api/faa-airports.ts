@@ -51,6 +51,26 @@ export const getAirportByIcaoCode = async (icaoCode: string): Promise<Airport | 
   }
 };
 
+export const getAirportByIdent = async (ident: string): Promise<Airport | null> => {
+  try {
+    const response = await axios.get<ApiResponse>(API_BASE_URL, {
+      params: {
+        where: `IDENT = '${ident}'`,
+        outFields:
+          'GLOBAL_ID,IDENT,NAME,LATITUDE,LONGITUDE,ELEVATION,ICAO_ID,TYPE_CODE,SERVCITY,STATE',
+        outSR: 4326,
+        f: 'json',
+      },
+    });
+
+    const airports = response.data.features.map((feature) => feature.attributes);
+    return airports.length > 0 ? airports[0] : null;
+  } catch (error) {
+    console.error('Error fetching airport:', error);
+    throw error;
+  }
+};
+
 const MAX_RECORDS_PER_REQUEST = 1000; // Adjust this value based on the API's limit
 
 export const getAllAirports = async (): Promise<Airport[]> => {
