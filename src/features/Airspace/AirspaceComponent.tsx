@@ -1,4 +1,4 @@
-import { Entity, KmlDataSource } from 'cesium';
+import { Entity, IonResource, KmlDataSource } from 'cesium';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
@@ -25,15 +25,12 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
 
     const loadKML = async () => {
       try {
-        setIsLoading(true); // Set loading state to true
-
-        // const ionKmlResource = await IonResource.fromAssetId(2528900, {
-        //   accessToken: import.meta.env.VITE_CESIUM_API_KEY,
-        // });
-        await kmlDataSource.load('/doc.kml');
-
+        setIsLoading(true);
+        const ionKmlResource = await IonResource.fromAssetId(2537586, {
+          accessToken: import.meta.env.VITE_CESIUM_API_KEY,
+        });
+        await kmlDataSource.load(ionKmlResource);
         viewer.dataSources.add(kmlDataSource);
-
         const newEntityIds: string[] = [];
         const entities = kmlDataSource.entities.values;
 
