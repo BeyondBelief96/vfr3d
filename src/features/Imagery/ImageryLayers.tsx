@@ -41,7 +41,7 @@ const ImageryLayers: React.FC = () => {
         <ImageryLayer
           minimumTerrainLevel={7}
           magnificationFilter={TextureMagnificationFilter.NEAREST}
-          minificationFilter={TextureMinificationFilter.LINEAR}
+          minificationFilter={TextureMinificationFilter.NEAREST}
           maximumTerrainLevel={13}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
