@@ -1,3 +1,4 @@
+import { TextureMagnificationFilter, TextureMinificationFilter } from 'cesium';
 import { useSelector } from 'react-redux';
 import { ImageryLayer } from 'resium';
 import { useImageryProviders } from '../../hooks/useImageryProviders';
@@ -33,11 +34,14 @@ const ImageryLayers: React.FC = () => {
     import.meta.env.VITE_ARCGIS_API_KEY,
     ARCGIS_FAA_VFR_TERMINAL_URL
   );
+
   return (
     <>
       {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
         <ImageryLayer
           minimumTerrainLevel={7}
+          magnificationFilter={TextureMagnificationFilter.NEAREST}
+          minificationFilter={TextureMinificationFilter.LINEAR}
           maximumTerrainLevel={13}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
@@ -49,6 +53,8 @@ const ImageryLayers: React.FC = () => {
         <ImageryLayer
           minimumTerrainLevel={9}
           maximumTerrainLevel={13}
+          magnificationFilter={TextureMagnificationFilter.NEAREST}
+          minificationFilter={TextureMinificationFilter.NEAREST}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
           imageryProvider={vfrTerminal}
@@ -59,6 +65,8 @@ const ImageryLayers: React.FC = () => {
         <ImageryLayer
           minimumTerrainLevel={5}
           maximumTerrainLevel={10}
+          magnificationFilter={TextureMagnificationFilter.NEAREST}
+          minificationFilter={TextureMinificationFilter.NEAREST}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryAlpha ?? 1}
           imageryProvider={ifrLowImagery}
@@ -69,6 +77,8 @@ const ImageryLayers: React.FC = () => {
         <ImageryLayer
           minimumTerrainLevel={4}
           maximumTerrainLevel={9}
+          magnificationFilter={TextureMagnificationFilter.NEAREST}
+          minificationFilter={TextureMinificationFilter.NEAREST}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryAlpha ?? 1}
           imageryProvider={ifrHighImagery}
