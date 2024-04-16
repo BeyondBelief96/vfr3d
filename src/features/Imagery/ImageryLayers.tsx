@@ -40,8 +40,8 @@ const ImageryLayers: React.FC = () => {
       {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
         <ImageryLayer
           minimumTerrainLevel={7}
-          magnificationFilter={TextureMagnificationFilter.NEAREST}
-          minificationFilter={TextureMinificationFilter.NEAREST}
+          magnificationFilter={TextureMagnificationFilter.LINEAR}
+          minificationFilter={TextureMinificationFilter.LINEAR}
           maximumTerrainLevel={13}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
@@ -53,8 +53,8 @@ const ImageryLayers: React.FC = () => {
         <ImageryLayer
           minimumTerrainLevel={9}
           maximumTerrainLevel={13}
-          magnificationFilter={TextureMagnificationFilter.NEAREST}
-          minificationFilter={TextureMinificationFilter.NEAREST}
+          magnificationFilter={TextureMagnificationFilter.LINEAR}
+          minificationFilter={TextureMinificationFilter.LINEAR}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
           imageryProvider={vfrTerminal}
@@ -65,8 +65,8 @@ const ImageryLayers: React.FC = () => {
         <ImageryLayer
           minimumTerrainLevel={5}
           maximumTerrainLevel={10}
-          magnificationFilter={TextureMagnificationFilter.NEAREST}
-          minificationFilter={TextureMinificationFilter.NEAREST}
+          magnificationFilter={TextureMagnificationFilter.LINEAR}
+          minificationFilter={TextureMinificationFilter.LINEAR}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryAlpha ?? 1}
           imageryProvider={ifrLowImagery}
@@ -77,8 +77,8 @@ const ImageryLayers: React.FC = () => {
         <ImageryLayer
           minimumTerrainLevel={4}
           maximumTerrainLevel={9}
-          magnificationFilter={TextureMagnificationFilter.NEAREST}
-          minificationFilter={TextureMinificationFilter.NEAREST}
+          magnificationFilter={TextureMagnificationFilter.LINEAR}
+          minificationFilter={TextureMinificationFilter.LINEAR}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryAlpha ?? 1}
           imageryProvider={ifrHighImagery}
