@@ -65,14 +65,29 @@ const RouteComponent: React.FC = () => {
       );
     };
 
+    // Add touch event handler
+    const touchHandler = (event: ScreenSpaceEventHandler.PositionedEvent) => {
+      const now = Date.now();
+      const timeSinceLastTouch = now - (touchHandler.lastTouchTime || 0);
+
+      if (timeSinceLastTouch >= 200 && timeSinceLastTouch <= 500) {
+        doubleClickHandler(event);
+      }
+
+      touchHandler.lastTouchTime = now;
+    };
+
     viewer.screenSpaceEventHandler.setInputAction(
       doubleClickHandler,
       ScreenSpaceEventType.LEFT_DOUBLE_CLICK
     );
+    touchHandler.lastTouchTime = 0;
+    viewer.screenSpaceEventHandler.setInputAction(touchHandler, ScreenSpaceEventType.LEFT_CLICK);
 
     return () => {
       cleanupEntities();
       viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+      viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
     };
   }, [viewer, currentRoute, lineColor, endPointColor, dispatch]);
 
