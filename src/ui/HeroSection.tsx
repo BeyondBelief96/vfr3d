@@ -11,7 +11,6 @@ const HeroSection: React.FC = () => {
         backgroundPosition: 'center',
       }}
     >
-      <div className="hero-overlay bg-opacity-60"></div>
       <div className="px-4 text-center hero-content text-neutral-content sm:px-0">
         <div className="max-w-md shadow-xl card bg-base-100">
           <div className="items-center p-6 card-body sm:p-8">

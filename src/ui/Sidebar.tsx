@@ -60,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({ imageryLayerOptions }) => {
             <h2 className="mb-2 text-lg font-semibold">Map Options</h2>
             <div className="mb-4">
               <label htmlFor="layer-select" className="block mb-2">
-                Imagery Layer
+                Aviation Chart Layer
               </label>
               <select
                 id="layer-select"
@@ -176,7 +176,7 @@ const Sidebar: React.FC<SidebarProps> = ({ imageryLayerOptions }) => {
             <h2 className="mb-2 text-lg font-semibold">Map Options</h2>
             <div className="mb-4">
               <label htmlFor="layer-select-desktop" className="block mb-2">
-                Imagery Layer
+                Aviation Chart Layer
               </label>
               <select
                 id="layer-select-desktop"

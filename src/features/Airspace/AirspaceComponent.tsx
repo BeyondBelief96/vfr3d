@@ -30,7 +30,7 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
           accessToken: import.meta.env.VITE_CESIUM_API_KEY,
         });
         await kmlDataSource.load(ionKmlResource);
-        viewer.dataSources.add(kmlDataSource);
+        viewer?.dataSources?.add(kmlDataSource);
         const newEntityIds: string[] = [];
         const entities = kmlDataSource.entities.values;
 
@@ -54,7 +54,7 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
     }
 
     return () => {
-      viewer.dataSources.remove(kmlDataSource);
+      viewer?.dataSources?.remove(kmlDataSource);
     };
   }, [viewer, dispatch, airspace3dEnabled, setIsLoading]);
   useEffect(() => {

@@ -1,3 +1,4 @@
+import { ImageryLayer, IonImageryProvider, ProviderViewModel, buildModuleUrl } from 'cesium';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Viewer as ResiumViewer } from 'resium';
@@ -14,9 +15,43 @@ import Sidebar from '../ui/Sidebar';
 const ViewerPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { airports } = useSelector((state: RootState) => state.airport);
-
   const [isLoading, setIsLoading] = useState(true);
   const [airspace3dloading, setAirspace3dloading] = useState(false);
+  const imageryViewModels: ProviderViewModel[] = [];
+  const loadBaseImageryViewModels = () => {
+    imageryViewModels.push(
+      new ProviderViewModel({
+        name: 'Bing Maps Road',
+        iconUrl: buildModuleUrl('Widgets/Images/ImageryProviders/bingRoads.png'),
+        tooltip: 'Bing Maps With Roads',
+        creationFunction: function () {
+          return IonImageryProvider.fromAssetId(4);
+        },
+      })
+    );
+
+    imageryViewModels.push(
+      new ProviderViewModel({
+        name: 'Sentinel-2',
+        iconUrl: buildModuleUrl('Widgets/Images/ImageryProviders/sentinel-2.png'),
+        tooltip: 'Sentinel-2 cloudless.',
+        creationFunction: function () {
+          return IonImageryProvider.fromAssetId(3954);
+        },
+      })
+    );
+
+    imageryViewModels.push(
+      new ProviderViewModel({
+        name: 'Bing Maps Aerial',
+        iconUrl: buildModuleUrl('Widgets/Images/ImageryProviders/bingAerial.png'),
+        tooltip: 'Bing Satellite Imagery',
+        creationFunction: function () {
+          return IonImageryProvider.fromAssetId(2);
+        },
+      })
+    );
+  };
 
   useEffect(() => {
     if (airports.length) return;
@@ -29,17 +64,20 @@ const ViewerPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
   const imageryLayerOptions = [
+    { value: 'None', label: 'None' },
     { value: 'vfrImagery', label: 'VFR' },
     { value: 'vfrTerminal', label: 'VFR TAC' },
     { value: 'ifrLowImagery', label: 'IFR Low' },
     { value: 'ifrHighImagery', label: 'IFR High' },
   ];
+
+  loadBaseImageryViewModels();
 
   return isLoading ? (
     <LoadingSpinner fullScreen={true} />
@@ -51,7 +89,13 @@ const ViewerPage = () => {
         </div>
         <div className="flex-1">
           {airspace3dloading && <LoadingSpinner />}
-          <ResiumViewer className="h-screen" geocoder={false} infoBox={false}>
+          <ResiumViewer
+            imageryProviderViewModels={imageryViewModels}
+            baseLayer={ImageryLayer.fromProviderAsync(IonImageryProvider.fromAssetId(3954), {})}
+            className="h-screen"
+            geocoder={false}
+            infoBox={false}
+          >
             <ImageryLayers />
             <AirspaceComponent setIsLoading={setAirspace3dloading} />
             <VisibleAirports />

@@ -1,7 +1,7 @@
 import { TextureMagnificationFilter, TextureMinificationFilter } from 'cesium';
 import { useSelector } from 'react-redux';
 import { ImageryLayer } from 'resium';
-import { useImageryProviders } from '../../hooks/useImageryProviders';
+import { useArcGisImageryProviders } from '../../hooks/useImageryProviders';
 import { RootState } from '../../redux/store';
 import {
   ARCGIS_FAA_IFR_HIGH_URL,
@@ -15,22 +15,22 @@ const ImageryLayers: React.FC = () => {
     (state: RootState) => state.viewer
   );
 
-  const { imagery: vfrImagery } = useImageryProviders(
+  const { imagery: vfrImagery } = useArcGisImageryProviders(
     import.meta.env.VITE_ARCGIS_API_KEY,
     ARCGIS_FAA_VFR_SECTIONAL_URL
   );
 
-  const { imagery: ifrLowImagery } = useImageryProviders(
+  const { imagery: ifrLowImagery } = useArcGisImageryProviders(
     import.meta.env.VITE_ARCGIS_API_KEY,
     ARCGIS_FAA_IFR_LOW_URL
   );
 
-  const { imagery: ifrHighImagery } = useImageryProviders(
+  const { imagery: ifrHighImagery } = useArcGisImageryProviders(
     import.meta.env.VITE_ARCGIS_API_KEY,
     ARCGIS_FAA_IFR_HIGH_URL
   );
 
-  const { imagery: vfrTerminal } = useImageryProviders(
+  const { imagery: vfrTerminal } = useArcGisImageryProviders(
     import.meta.env.VITE_ARCGIS_API_KEY,
     ARCGIS_FAA_VFR_TERMINAL_URL
   );
