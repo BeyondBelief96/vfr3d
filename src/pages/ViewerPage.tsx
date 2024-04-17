@@ -95,6 +95,7 @@ const ViewerPage = () => {
             className="h-screen"
             geocoder={false}
             infoBox={false}
+            timeline={false}
           >
             <ImageryLayers />
             <AirspaceComponent setIsLoading={setAirspace3dloading} />

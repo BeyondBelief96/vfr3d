@@ -49,16 +49,22 @@ export const addPointToPolyline = (
       const cartesian = globe.pick(ray, viewer.scene);
       if (defined(cartesian)) {
         const newPointEntity = createPointEntity(viewer, cartesian, endPointColor);
-
         const positions = polylineEntity.polyline?.positions?.getValue(JulianDate.now()) || [];
         const newPositions = [...positions];
-        const index = findClosestIndex(cartesian, positions);
-        newPositions.splice(index + 1, 0, cartesian);
+
+        // Find the index to insert the new point
+        const index = findInsertionIndex(cartesian, positions);
+
+        // Insert the new point at the correct index
+        newPositions.splice(index, 0, cartesian);
+
         if (polylineEntity.polyline) {
           polylineEntity.polyline.positions = new ConstantProperty(newPositions);
         }
 
-        routePointEntityIds.current = [...routePointEntityIds.current, newPointEntity.id];
+        // Insert the new point entity ID at the correct index in routePointEntityIds
+        routePointEntityIds.current.splice(index, 0, newPointEntity.id);
+
         dispatch(updateCurrentRouteEntityIds([...routePointEntityIds.current]));
       }
     }
@@ -80,7 +86,7 @@ export const removeEntities = (
   });
 };
 
-const findClosestIndex = (cartesian: Cartesian3, positions: Cartesian3[]) => {
+const findInsertionIndex = (cartesian: Cartesian3, positions: Cartesian3[]) => {
   let closestIndex = -1;
   let closestDistance = Number.MAX_VALUE;
   for (let i = 0; i < positions.length - 1; i++) {
@@ -90,5 +96,5 @@ const findClosestIndex = (cartesian: Cartesian3, positions: Cartesian3[]) => {
       closestDistance = distance;
     }
   }
-  return closestIndex;
+  return closestIndex + 1;
 };
