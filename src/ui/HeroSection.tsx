@@ -24,6 +24,9 @@ const HeroSection: React.FC = () => {
               <Link to="/viewer" className="btn btn-primary">
                 Get Started
               </Link>
+              <Link to="/documentation" className="btn btn-primary">
+                Documentation
+              </Link>
             </div>
           </div>
         </div>

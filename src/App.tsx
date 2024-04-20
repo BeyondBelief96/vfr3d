@@ -2,6 +2,7 @@ import { ArcGisMapService, Ion } from 'cesium';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import AppLayout from './AppLayout';
 import { ContactMePage } from './pages/ContactMe';
+import DocumentationPage from './pages/DocumentationPage';
 import HomePage from './pages/Home';
 import ViewerPage from './pages/ViewerPage';
 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: '/contact',
         element: <ContactMePage />,
+      },
+      {
+        path: '/documentation',
+        element: <DocumentationPage />,
       },
     ],
   },
