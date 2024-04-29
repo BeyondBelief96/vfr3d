@@ -1,20 +1,15 @@
 import { ImageryLayer, IonImageryProvider, ProviderViewModel, buildModuleUrl } from 'cesium';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Viewer as ResiumViewer } from 'resium';
 import FlyTo from '../features/Airports/FlyTo';
 import VisibleAirports from '../features/Airports/VisibleAirports';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import ImageryLayers from '../features/Imagery/ImageryLayers';
 import RouteComponent from '../features/Routes/RouteComponent';
-import { fetchAllAirports } from '../redux/slices/airportsSlice';
-import { AppDispatch, RootState } from '../redux/store';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import Sidebar from '../ui/Sidebar';
 
 const ViewerPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { airports } = useSelector((state: RootState) => state.airport);
   const [isLoading, setIsLoading] = useState(true);
   const [airspace3dloading, setAirspace3dloading] = useState(false);
   const imageryViewModels: ProviderViewModel[] = [];
@@ -52,11 +47,6 @@ const ViewerPage = () => {
       })
     );
   };
-
-  useEffect(() => {
-    if (airports.length) return;
-    dispatch(fetchAllAirports());
-  }, [dispatch, airports.length]);
 
   // Used to give cesium some time to load so the viewer is ready to render.
   // If this is not here, the cesium viewer will not load. maybe there's something else
