@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getAirportsByState, getAllAirports } from '../../api/faa-api/faa-airports';
+import { getAirportsByState, getAllAirports } from '../../api/faa-api/faa.api';
 import { Airport } from '../../api/faa-api/faa.dto';
 import { states } from '../../utility/states';
 

@@ -2,7 +2,7 @@ import { Math } from 'cesium';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useCesium } from 'resium';
-import { getAirportByIcaoCode, getAirportByIdent } from '../../api/faa-api/faa-airports';
+import { getAirportByIcaoCode, getAirportByIdent } from '../../api/faa-api/faa.api';
 import { RootState } from '../../redux/store';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
 

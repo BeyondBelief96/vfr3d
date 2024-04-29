@@ -2,7 +2,7 @@ import { Color } from 'cesium';
 import { useState } from 'react';
 import { HuePicker } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAirportByIcaoCodeOrIdent } from '../../api/faa-api/faa-airports';
+import { getAirportByIcaoCodeOrIdent } from '../../api/faa-api/faa.api';
 import {
   clearRoute,
   setEndPointColor,

@@ -1,7 +1,7 @@
 import { Math } from 'cesium';
 import { useCallback } from 'react';
 import { useCesium } from 'resium';
-import { getAirportByIcaoCode, getAirportByIdent } from '../api/faa-api/faa-airports';
+import { getAirportByIcaoCode, getAirportByIdent } from '../api/faa-api/faa.api';
 import { mapAirportDataToCartesian3 } from '../utility/utils';
 
 const useSearchAndFlyTo = () => {
