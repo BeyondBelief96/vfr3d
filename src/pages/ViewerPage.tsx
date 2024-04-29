@@ -84,7 +84,6 @@ const ViewerPage = () => {
             baseLayer={ImageryLayer.fromProviderAsync(IonImageryProvider.fromAssetId(3954), {})}
             className="h-screen"
             geocoder={false}
-            infoBox={false}
             timeline={false}
           >
             <ImageryLayers />

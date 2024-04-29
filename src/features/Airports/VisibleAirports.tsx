@@ -1,7 +1,6 @@
-import { Entity } from 'cesium';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCesium } from 'resium';
+import { Entity } from 'resium';
 import { fetchAirportsByState } from '../../redux/slices/airportsSlice';
 import { updateCurrentAirportEntityIds } from '../../redux/slices/entitiesSlice';
 import { AppDispatch, RootState } from '../../redux/store';
@@ -13,42 +12,41 @@ const VisibleAirports: React.FC = () => {
     visibleAirports,
     selectedState: selectedStateAirports,
   } = useSelector((state: RootState) => state.airport);
+
   const dispatch = useDispatch<AppDispatch>();
-  const { viewer } = useCesium();
-  const entityRefs = useRef<Record<string, Entity>>({});
 
   useEffect(() => {
     dispatch(fetchAirportsByState(selectedStateAirports));
   }, [dispatch, selectedStateAirports]);
 
   useEffect(() => {
-    // Remove existing entities
-    Object.values(entityRefs.current).forEach((entity) => viewer?.entities.remove(entity));
-    entityRefs.current = {};
-
-    if (!showAirports || !viewer) {
-      dispatch(updateCurrentAirportEntityIds([])); // Clear airport entity IDs in the store
-      return;
+    if (showAirports) {
+      const newEntityIds = visibleAirports.map((airport) => airport.GLOBAL_ID);
+      dispatch(updateCurrentAirportEntityIds(newEntityIds));
+    } else {
+      dispatch(updateCurrentAirportEntityIds([]));
     }
+  }, [showAirports, visibleAirports, dispatch]);
 
-    // Add new entities
-    const newEntityIds: string[] = [];
-    visibleAirports.forEach((airport) => {
-      const position = mapAirportDataToCartesian3(airport);
-      if (!position) return;
+  if (!showAirports) return null;
+  return (
+    <>
+      {visibleAirports.map((airport) => {
+        const position = mapAirportDataToCartesian3(airport);
+        if (!position) return null;
 
-      const entity = viewer.entities.add({
-        position,
-        point: { pixelSize: 10 },
-      });
-      entityRefs.current[airport.GLOBAL_ID] = entity;
-      newEntityIds.push(airport.GLOBAL_ID);
-    });
-
-    dispatch(updateCurrentAirportEntityIds(newEntityIds)); // Update airport entity IDs in the store
-  }, [showAirports, viewer, visibleAirports, dispatch]);
-
-  return null;
+        return (
+          <Entity
+            key={airport.GLOBAL_ID}
+            id={airport.GLOBAL_ID}
+            position={position}
+            point={{ pixelSize: 10 }}
+            show={showAirports}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 export default VisibleAirports;
