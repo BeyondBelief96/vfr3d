@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Airport } from './types';
+import { Airport } from './faa.dto';
 
 interface ApiResponse {
   features: {
