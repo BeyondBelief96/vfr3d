@@ -7,6 +7,7 @@ interface AirportState {
   visibleAirports: Airport[];
   showAirports: boolean;
   selectedState: string;
+  selectedAirport: Airport | null;
   loading: boolean;
   error: string | null;
 }
@@ -15,6 +16,7 @@ const initialState: AirportState = {
   visibleAirports: [],
   showAirports: false,
   selectedState: states[0],
+  selectedAirport: null,
   loading: false,
   error: '',
 };
@@ -53,6 +55,12 @@ const airportSlice = createSlice({
     setSelectedState: (state, action: PayloadAction<string>) => {
       state.selectedState = action.payload;
     },
+    setSelectedAirport: (state, action: PayloadAction<Airport | null>) => {
+      state.selectedAirport = action.payload;
+    },
+    clearVisibleAirports: (state) => {
+      state.visibleAirports = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -72,6 +80,7 @@ const airportSlice = createSlice({
   },
 });
 
-export const { toggleShowAirports, setSelectedState } = airportSlice.actions;
+export const { toggleShowAirports, setSelectedState, setSelectedAirport, clearVisibleAirports } =
+  airportSlice.actions;
 
 export default airportSlice.reducer;

@@ -1,52 +1,80 @@
-import { useEffect } from 'react';
+import { Entity, ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Entity } from 'resium';
-import { fetchAirportsByState } from '../../redux/slices/airportsSlice';
-import { updateCurrentAirportEntityIds } from '../../redux/slices/entitiesSlice';
+import { pick, useCesium } from 'resium';
+import {
+  clearVisibleAirports,
+  fetchAirportsByState,
+  setSelectedAirport,
+} from '../../redux/slices/airportsSlice';
 import { AppDispatch, RootState } from '../../redux/store';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
 
 const VisibleAirports: React.FC = () => {
-  const {
-    showAirports,
-    visibleAirports,
-    selectedState: selectedStateAirports,
-  } = useSelector((state: RootState) => state.airport);
-
+  const { showAirports, visibleAirports, selectedState } = useSelector(
+    (state: RootState) => state.airport
+  );
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchAirportsByState(selectedStateAirports));
-  }, [dispatch, selectedStateAirports]);
+  const { viewer } = useCesium();
+  const entityRefs = useRef<Record<string, Entity>>({});
 
   useEffect(() => {
     if (showAirports) {
-      const newEntityIds = visibleAirports.map((airport) => airport.GLOBAL_ID);
-      dispatch(updateCurrentAirportEntityIds(newEntityIds));
+      dispatch(fetchAirportsByState(selectedState));
     } else {
-      dispatch(updateCurrentAirportEntityIds([]));
+      dispatch(clearVisibleAirports());
     }
-  }, [showAirports, visibleAirports, dispatch]);
+  }, [dispatch, selectedState, showAirports]);
 
-  if (!showAirports) return null;
-  return (
-    <>
-      {visibleAirports.map((airport) => {
-        const position = mapAirportDataToCartesian3(airport);
-        if (!position) return null;
+  useEffect(() => {
+    if (!viewer) return;
 
-        return (
-          <Entity
-            key={airport.GLOBAL_ID}
-            id={airport.GLOBAL_ID}
-            position={position}
-            point={{ pixelSize: 10 }}
-            show={showAirports}
-          />
-        );
-      })}
-    </>
-  );
+    // Remove existing entities
+    Object.values(entityRefs.current).forEach((entity) => viewer.entities.remove(entity));
+    entityRefs.current = {};
+
+    if (!showAirports) return;
+
+    // Add new entities
+    visibleAirports.forEach((airport) => {
+      const position = mapAirportDataToCartesian3(airport);
+      if (!position) return;
+
+      const entity = viewer?.entities.add({
+        position,
+        point: { pixelSize: 10 },
+        id: airport.GLOBAL_ID,
+      });
+      entityRefs.current[airport.GLOBAL_ID] = entity;
+    });
+  }, [showAirports, viewer, visibleAirports]);
+
+  useEffect(() => {
+    const handleClickAirport = (event: ScreenSpaceEventHandler.PositionedEvent) => {
+      const pickedObject = viewer?.scene.pick(event.position);
+      if (pickedObject && pickedObject.id) {
+        const airportEntity = pickedObject.id as Entity;
+        const airportEntityId = airportEntity.id;
+        if (entityRefs.current[airportEntityId]) {
+          const airport = visibleAirports.find((airport) => airport.GLOBAL_ID === airportEntityId);
+          dispatch(setSelectedAirport(airport || null));
+        } else {
+          dispatch(setSelectedAirport(null));
+        }
+      }
+    };
+
+    viewer?.screenSpaceEventHandler.setInputAction(
+      handleClickAirport,
+      ScreenSpaceEventType.LEFT_CLICK
+    );
+
+    return () => {
+      viewer?.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
+    };
+  }, [viewer, visibleAirports, dispatch]);
+
+  return null;
 };
 
 export default VisibleAirports;

@@ -5,7 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_VFR3D_BASE_URL;
 
 export const getAllAirsigmets = async (): Promise<AirsigmetDTO[]> => {
   try {
-    const response = await axios.get<AirsigmetDTO[]>(API_BASE_URL);
+    const response = await axios.get<AirsigmetDTO[]>(`${API_BASE_URL}/airsigmet`);
     return response.data;
   } catch (error) {
     console.error('Error fetching AIRSIGMETs:', error);
@@ -15,7 +15,7 @@ export const getAllAirsigmets = async (): Promise<AirsigmetDTO[]> => {
 
 export const getMetarForAirport = async (icaoCode: string): Promise<MetarDTO> => {
   try {
-    const response = await axios.get<MetarDTO>(`${API_BASE_URL}/${icaoCode}`);
+    const response = await axios.get<MetarDTO>(`${API_BASE_URL}/metar/${icaoCode}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching METAR:', error);
@@ -25,7 +25,7 @@ export const getMetarForAirport = async (icaoCode: string): Promise<MetarDTO> =>
 
 export const getAllPireps = async (): Promise<PirepDTO[]> => {
   try {
-    const response = await axios.get<PirepDTO[]>(API_BASE_URL);
+    const response = await axios.get<PirepDTO[]>(`${API_BASE_URL}/pirep`);
     return response.data;
   } catch (error) {
     console.error('Error fetching PIREPs:', error);
@@ -35,7 +35,7 @@ export const getAllPireps = async (): Promise<PirepDTO[]> => {
 
 export const getTafForAirport = async (icaoCode: string): Promise<TafDTO> => {
   try {
-    const response = await axios.get<TafDTO>(`${API_BASE_URL}/${icaoCode}`);
+    const response = await axios.get<TafDTO>(`${API_BASE_URL}/taf/${icaoCode}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching TAF:', error);

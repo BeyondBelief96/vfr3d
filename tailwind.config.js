@@ -2,7 +2,11 @@
 export default {
   content: ['./index.html', './src/**/*.{js,tx,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
+      },
+    },
   },
   daisyui: {
     themes: [

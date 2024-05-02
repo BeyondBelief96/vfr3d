@@ -16,8 +16,7 @@ export const getAirportsByState = async (state: string): Promise<Airport[]> => {
     const response = await axios.get<ApiResponse>(API_BASE_URL, {
       params: {
         where: `STATE = '${state}'`,
-        outFields:
-          'GLOBAL_ID,IDENT,NAME,LATITUDE,LONGITUDE,ELEVATION,ICAO_ID,TYPE_CODE,SERVCITY,STATE',
+        outFields: '*',
         outSR: 4326,
         f: 'json',
       },
@@ -36,8 +35,7 @@ export const getAirportByIcaoCode = async (icaoCode: string): Promise<Airport | 
     const response = await axios.get<ApiResponse>(API_BASE_URL, {
       params: {
         where: `ICAO_ID = '${icaoCode}'`,
-        outFields:
-          'GLOBAL_ID,IDENT,NAME,LATITUDE,LONGITUDE,ELEVATION,ICAO_ID,TYPE_CODE,SERVCITY,STATE',
+        outFields: '*',
         outSR: 4326,
         f: 'json',
       },
@@ -56,8 +54,7 @@ export const getAirportByIdent = async (ident: string): Promise<Airport | null> 
     const response = await axios.get<ApiResponse>(API_BASE_URL, {
       params: {
         where: `IDENT = '${ident}'`,
-        outFields:
-          'GLOBAL_ID,IDENT,NAME,LATITUDE,LONGITUDE,ELEVATION,ICAO_ID,TYPE_CODE,SERVCITY,STATE',
+        outFields: '*',
         outSR: 4326,
         f: 'json',
       },
@@ -111,8 +108,7 @@ export const getAllAirports = async (): Promise<Airport[]> => {
       const response = await axios.get<ApiResponse>(API_BASE_URL, {
         params: {
           where: '1=1',
-          outFields:
-            'GLOBAL_ID,IDENT,NAME,LATITUDE,LONGITUDE,ELEVATION,ICAO_ID,TYPE_CODE,SERVCITY,STATE',
+          outFields: '*',
           outSR: 4326,
           f: 'json',
           resultOffset,
@@ -124,9 +120,11 @@ export const getAllAirports = async (): Promise<Airport[]> => {
         ...allAirports,
         ...response.data.features.map((feature) => feature.attributes),
       ];
+
       resultOffset += MAX_RECORDS_PER_REQUEST;
       exceededTransferLimit = response.data.exceededTransferLimit;
     } while (exceededTransferLimit);
+
     return allAirports;
   } catch (error) {
     console.error('Error fetching all airports:', error);

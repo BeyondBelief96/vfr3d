@@ -8,11 +8,14 @@ import ImageryLayers from '../features/Imagery/ImageryLayers';
 import RouteComponent from '../features/Routes/RouteComponent';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import Sidebar from '../ui/Sidebar';
+import { IMAGERY_LAYER_OPTIONS } from '../utility/constants';
+import AirportInfoPopup from '../features/Airports/InformationPopup/AirportInfoPopup';
 
 const ViewerPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [airspace3dloading, setAirspace3dloading] = useState(false);
   const imageryViewModels: ProviderViewModel[] = [];
+
   const loadBaseImageryViewModels = () => {
     imageryViewModels.push(
       new ProviderViewModel({
@@ -54,18 +57,10 @@ const ViewerPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);
-
-  const imageryLayerOptions = [
-    { value: 'None', label: 'None' },
-    { value: 'vfrImagery', label: 'VFR' },
-    { value: 'vfrTerminal', label: 'VFR TAC' },
-    { value: 'ifrLowImagery', label: 'IFR Low' },
-    { value: 'ifrHighImagery', label: 'IFR High' },
-  ];
 
   loadBaseImageryViewModels();
 
@@ -75,7 +70,7 @@ const ViewerPage = () => {
     <div className="flex flex-col h-screen">
       <div className="flex flex-1 overflow-hidden">
         <div className="lg:block lg:w-[25rem] lg:overflow-y-auto">
-          <Sidebar imageryLayerOptions={imageryLayerOptions} />
+          <Sidebar imageryLayerOptions={IMAGERY_LAYER_OPTIONS} />
         </div>
         <div className="flex-1">
           {airspace3dloading && <LoadingSpinner />}
@@ -92,6 +87,7 @@ const ViewerPage = () => {
             <FlyTo />
             <RouteComponent />
           </ResiumViewer>
+          <AirportInfoPopup />
         </div>
       </div>
     </div>
