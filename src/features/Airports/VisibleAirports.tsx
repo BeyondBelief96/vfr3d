@@ -1,7 +1,7 @@
 import { Entity, ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { pick, useCesium } from 'resium';
+import { useCesium } from 'resium';
 import {
   clearVisibleAirports,
   fetchAirportsByState,

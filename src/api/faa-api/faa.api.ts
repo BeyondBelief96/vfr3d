@@ -30,7 +30,7 @@ export const getAirportsByState = async (state: string): Promise<Airport[]> => {
   }
 };
 
-export const getAirportByIcaoCode = async (icaoCode: string): Promise<Airport | null> => {
+const getAirportByIcaoCode = async (icaoCode: string): Promise<Airport | null> => {
   try {
     const response = await axios.get<ApiResponse>(API_BASE_URL, {
       params: {
@@ -49,7 +49,7 @@ export const getAirportByIcaoCode = async (icaoCode: string): Promise<Airport | 
   }
 };
 
-export const getAirportByIdent = async (ident: string): Promise<Airport | null> => {
+const getAirportByIdent = async (ident: string): Promise<Airport | null> => {
   try {
     const response = await axios.get<ApiResponse>(API_BASE_URL, {
       params: {
