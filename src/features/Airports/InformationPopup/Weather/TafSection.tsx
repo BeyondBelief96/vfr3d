@@ -16,7 +16,7 @@ const TafSection: React.FC<TafSectionProps> = ({ taf, isLoadingTaf }) => {
   };
 
   return (
-    <div className="shadow-xl card bg-base-100">
+    <div className="shadow-xl card bg-base-300">
       <div className="card-body">
         <h3 className="card-title">TAF</h3>
         {isLoadingTaf ? (

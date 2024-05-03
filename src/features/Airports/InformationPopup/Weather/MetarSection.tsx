@@ -16,7 +16,7 @@ const MetarSection: React.FC<MetarSectionProps> = ({ metar, isLoadingMetar }) =>
   };
 
   return (
-    <div className="shadow-xl card bg-base-100">
+    <div className="shadow-xl card bg-base-300">
       <div className="card-body">
         <h3 className="card-title">METAR</h3>
         {isLoadingMetar ? (
