@@ -1,4 +1,4 @@
-import { ImageryLayer, IonImageryProvider, ProviderViewModel, buildModuleUrl } from 'cesium';
+import { IonImageryProvider, ProviderViewModel, buildModuleUrl } from 'cesium';
 import { useEffect, useState } from 'react';
 import { Viewer as ResiumViewer } from 'resium';
 import FlyTo from '../features/Airports/FlyTo';
@@ -16,6 +16,28 @@ const ViewerPage = () => {
   const [airspace3dloading, setAirspace3dloading] = useState(false);
   const imageryViewModels: ProviderViewModel[] = [];
 
+  imageryViewModels.push(
+    new ProviderViewModel({
+      name: 'Sentinel-2',
+      iconUrl: buildModuleUrl('Widgets/Images/ImageryProviders/sentinel-2.png'),
+      tooltip: 'Sentinel-2 cloudless.',
+      creationFunction: function () {
+        return IonImageryProvider.fromAssetId(3954);
+      },
+    })
+  );
+
+  imageryViewModels.push(
+    new ProviderViewModel({
+      name: 'Bing Maps Aerial',
+      iconUrl: buildModuleUrl('Widgets/Images/ImageryProviders/bingAerial.png'),
+      tooltip: 'Bing Satellite Imagery',
+      creationFunction: function () {
+        return IonImageryProvider.fromAssetId(2);
+      },
+    })
+  );
+
   const loadBaseImageryViewModels = () => {
     imageryViewModels.push(
       new ProviderViewModel({
@@ -24,28 +46,6 @@ const ViewerPage = () => {
         tooltip: 'Bing Maps With Roads',
         creationFunction: function () {
           return IonImageryProvider.fromAssetId(4);
-        },
-      })
-    );
-
-    imageryViewModels.push(
-      new ProviderViewModel({
-        name: 'Sentinel-2',
-        iconUrl: buildModuleUrl('Widgets/Images/ImageryProviders/sentinel-2.png'),
-        tooltip: 'Sentinel-2 cloudless.',
-        creationFunction: function () {
-          return IonImageryProvider.fromAssetId(3954);
-        },
-      })
-    );
-
-    imageryViewModels.push(
-      new ProviderViewModel({
-        name: 'Bing Maps Aerial',
-        iconUrl: buildModuleUrl('Widgets/Images/ImageryProviders/bingAerial.png'),
-        tooltip: 'Bing Satellite Imagery',
-        creationFunction: function () {
-          return IonImageryProvider.fromAssetId(2);
         },
       })
     );
@@ -76,7 +76,6 @@ const ViewerPage = () => {
           {airspace3dloading && <LoadingSpinner />}
           <ResiumViewer
             imageryProviderViewModels={imageryViewModels}
-            baseLayer={ImageryLayer.fromProviderAsync(IonImageryProvider.fromAssetId(3954), {})}
             className="h-screen"
             geocoder={false}
             timeline={false}
