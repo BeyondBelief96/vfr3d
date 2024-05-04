@@ -9,7 +9,7 @@ import { RootState } from '../../../redux/store';
 // Components
 import AirportInfo from './AirportInfo';
 import AirportWeather from './Weather/AirportWeather';
-import AirportRunways from './AirportRunways';
+import MetarFlightCategoryBadge from '../../../ui/ReusableComponents/FlightCategoryBadge';
 
 const AirportInfoPopup: React.FC = () => {
   const dispatch = useDispatch();
@@ -77,22 +77,25 @@ const AirportInfoPopup: React.FC = () => {
         <div className="px-4 py-2 bg-primary text-primary-content">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">{selectedAirport.NAME}</h2>
-            <button className="btn btn-sm btn-circle btn-ghost" onClick={handleClose}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
+            <div className="flex flex-col items-end">
+              <MetarFlightCategoryBadge metar={metar} />
+              <button className="btn btn-sm btn-circle btn-ghost" onClick={handleClose}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
         <div className="tabs tabs-boxed bg-base-200">
