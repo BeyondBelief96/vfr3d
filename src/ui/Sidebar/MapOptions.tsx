@@ -1,5 +1,5 @@
 // MapOptions.tsx
-import React from 'react';
+import React, { useMemo } from 'react';
 import ImageryControls from '../../features/Imagery/ImageryControls';
 import useMapOptions from '../../hooks/useMapOptions';
 
@@ -7,9 +7,17 @@ interface MapOptionsProps {
   imageryLayerOptions: { value: string; label: string }[];
 }
 
-const MapOptions: React.FC<MapOptionsProps> = ({ imageryLayerOptions }) => {
+const MapOptions: React.FC<MapOptionsProps> = React.memo(({ imageryLayerOptions }) => {
   const { selectedImageryLayer, handleLayerChange, handleAlphaChange, handleBrightnessChange } =
     useMapOptions();
+  console.log('Map Options Rendered!');
+  const renderImageryLayerOptions = useMemo(() => {
+    return imageryLayerOptions.map((option) => (
+      <option key={option.value} value={option.value}>
+        {option.label}
+      </option>
+    ));
+  }, [imageryLayerOptions]);
 
   return (
     <div className="mb-6">
@@ -24,11 +32,7 @@ const MapOptions: React.FC<MapOptionsProps> = ({ imageryLayerOptions }) => {
           value={selectedImageryLayer}
           onChange={(e) => handleLayerChange(e.target.value)}
         >
-          {imageryLayerOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
+          {renderImageryLayerOptions}
         </select>
       </div>
       <ImageryControls
@@ -37,6 +41,6 @@ const MapOptions: React.FC<MapOptionsProps> = ({ imageryLayerOptions }) => {
       />
     </div>
   );
-};
+});
 
 export default MapOptions;

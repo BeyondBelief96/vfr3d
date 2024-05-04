@@ -38,3 +38,10 @@ export const IMAGERY_LAYER_OPTIONS = [
   { value: 'ifrLowImagery', label: 'IFR Low' },
   { value: 'ifrHighImagery', label: 'IFR High' },
 ];
+
+export enum FlightCategories {
+  VFR = 'VFR',
+  MVFR = 'MVFR',
+  IFR = 'IFR',
+  LIFR = 'LIFR',
+}
