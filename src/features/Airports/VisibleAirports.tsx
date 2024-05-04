@@ -11,6 +11,7 @@ import {
 import { AppDispatch, RootState } from '../../redux/store';
 import AirportEntity from './AirportEntity';
 import useMetarDataByState from '../../hooks/useMetarDataByState';
+import { getMetarStationIdFromAirport } from '../../utility/utils';
 
 const VisibleAirports: React.FC = () => {
   const { showAirports, visibleAirports, selectedState } = useSelector(
@@ -56,18 +57,10 @@ const VisibleAirports: React.FC = () => {
   return (
     <>
       {visibleAirports.map((airport) => {
-        const icaoId = airport.ICAO_ID;
-        const ident = airport.IDENT;
+        const stationId = getMetarStationIdFromAirport(airport);
         let metar;
-
-        if (icaoId) {
-          metar = metarMap.get(icaoId);
-        }
-
-        if (!metar && ident) {
-          const stationIdWithoutPrefix =
-            ident.startsWith('K') || ident.startsWith('P') ? ident : `K${ident}`;
-          metar = metarMap.get(stationIdWithoutPrefix);
+        if (stationId) {
+          metar = metarMap.get(stationId);
         }
 
         return <AirportEntity key={airport.GLOBAL_ID} airport={airport} metar={metar} />;

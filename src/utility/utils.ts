@@ -33,6 +33,24 @@ export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null 
   return Cartesian3.fromDegrees(longitude, latitude, elevation);
 };
 
+export function getMetarStationIdFromAirport(airport: Airport): string | undefined {
+  const { ICAO_ID, IDENT } = airport;
+
+  if (ICAO_ID) {
+    return ICAO_ID;
+  }
+
+  if (IDENT) {
+    if (IDENT.startsWith('K') || IDENT.startsWith('P')) {
+      return IDENT;
+    } else {
+      return `K${IDENT}`;
+    }
+  }
+
+  return undefined;
+}
+
 export const colorSerializer = {
   serialize: (color: Color) => {
     return {
