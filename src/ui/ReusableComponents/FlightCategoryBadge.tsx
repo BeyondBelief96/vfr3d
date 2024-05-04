@@ -1,13 +1,16 @@
 // MetarFlightCategoryBadge.tsx
 import React from 'react';
 import { MetarDTO } from 'vfr3d-shared';
+import { ApiError } from '../../redux/api/types';
 
 interface MetarFlightCategoryBadgeProps {
-  metar: MetarDTO | null;
+  metar?: MetarDTO | { error: ApiError };
 }
 
 const MetarFlightCategoryBadge: React.FC<MetarFlightCategoryBadgeProps> = ({ metar }) => {
-  if (!metar) return null;
+  if (!metar || 'error' in metar) {
+    return null;
+  }
 
   let badgeClass = '';
   const textClass = 'text-white';

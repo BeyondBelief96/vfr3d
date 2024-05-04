@@ -1,8 +1,6 @@
 // AirportInfoPopup.tsx
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MetarDTO, TafDTO } from 'vfr3d-shared';
-import { getMetarForAirport, getTafForAirport } from '../../../api/vfr3d-api/vfr3d.api';
 import { setSelectedAirport } from '../../../redux/slices/airportsSlice';
 import { RootState } from '../../../redux/store';
 
@@ -10,60 +8,43 @@ import { RootState } from '../../../redux/store';
 import AirportInfo from './AirportInfo';
 import AirportWeather from './Weather/AirportWeather';
 import MetarFlightCategoryBadge from '../../../ui/ReusableComponents/FlightCategoryBadge';
+import {
+  useGetMetarForAirportQuery,
+  useGetTafForAirportQuery,
+} from '../../../redux/api/vfr3d/weatherApi';
+import { CloseButton } from '../../../ui/ReusableComponents/CloseButton';
+import { ApiError } from '../../../redux/api/types';
 
 const AirportInfoPopup: React.FC = () => {
   const dispatch = useDispatch();
   const selectedAirport = useSelector((state: RootState) => state.airport.selectedAirport);
-  const [metar, setMetar] = useState<MetarDTO | null>(null);
-  const [taf, setTaf] = useState<TafDTO | null>(null);
   const [activeTab, setActiveTab] = useState('info');
-  const [isLoadingMetar, setIsLoadingMetar] = useState(false);
-  const [isLoadingTaf, setIsLoadingTaf] = useState(false);
+  const icaoCodeOrIdent = selectedAirport?.ICAO_ID || selectedAirport?.IDENT;
+
+  const {
+    data: metar,
+    isLoading: isLoadingMetar,
+    error: metarError,
+    refetch: refetchMetar,
+  } = useGetMetarForAirportQuery(icaoCodeOrIdent || '', {
+    skip: !icaoCodeOrIdent,
+  });
+
+  const {
+    data: taf,
+    isLoading: isLoadingTaf,
+    error: tafError,
+    refetch: refetchTaf,
+  } = useGetTafForAirportQuery(icaoCodeOrIdent || '', {
+    skip: !icaoCodeOrIdent,
+  });
 
   useEffect(() => {
-    const fetchMetarData = async () => {
-      if (selectedAirport) {
-        try {
-          const icaoCodeOrIdent = selectedAirport.ICAO_ID || selectedAirport.IDENT;
-          if (icaoCodeOrIdent) {
-            setIsLoadingMetar(true);
-            const metarData = await getMetarForAirport(icaoCodeOrIdent);
-            setMetar(metarData);
-          } else {
-            console.error('No ICAO code or IDENT available for the airport.');
-          }
-        } catch (error) {
-          setMetar(null);
-          console.error('Error fetching METAR data:', error);
-        } finally {
-          setIsLoadingMetar(false);
-        }
-      }
-    };
-
-    const fetchTafData = async () => {
-      if (selectedAirport) {
-        try {
-          const icaoCodeOrIdent = selectedAirport.ICAO_ID || selectedAirport.IDENT;
-          if (icaoCodeOrIdent) {
-            setIsLoadingTaf(true);
-            const tafData = await getTafForAirport(icaoCodeOrIdent);
-            setTaf(tafData);
-          } else {
-            console.error('No ICAO code or IDENT available for the airport.');
-          }
-        } catch (error) {
-          setTaf(null);
-          console.error('Error fetching TAF data:', error);
-        } finally {
-          setIsLoadingTaf(false);
-        }
-      }
-    };
-
-    fetchMetarData();
-    fetchTafData();
-  }, [selectedAirport]);
+    if (selectedAirport) {
+      refetchMetar();
+      refetchTaf();
+    }
+  }, [selectedAirport, refetchMetar, refetchTaf]);
 
   const handleClose = () => {
     dispatch(setSelectedAirport(null));
@@ -78,23 +59,8 @@ const AirportInfoPopup: React.FC = () => {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">{selectedAirport.NAME}</h2>
             <div className="flex flex-col items-end">
-              <MetarFlightCategoryBadge metar={metar} />
-              <button className="btn btn-sm btn-circle btn-ghost" onClick={handleClose}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
+              {metar && <MetarFlightCategoryBadge metar={metar} />}
+              <CloseButton handleClose={handleClose} />
             </div>
           </div>
         </div>
@@ -120,6 +86,8 @@ const AirportInfoPopup: React.FC = () => {
               taf={taf}
               isLoadingMetar={isLoadingMetar}
               isLoadingTaf={isLoadingTaf}
+              metarError={metarError as ApiError}
+              tafError={tafError as ApiError}
             />
           )}
         </div>
