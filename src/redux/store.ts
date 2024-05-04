@@ -6,8 +6,7 @@ import entitiesReducer from './slices/entitiesSlice';
 import routeReducer from './slices/routeSlice';
 import searchReducer from './slices/searchSlice';
 import sidebarReducer from './slices/sidebarSlice';
-import { faaApi } from './api/faa/faaApi';
-import { weatherApi } from './api/vfr3d/weatherApi';
+import { baseApi } from './api/apiSlice';
 
 const store = configureStore({
   reducer: {
@@ -18,11 +17,9 @@ const store = configureStore({
     airspace: airspaceReducer,
     search: searchReducer,
     sidebar: sidebarReducer,
-    [faaApi.reducerPath]: faaApi.reducer,
-    [weatherApi.reducerPath]: weatherApi.reducer,
+    [baseApi.reducerPath]: baseApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(faaApi.middleware, weatherApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

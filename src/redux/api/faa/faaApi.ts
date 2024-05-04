@@ -1,16 +1,15 @@
 // src/redux/api/faaApi.ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '../apiSlice';
 import { Airport, ApiResponse } from './faa.interface';
 
-const BASE_URL = 'https://services6.arcgis.com/ssFJjBXIUyZDrSYZ/arcgis/rest/services';
+const FAA_BASE_URL = 'https://services6.arcgis.com/ssFJjBXIUyZDrSYZ/arcgis/rest/services';
 const MAX_RECORDS_PER_REQUEST = 1000;
-export const faaApi = createApi({
-  reducerPath: 'faaApi',
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+
+export const faaApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAirportsByState: builder.query<Airport[], string>({
       query: (state) => ({
-        url: '/US_Airport/FeatureServer/0/query',
+        url: `${FAA_BASE_URL}/US_Airport/FeatureServer/0/query`,
         params: {
           where: `STATE = '${state}'`,
           outFields: '*',
@@ -23,7 +22,7 @@ export const faaApi = createApi({
     }),
     getAllAirports: builder.query<Airport[], void>({
       query: () => ({
-        url: '/US_Airport/FeatureServer/0/query',
+        url: `${FAA_BASE_URL}/US_Airport/FeatureServer/0/query`,
         params: {
           where: '1=1',
           outFields: '*',
@@ -38,7 +37,7 @@ export const faaApi = createApi({
     }),
     getAirportByIcaoCodeOrIdent: builder.query<Airport, string>({
       query: (icaoCodeOrIdent) => ({
-        url: '/US_Airport/FeatureServer/0/query',
+        url: `${FAA_BASE_URL}/US_Airport/FeatureServer/0/query`,
         params: {
           where: `ICAO_ID = '${icaoCodeOrIdent}' OR IDENT = '${icaoCodeOrIdent}'`,
           outFields: '*',
