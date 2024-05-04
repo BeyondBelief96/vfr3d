@@ -23,6 +23,16 @@ export const getMetarForAirport = async (icaoCode: string): Promise<MetarDTO> =>
   }
 };
 
+export const getMetarsByState = async (stateCode: string): Promise<MetarDTO[]> => {
+  try {
+    const response = await axios.get<MetarDTO[]>(`${API_BASE_URL}/metar/state/${stateCode}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching METAR for state ${stateCode}`, error);
+    throw error;
+  }
+};
+
 export const getAllPireps = async (): Promise<PirepDTO[]> => {
   try {
     const response = await axios.get<PirepDTO[]>(`${API_BASE_URL}/pirep`);

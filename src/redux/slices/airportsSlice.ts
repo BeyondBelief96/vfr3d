@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getAirportsByState, getAllAirports } from '../../api/faa-api/faa.api';
 import { Airport } from '../../api/faa-api/faa.dto';
 import { states } from '../../utility/states';
+import { MetarDTO } from 'vfr3d-shared';
 
 interface AirportState {
   visibleAirports: Airport[];
@@ -75,7 +76,7 @@ const airportSlice = createSlice({
       })
       .addCase(fetchAirportsByState.rejected, (state) => {
         state.loading = false;
-        state.error = 'Error occured when attempting to fetch airport data';
+        state.error = 'Error occurred when attempting to fetch airport data';
       });
   },
 });
