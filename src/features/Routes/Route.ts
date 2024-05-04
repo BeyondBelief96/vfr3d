@@ -1,4 +1,4 @@
-import { Airport } from '../../api/faa-api/faa.dto';
+import { Airport } from '../../redux/api/faa/faa.interface';
 
 export interface Route {
   id: number;

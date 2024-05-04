@@ -3,10 +3,10 @@ import { Entity, PointGraphics, Color, ConstantProperty, NearFarScalar } from 'c
 import { useEffect, useRef } from 'react';
 import { useCesium } from 'resium';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
-import { Airport } from '../../api/faa-api/faa.dto';
 import { MetarDTO } from 'vfr3d-shared';
 import { FlightCategories } from '../../utility/constants';
 import React from 'react';
+import { Airport } from '../../redux/api/faa/faa.interface';
 
 interface AirportEntityProps {
   airport: Airport;

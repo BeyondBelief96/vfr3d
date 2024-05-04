@@ -1,5 +1,5 @@
 import { Cartesian3, Color } from 'cesium';
-import { Airport } from '../api/faa-api/faa.dto';
+import { Airport } from '../redux/api/faa/faa.interface';
 
 const convertDMSToDecimal = (dms: string): number => {
   const hemisphere = dms.slice(-1);
