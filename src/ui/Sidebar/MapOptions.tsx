@@ -10,7 +10,6 @@ interface MapOptionsProps {
 const MapOptions: React.FC<MapOptionsProps> = React.memo(({ imageryLayerOptions }) => {
   const { selectedImageryLayer, handleLayerChange, handleAlphaChange, handleBrightnessChange } =
     useMapOptions();
-  console.log('Map Options Rendered!');
   const renderImageryLayerOptions = useMemo(() => {
     return imageryLayerOptions.map((option) => (
       <option key={option.value} value={option.value}>
