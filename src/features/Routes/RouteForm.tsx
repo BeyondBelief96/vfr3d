@@ -2,7 +2,6 @@ import { Color } from 'cesium';
 import { useState } from 'react';
 import { HuePicker } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAirportByIcaoCodeOrIdent } from '../../api/faa-api/faa.api';
 import {
   clearRoute,
   setEndPointColor,
@@ -11,6 +10,7 @@ import {
 } from '../../redux/slices/routeSlice';
 import { AppDispatch, RootState } from '../../redux/store';
 import { Route } from './Route';
+import { useGetAirportByIcaoCodeOrIdentQuery } from '../../redux/api/faa/faaApi';
 
 interface RouteFormProps {}
 
@@ -21,6 +21,18 @@ const RouteForm: React.FC<RouteFormProps> = () => {
   const [toIcaoCode, setToIcaoCode] = useState('');
   const [fromAirportError, setFromAirportError] = useState('');
   const [toAirportError, setToAirportError] = useState('');
+
+  const { data: fromAirportData, isError: isFromAirportError } =
+    useGetAirportByIcaoCodeOrIdentQuery(fromIcaoCode, {
+      skip: !fromIcaoCode,
+    });
+
+  const { data: toAirportData, isError: isToAirportError } = useGetAirportByIcaoCodeOrIdentQuery(
+    toIcaoCode,
+    {
+      skip: !toIcaoCode,
+    }
+  );
 
   const handleLineColorChange = (color: Color) => {
     const colorString = `rgba(${color.red * 255}, ${color.green * 255}, ${color.blue * 255}, ${color.alpha})`;
@@ -42,29 +54,23 @@ const RouteForm: React.FC<RouteFormProps> = () => {
     setToAirportError('');
   };
 
-  const handleRouteSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
+  const handleRouteSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    try {
-      const fromAirportData = await getAirportByIcaoCodeOrIdent(fromIcaoCode);
-      const toAirportData = await getAirportByIcaoCodeOrIdent(toIcaoCode);
 
-      if (!fromAirportData) {
-        setFromAirportError('Invalid ICAO code');
-      } else if (!toAirportData) {
-        setToAirportError('Invalid ICAO code');
-      } else {
-        const newRoute: Route = {
-          id: Date.now(), // Generate a unique ID for the new route
-          fromAirport: fromAirportData,
-          toAirport: toAirportData,
-        };
+    if (isFromAirportError) {
+      setFromAirportError('Invalid ICAO code');
+    } else if (isToAirportError) {
+      setToAirportError('Invalid ICAO code');
+    } else if (fromAirportData && toAirportData) {
+      const newRoute: Route = {
+        id: Date.now(), // Generate a unique ID for the new route
+        fromAirport: fromAirportData,
+        toAirport: toAirportData,
+      };
 
-        dispatch(setRoute(newRoute));
-        setFromIcaoCode('');
-        setToIcaoCode('');
-      }
-    } catch (error) {
-      console.error('Error fetching airport data:', error);
+      dispatch(setRoute(newRoute));
+      setFromIcaoCode('');
+      setToIcaoCode('');
     }
   };
 
@@ -84,7 +90,9 @@ const RouteForm: React.FC<RouteFormProps> = () => {
           id="from-icao-code"
           type="text"
           value={fromIcaoCode}
-          className={`w-full input input-bordered ${fromAirportError ? 'input-error' : ''}`}
+          className={`w-full input input-bordered ${
+            isFromAirportError || fromAirportError ? 'input-error' : ''
+          }`}
           onChange={handleFromIcaoCodeChange}
           placeholder="Enter ICAO code"
         />
@@ -98,7 +106,9 @@ const RouteForm: React.FC<RouteFormProps> = () => {
           id="to-icao-code"
           type="text"
           value={toIcaoCode}
-          className={`w-full input input-bordered ${toAirportError ? 'input-error' : ''}`}
+          className={`w-full input input-bordered ${
+            isToAirportError || toAirportError ? 'input-error' : ''
+          }`}
           onChange={handleToIcaoCodeChange}
           placeholder="Enter ICAO code"
         />

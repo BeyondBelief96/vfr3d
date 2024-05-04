@@ -26,3 +26,12 @@ export interface Airport {
   US_AREA: number;
   PACIFIC: number;
 }
+
+export interface ApiFeature<T> {
+  attributes: T;
+}
+
+export interface ApiResponse<T> {
+  features: ApiFeature<T>[];
+  exceededTransferLimit: boolean;
+}

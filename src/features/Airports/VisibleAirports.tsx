@@ -3,30 +3,25 @@ import { Entity, ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
-import {
-  clearVisibleAirports,
-  fetchAirportsByState,
-  setSelectedAirport,
-} from '../../redux/slices/airportsSlice';
+import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { AppDispatch, RootState } from '../../redux/store';
 import AirportEntity from './AirportEntity';
-import useMetarDataByState from '../../hooks/useMetarDataByState';
+import { getMetarStationIdFromAirport } from '../../utility/utils';
+import { useGetAirportsByStateQuery } from '../../redux/api/faa/faaApi';
+import { useGetMetarsByStateQuery } from '../../redux/api/vfr3d/weatherApi';
 
 const VisibleAirports: React.FC = () => {
-  const { showAirports, visibleAirports, selectedState } = useSelector(
-    (state: RootState) => state.airport
-  );
+  const { showAirports, selectedState } = useSelector((state: RootState) => state.airport);
   const dispatch = useDispatch<AppDispatch>();
   const { viewer } = useCesium();
-  const metarData = useMetarDataByState(selectedState);
 
-  useEffect(() => {
-    if (showAirports) {
-      dispatch(fetchAirportsByState(selectedState));
-    } else {
-      dispatch(clearVisibleAirports());
-    }
-  }, [dispatch, selectedState, showAirports]);
+  const { data: visibleAirports = [] } = useGetAirportsByStateQuery(selectedState, {
+    skip: !showAirports,
+  });
+
+  const { data: metarData = [] } = useGetMetarsByStateQuery(selectedState, {
+    skip: !showAirports,
+  });
 
   useEffect(() => {
     const handleClickAirport = (event: ScreenSpaceEventHandler.PositionedEvent) => {
@@ -34,42 +29,40 @@ const VisibleAirports: React.FC = () => {
       if (pickedObject && pickedObject.id) {
         const airportEntity = pickedObject.id as Entity;
         const airport = visibleAirports.find((airport) => airport.GLOBAL_ID === airportEntity.id);
-        console.log(airport);
         dispatch(setSelectedAirport(airport || null));
       } else {
         dispatch(setSelectedAirport(null));
       }
     };
 
-    viewer?.screenSpaceEventHandler.setInputAction(
-      handleClickAirport,
-      ScreenSpaceEventType.LEFT_CLICK
-    );
+    if (showAirports) {
+      viewer?.screenSpaceEventHandler.setInputAction(
+        handleClickAirport,
+        ScreenSpaceEventType.LEFT_CLICK
+      );
+    } else {
+      viewer?.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
+    }
 
     return () => {
       viewer?.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
     };
-  }, [viewer, visibleAirports, dispatch]);
+  }, [viewer, visibleAirports, dispatch, showAirports]);
 
   const metarMap = new Map(metarData.map((metar) => [metar.stationId, metar]));
+
+  if (!showAirports) {
+    return null;
+  }
 
   return (
     <>
       {visibleAirports.map((airport) => {
-        const icaoId = airport.ICAO_ID;
-        const ident = airport.IDENT;
+        const stationId = getMetarStationIdFromAirport(airport);
         let metar;
-
-        if (icaoId) {
-          metar = metarMap.get(icaoId);
+        if (stationId) {
+          metar = metarMap.get(stationId);
         }
-
-        if (!metar && ident) {
-          const stationIdWithoutPrefix =
-            ident.startsWith('K') || ident.startsWith('P') ? ident : `K${ident}`;
-          metar = metarMap.get(stationIdWithoutPrefix);
-        }
-
         return <AirportEntity key={airport.GLOBAL_ID} airport={airport} metar={metar} />;
       })}
     </>

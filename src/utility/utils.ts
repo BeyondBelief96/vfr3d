@@ -1,5 +1,5 @@
 import { Cartesian3, Color } from 'cesium';
-import { Airport } from '../api/faa-api/faa.dto';
+import { Airport } from '../redux/api/faa/faa.interface';
 
 const convertDMSToDecimal = (dms: string): number => {
   const hemisphere = dms.slice(-1);
@@ -32,6 +32,24 @@ export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null 
 
   return Cartesian3.fromDegrees(longitude, latitude, elevation);
 };
+
+export function getMetarStationIdFromAirport(airport: Airport): string | undefined {
+  const { ICAO_ID, IDENT } = airport;
+
+  if (ICAO_ID) {
+    return ICAO_ID;
+  }
+
+  if (IDENT) {
+    if (IDENT.startsWith('K') || IDENT.startsWith('P')) {
+      return IDENT;
+    } else {
+      return `K${IDENT}`;
+    }
+  }
+
+  return undefined;
+}
 
 export const colorSerializer = {
   serialize: (color: Color) => {

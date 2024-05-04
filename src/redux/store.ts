@@ -6,6 +6,7 @@ import entitiesReducer from './slices/entitiesSlice';
 import routeReducer from './slices/routeSlice';
 import searchReducer from './slices/searchSlice';
 import sidebarReducer from './slices/sidebarSlice';
+import { baseApi } from './api/apiSlice';
 
 const store = configureStore({
   reducer: {
@@ -16,7 +17,9 @@ const store = configureStore({
     airspace: airspaceReducer,
     search: searchReducer,
     sidebar: sidebarReducer,
+    [baseApi.reducerPath]: baseApi.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
