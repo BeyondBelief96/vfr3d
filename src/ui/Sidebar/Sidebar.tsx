@@ -1,18 +1,18 @@
 // Sidebar.tsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ImageryControls from '../features/Imagery/ImageryControls';
-import RouteForm from '../features/Routes/RouteForm';
+import ImageryControls from '../../features/Imagery/ImageryControls';
+import RouteForm from '../../features/Routes/RouteForm';
 import {
   setImageryAlpha,
   setImageryBrightness,
   setSelectedLayer,
-} from '../redux/slices/ViewerSlice';
-import { setSelectedState, toggleShowAirports } from '../redux/slices/airportsSlice';
-import { toggleAirspace3d } from '../redux/slices/airspaceSlice';
-import { toggleSidebar } from '../redux/slices/sidebarSlice';
-import { RootState } from '../redux/store';
-import { states } from '../utility/states';
+} from '../../redux/slices/ViewerSlice';
+import { setSelectedState, toggleShowAirports } from '../../redux/slices/airportsSlice';
+import { toggleAirspace3d } from '../../redux/slices/airspaceSlice';
+import { toggleSidebar } from '../../redux/slices/sidebarSlice';
+import { RootState } from '../../redux/store';
+import { states } from '../../utility/states';
 
 interface SidebarProps {
   imageryLayerOptions: { value: string; label: string }[];

@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { toggleSidebar } from '../redux/slices/sidebarSlice';
 import { RootState } from '../redux/store';
-import DonationButton from './DonationButton';
-import SearchBar from './SearchBar';
-import ThemeController from './ThemeController';
+import DonationButton from './ReusableComponents/DonationButton';
+import SearchBar from './ReusableComponents/SearchBar';
+import ThemeController from './ReusableComponents/ThemeController';
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();

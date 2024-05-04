@@ -6,8 +6,8 @@ import VisibleAirports from '../features/Airports/VisibleAirports';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import ImageryLayers from '../features/Imagery/ImageryLayers';
 import RouteComponent from '../features/Routes/RouteComponent';
-import LoadingSpinner from '../ui/LoadingSpinner';
-import Sidebar from '../ui/Sidebar';
+import LoadingSpinner from '../ui/ReusableComponents/LoadingSpinner';
+import Sidebar from '../ui/Sidebar/Sidebar';
 import { IMAGERY_LAYER_OPTIONS } from '../utility/constants';
 import AirportInfoPopup from '../features/Airports/InformationPopup/AirportInfoPopup';
 
