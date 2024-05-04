@@ -27,7 +27,8 @@
     "react-router-dom": "^6.22.3",
     "resium": "^1.17.3",
     "swiper": "^11.1.1",
-    "tailwindcss": "^3.4.3"
+    "tailwindcss": "^3.4.3",
+    "vfr3d-shared": "^1.4.0"
   },
   "devDependencies": {
     "@types/cesium": "^1.70.0",

@@ -1,19 +1,16 @@
 import { Math } from 'cesium';
 import { useCallback } from 'react';
 import { useCesium } from 'resium';
-import { getAirportByIcaoCode, getAirportByIdent } from '../api/faa-airports';
 import { mapAirportDataToCartesian3 } from '../utility/utils';
+import { getAirportByIcaoCodeOrIdent } from '../api/faa-api/faa.api';
 
-const useSearchAndFlyTo = () => {
+export const useSearchAndFlyTo = () => {
   const { viewer } = useCesium();
 
   const searchAndFlyTo = useCallback(
     async (icaoCode: string) => {
       try {
-        let airport = await getAirportByIcaoCode(icaoCode);
-        // If ICAO code fails, search by IDENT. Usually smaller airports don't have an ICAO code,
-        //but have some other identifier name.
-        if (!airport) airport = await getAirportByIdent(icaoCode);
+        const airport = await getAirportByIcaoCodeOrIdent(icaoCode);
         if (airport) {
           const position = mapAirportDataToCartesian3(airport);
           if (position && viewer) {
@@ -39,5 +36,3 @@ const useSearchAndFlyTo = () => {
 
   return searchAndFlyTo;
 };
-
-export default useSearchAndFlyTo;

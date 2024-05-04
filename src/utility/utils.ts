@@ -1,5 +1,5 @@
 import { Cartesian3, Color } from 'cesium';
-import { Airport } from '../api/types';
+import { Airport } from '../api/faa-api/faa.dto';
 
 const convertDMSToDecimal = (dms: string): number => {
   const hemisphere = dms.slice(-1);

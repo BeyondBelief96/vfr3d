@@ -1,22 +1,22 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getAirportsByState, getAllAirports } from '../../api/faa-airports';
-import { Airport } from '../../api/types';
+import { getAirportsByState, getAllAirports } from '../../api/faa-api/faa.api';
+import { Airport } from '../../api/faa-api/faa.dto';
 import { states } from '../../utility/states';
 
 interface AirportState {
-  airports: Airport[];
   visibleAirports: Airport[];
   showAirports: boolean;
   selectedState: string;
+  selectedAirport: Airport | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AirportState = {
-  airports: [],
   visibleAirports: [],
   showAirports: false,
   selectedState: states[0],
+  selectedAirport: null,
   loading: false,
   error: '',
 };
@@ -49,14 +49,17 @@ const airportSlice = createSlice({
   name: 'airport',
   initialState,
   reducers: {
-    setAirports: (state, action: PayloadAction<Airport[]>) => {
-      state.airports = action.payload;
-    },
     toggleShowAirports: (state) => {
       state.showAirports = !state.showAirports;
     },
     setSelectedState: (state, action: PayloadAction<string>) => {
       state.selectedState = action.payload;
+    },
+    setSelectedAirport: (state, action: PayloadAction<Airport | null>) => {
+      state.selectedAirport = action.payload;
+    },
+    clearVisibleAirports: (state) => {
+      state.visibleAirports = [];
     },
   },
   extraReducers: (builder) => {
@@ -72,23 +75,12 @@ const airportSlice = createSlice({
       })
       .addCase(fetchAirportsByState.rejected, (state) => {
         state.loading = false;
-        state.error = 'Error occured when attempting to fetch airport data';
-      })
-      .addCase(fetchAllAirports.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchAllAirports.fulfilled, (state, action: PayloadAction<Airport[]>) => {
-        state.loading = false;
-        state.airports = action.payload;
-      })
-      .addCase(fetchAllAirports.rejected, (state) => {
-        state.loading = false;
-        state.error = 'Error occured when attempting to fech airport data';
+        state.error = 'Error occurred when attempting to fetch airport data';
       });
   },
 });
 
-export const { setAirports, toggleShowAirports, setSelectedState } = airportSlice.actions;
+export const { toggleShowAirports, setSelectedState, setSelectedAirport, clearVisibleAirports } =
+  airportSlice.actions;
 
 export default airportSlice.reducer;

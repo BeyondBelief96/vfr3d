@@ -1,25 +1,23 @@
 import { Math } from 'cesium';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
-import { getAirportByIcaoCode, getAirportByIdent } from '../../api/faa-airports';
+import { getAirportByIcaoCodeOrIdent } from '../../api/faa-api/faa.api';
 import { RootState } from '../../redux/store';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
+import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 
 const FlyTo = () => {
   const { viewer } = useCesium();
   const searchQuery = useSelector((state: RootState) => state.search.airportQuery);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const searchAndFlyTo = async () => {
       try {
-        let airport = await getAirportByIcaoCode(searchQuery);
-
-        if (!airport) {
-          airport = await getAirportByIdent(searchQuery);
-        }
-
+        const airport = await getAirportByIcaoCodeOrIdent(searchQuery);
         if (airport) {
+          dispatch(setSelectedAirport(airport));
           const position = mapAirportDataToCartesian3(airport);
           if (position && viewer) {
             viewer.camera.setView({
@@ -43,7 +41,7 @@ const FlyTo = () => {
     if (searchQuery) {
       searchAndFlyTo();
     }
-  }, [searchQuery, viewer]);
+  }, [searchQuery, viewer, dispatch]);
 
   return null;
 };

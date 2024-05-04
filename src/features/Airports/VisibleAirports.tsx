@@ -1,54 +1,79 @@
-import { Entity } from 'cesium';
-import { useEffect, useRef } from 'react';
+// VisibleAirports.tsx
+import { Entity, ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
-import { fetchAirportsByState } from '../../redux/slices/airportsSlice';
-import { updateCurrentAirportEntityIds } from '../../redux/slices/entitiesSlice';
+import {
+  clearVisibleAirports,
+  fetchAirportsByState,
+  setSelectedAirport,
+} from '../../redux/slices/airportsSlice';
 import { AppDispatch, RootState } from '../../redux/store';
-import { mapAirportDataToCartesian3 } from '../../utility/utils';
+import AirportEntity from './AirportEntity';
+import useMetarDataByState from '../../hooks/useMetarDataByState';
 
 const VisibleAirports: React.FC = () => {
-  const {
-    showAirports,
-    visibleAirports,
-    selectedState: selectedStateAirports,
-  } = useSelector((state: RootState) => state.airport);
+  const { showAirports, visibleAirports, selectedState } = useSelector(
+    (state: RootState) => state.airport
+  );
   const dispatch = useDispatch<AppDispatch>();
   const { viewer } = useCesium();
-  const entityRefs = useRef<Record<string, Entity>>({});
+  const metarData = useMetarDataByState(selectedState);
 
   useEffect(() => {
-    dispatch(fetchAirportsByState(selectedStateAirports));
-  }, [dispatch, selectedStateAirports]);
-
-  useEffect(() => {
-    // Remove existing entities
-    Object.values(entityRefs.current).forEach((entity) => viewer?.entities.remove(entity));
-    entityRefs.current = {};
-
-    if (!showAirports || !viewer) {
-      dispatch(updateCurrentAirportEntityIds([])); // Clear airport entity IDs in the store
-      return;
+    if (showAirports) {
+      dispatch(fetchAirportsByState(selectedState));
+    } else {
+      dispatch(clearVisibleAirports());
     }
+  }, [dispatch, selectedState, showAirports]);
 
-    // Add new entities
-    const newEntityIds: string[] = [];
-    visibleAirports.forEach((airport) => {
-      const position = mapAirportDataToCartesian3(airport);
-      if (!position) return;
+  useEffect(() => {
+    const handleClickAirport = (event: ScreenSpaceEventHandler.PositionedEvent) => {
+      const pickedObject = viewer?.scene.pick(event.position);
+      if (pickedObject && pickedObject.id) {
+        const airportEntity = pickedObject.id as Entity;
+        const airport = visibleAirports.find((airport) => airport.GLOBAL_ID === airportEntity.id);
+        console.log(airport);
+        dispatch(setSelectedAirport(airport || null));
+      } else {
+        dispatch(setSelectedAirport(null));
+      }
+    };
 
-      const entity = viewer.entities.add({
-        position,
-        point: { pixelSize: 10 },
-      });
-      entityRefs.current[airport.GLOBAL_ID] = entity;
-      newEntityIds.push(airport.GLOBAL_ID);
-    });
+    viewer?.screenSpaceEventHandler.setInputAction(
+      handleClickAirport,
+      ScreenSpaceEventType.LEFT_CLICK
+    );
 
-    dispatch(updateCurrentAirportEntityIds(newEntityIds)); // Update airport entity IDs in the store
-  }, [showAirports, viewer, visibleAirports, dispatch]);
+    return () => {
+      viewer?.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
+    };
+  }, [viewer, visibleAirports, dispatch]);
 
-  return null;
+  const metarMap = new Map(metarData.map((metar) => [metar.stationId, metar]));
+
+  return (
+    <>
+      {visibleAirports.map((airport) => {
+        const icaoId = airport.ICAO_ID;
+        const ident = airport.IDENT;
+        let metar;
+
+        if (icaoId) {
+          metar = metarMap.get(icaoId);
+        }
+
+        if (!metar && ident) {
+          const stationIdWithoutPrefix =
+            ident.startsWith('K') || ident.startsWith('P') ? ident : `K${ident}`;
+          metar = metarMap.get(stationIdWithoutPrefix);
+        }
+
+        return <AirportEntity key={airport.GLOBAL_ID} airport={airport} metar={metar} />;
+      })}
+    </>
+  );
 };
 
 export default VisibleAirports;

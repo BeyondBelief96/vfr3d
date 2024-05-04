@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSearchAirportQuery } from '../redux/slices/searchSlice';
+import { setSearchAirportQuery } from '../../redux/slices/searchSlice';
 
 const SearchBar = () => {
   const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import { Airport } from '../../api/types';
+import { Airport } from '../../api/faa-api/faa.dto';
 
 export interface Route {
   id: number;
