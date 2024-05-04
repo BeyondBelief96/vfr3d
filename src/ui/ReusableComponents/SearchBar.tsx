@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSearchAirportQuery } from '../../redux/slices/searchSlice';
+import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -9,6 +9,8 @@ const SearchBar = () => {
 
   const handleSearch = useCallback(() => {
     dispatch(setSearchAirportQuery(searchQuery));
+    dispatch(triggerSearch());
+    setSearchQuery('');
   }, [dispatch, searchQuery]);
 
   const handleInputChange = useCallback(

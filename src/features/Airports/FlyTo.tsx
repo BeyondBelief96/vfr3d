@@ -10,6 +10,7 @@ import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 const FlyTo = () => {
   const { viewer } = useCesium();
   const searchQuery = useSelector((state: RootState) => state.search.airportQuery);
+  const triggerSearchCount = useSelector((state: RootState) => state.search.triggerSearchCount);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const FlyTo = () => {
     if (searchQuery) {
       searchAndFlyTo();
     }
-  }, [searchQuery, viewer, dispatch]);
+  }, [triggerSearchCount, searchQuery, viewer, dispatch]);
 
   return null;
 };
