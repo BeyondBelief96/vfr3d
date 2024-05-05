@@ -11,7 +11,9 @@ import { useGetAirportsByStateQuery } from '../../redux/api/faa/faaApi';
 import { useGetMetarsByStateQuery } from '../../redux/api/vfr3d/weatherApi';
 
 const VisibleAirports: React.FC = () => {
-  const { showAirports, selectedState } = useSelector((state: RootState) => state.airport);
+  const { showAirports, selectedState, refetchMETARs } = useSelector(
+    (state: RootState) => state.airport
+  );
   const dispatch = useDispatch<AppDispatch>();
   const { viewer } = useCesium();
 
@@ -19,9 +21,15 @@ const VisibleAirports: React.FC = () => {
     skip: !showAirports,
   });
 
-  const { data: metarData = [] } = useGetMetarsByStateQuery(selectedState, {
+  const { data: metarData = [], refetch: refetchMetars } = useGetMetarsByStateQuery(selectedState, {
     skip: !showAirports,
   });
+
+  useEffect(() => {
+    if (refetchMETARs) {
+      refetchMetars();
+    }
+  }, [refetchMETARs, refetchMetars]);
 
   useEffect(() => {
     const handleClickAirport = (event: ScreenSpaceEventHandler.PositionedEvent) => {

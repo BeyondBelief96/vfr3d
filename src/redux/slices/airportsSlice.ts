@@ -7,12 +7,14 @@ interface AirportState {
   showAirports: boolean;
   selectedState: string;
   selectedAirport: Airport | null;
+  refetchMETARs: boolean;
 }
 
 const initialState: AirportState = {
   showAirports: false,
   selectedState: states[0],
   selectedAirport: null,
+  refetchMETARs: false,
 };
 
 const airportSlice = createSlice({
@@ -21,6 +23,7 @@ const airportSlice = createSlice({
   reducers: {
     toggleShowAirports: (state) => {
       state.showAirports = !state.showAirports;
+      state.refetchMETARs = !state.refetchMETARs;
     },
     setSelectedState: (state, action: PayloadAction<string>) => {
       state.selectedState = action.payload;
