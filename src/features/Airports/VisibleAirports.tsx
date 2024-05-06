@@ -24,7 +24,17 @@ const VisibleAirports: React.FC = () => {
     if (refetchMETARs) {
       refetchMetars();
     }
-  }, [refetchMETARs, refetchMetars]);
+
+    const intervalId = setInterval(() => {
+      if (showAirports) {
+        refetchMetars();
+      }
+    }, 300000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [refetchMETARs, refetchMetars, showAirports]);
 
   const metarMap = new Map(metarData.map((metar) => [metar.stationId, metar]));
 
