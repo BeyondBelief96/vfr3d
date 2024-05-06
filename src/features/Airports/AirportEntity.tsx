@@ -1,12 +1,13 @@
 // AirportEntity.tsx
-import { Entity, PointGraphics, Color, ConstantProperty, NearFarScalar } from 'cesium';
-import { useEffect, useRef } from 'react';
-import { useCesium } from 'resium';
+import { Color, NearFarScalar } from 'cesium';
+import React, { useCallback } from 'react';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
 import { MetarDTO } from 'vfr3d-shared';
 import { FlightCategories } from '../../utility/constants';
-import React from 'react';
 import { Airport } from '../../redux/api/faa/faa.interface';
+import { useDispatch } from 'react-redux';
+import { setSelectedAirport } from '../../redux/slices/airportsSlice';
+import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 
 interface AirportEntityProps {
   airport: Airport;
@@ -14,53 +15,40 @@ interface AirportEntityProps {
 }
 
 const AirportEntity: React.FC<AirportEntityProps> = React.memo(({ airport, metar }) => {
-  const { viewer } = useCesium();
-  const entityRef = useRef<Entity | null>(null);
+  const dispatch = useDispatch();
+  const position = mapAirportDataToCartesian3(airport);
 
-  useEffect(() => {
-    if (!viewer) return;
+  const handleClick = useCallback(() => {
+    dispatch(setSelectedAirport(airport));
+  }, [airport, dispatch]);
 
-    const position = mapAirportDataToCartesian3(airport);
-    if (!position) return;
-
-    let color = Color.WHITE;
-    if (metar) {
-      switch (metar.flightCategory) {
-        case FlightCategories.VFR:
-          color = Color.GREEN;
-          break;
-        case FlightCategories.MVFR:
-          color = Color.BLUE;
-          break;
-        case FlightCategories.IFR:
-          color = Color.RED;
-          break;
-        case FlightCategories.LIFR:
-          color = Color.PURPLE;
-          break;
-      }
+  let color = Color.WHITE;
+  if (metar) {
+    switch (metar.flightCategory) {
+      case FlightCategories.VFR:
+        color = Color.GREEN;
+        break;
+      case FlightCategories.MVFR:
+        color = Color.BLUE;
+        break;
+      case FlightCategories.IFR:
+        color = Color.RED;
+        break;
+      case FlightCategories.LIFR:
+        color = Color.PURPLE;
+        break;
     }
+  }
 
-    const entity = viewer.entities.add({
-      position,
-      point: new PointGraphics({
-        color: new ConstantProperty(color),
-        pixelSize: new ConstantProperty(20),
-        scaleByDistance: new NearFarScalar(1000000, 1, 5000000, 0.5),
-      }),
-      id: airport.GLOBAL_ID,
-    });
-
-    entityRef.current = entity;
-
-    return () => {
-      if (viewer && entity) {
-        viewer.entities.remove(entity);
-      }
-    };
-  }, [viewer, airport, metar]);
-
-  return null;
+  return position ? (
+    <PointEntity
+      position={position}
+      color={color}
+      id={airport.GLOBAL_ID}
+      scaleByDistance={new NearFarScalar(1000000, 2, 5000000, 1)}
+      onClick={handleClick}
+    />
+  ) : null;
 });
 
 export default AirportEntity;
