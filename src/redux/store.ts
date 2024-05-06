@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import viewerReducer from './slices/viewerSlice';
+import viewerReducer from './slices/ViewerSlice';
 import airportReducer from './slices/airportsSlice';
 import airspaceReducer from './slices/airspaceSlice';
 import entitiesReducer from './slices/entitiesSlice';
