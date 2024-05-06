@@ -60,7 +60,7 @@ const VisibleAirports: React.FC = () => {
   const metarMap = new Map(metarData.map((metar) => [metar.stationId, metar]));
 
   if (!showAirports) {
-    return null;
+    return <></>;
   }
 
   return (
