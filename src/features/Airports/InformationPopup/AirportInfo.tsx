@@ -1,4 +1,5 @@
 import { Airport } from '../../../redux/api/faa/faa.interface';
+import { useGetRunwayInformationByAirportIdQuery } from '../../../redux/api/faa/faaApi';
 
 interface AirportInfoProps {
   airport: Airport;
@@ -18,6 +19,8 @@ const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
     COUNTRY,
     IAPEXISTS,
   } = airport;
+
+  const { data: runwayInformation } = useGetRunwayInformationByAirportIdQuery(airport.GLOBAL_ID);
 
   return (
     <div className="space-y-4">
@@ -82,6 +85,33 @@ const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
           )}
         </div>
       </div>
+      {runwayInformation && (
+        <div className="p-4 rounded-md shadow-md bg-base-200">
+          <h3 className="mb-2 text-lg font-semibold">Runway Information</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {runwayInformation.map((runway) => (
+              <div key={runway.OBJECTID}>
+                <h4 className="font-semibold">{runway.DESIGNATOR}</h4>
+                <div>
+                  <span className="font-semibold">Length:</span> {runway.LENGTH} {runway.DIM_UOM}
+                </div>
+                <div>
+                  <span className="font-semibold">Width:</span> {runway.WIDTH} {runway.DIM_UOM}
+                </div>
+                <div>
+                  <span className="font-semibold">Surface:</span> {runway.COMP_CODE}
+                </div>
+                {runway.LIGHTACTV !== null && (
+                  <div>
+                    <span className="font-semibold">Lighting:</span>{' '}
+                    {runway.LIGHTACTV ? 'Available' : 'Not Available'}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

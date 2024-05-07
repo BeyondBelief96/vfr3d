@@ -1,6 +1,6 @@
 // src/redux/api/faaApi.ts
 import { baseApi } from '../apiSlice';
-import { Airport, ApiResponse } from './faa.interface';
+import { Airport, ApiResponse, Runway } from './faa.interface';
 
 const FAA_BASE_URL = 'https://services6.arcgis.com/ssFJjBXIUyZDrSYZ/arcgis/rest/services';
 const MAX_RECORDS_PER_REQUEST = 1000;
@@ -52,6 +52,19 @@ export const faaApi = baseApi.injectEndpoints({
         return response.features[0].attributes;
       },
     }),
+    getRunwayInformationByAirportId: builder.query<Runway[], string>({
+      query: (airportId) => ({
+        url: `${FAA_BASE_URL}/Runways/FeatureServer/0/query`,
+        params: {
+          where: `AIRPORT_ID = '${airportId}'`,
+          outFields: '*',
+          outSR: 4326,
+          f: 'json',
+        },
+      }),
+      transformResponse: (response: ApiResponse<Runway>) =>
+        response.features.map((feature) => feature.attributes),
+    }),
   }),
 });
 
@@ -59,4 +72,5 @@ export const {
   useGetAirportsByStateQuery,
   useGetAllAirportsQuery,
   useGetAirportByIcaoCodeOrIdentQuery,
+  useGetRunwayInformationByAirportIdQuery,
 } = faaApi;

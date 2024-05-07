@@ -11,6 +11,12 @@ const AirportOptions: React.FC = () => {
     (state: RootState) => state.airport
   );
 
+  const handleSelectedStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault();
+    dispatch(setSelectedState(event.target.value));
+    dispatch(setShowAirports(true));
+  };
+
   return (
     <>
       <div className="mb-6">
@@ -23,7 +29,7 @@ const AirportOptions: React.FC = () => {
             id="state-select"
             className="w-full select select-bordered"
             value={selectedStateAirports}
-            onChange={(e) => dispatch(setSelectedState(e.target.value))}
+            onChange={(e) => handleSelectedStateChange(e)}
           >
             {states.map((state) => (
               <option key={state} value={state}>
