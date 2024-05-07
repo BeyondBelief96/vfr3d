@@ -14,7 +14,7 @@ import { setSelectedState, setShowAirports } from '../../redux/slices/airportsSl
 const VisibleAirports: React.FC = () => {
   const dispatch = useDispatch();
   const airportQuery = useSelector((state: RootState) => state.search.airportQuery);
-  const { showAirports, selectedState, refetchMETARs } = useSelector(
+  const { showAirports, selectedState, selectedAirport, refetchMETARs } = useSelector(
     (state: RootState) => state.airport
   );
 
@@ -45,7 +45,7 @@ const VisibleAirports: React.FC = () => {
     if (refetchMETARs && showAirports && !isMetarFetching) {
       refetchMetars();
     }
-  }, [refetchMETARs, refetchMetars, showAirports, isMetarFetching]);
+  }, [refetchMETARs, refetchMetars, showAirports, selectedAirport, isMetarFetching]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | undefined;
