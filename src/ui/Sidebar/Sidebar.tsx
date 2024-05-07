@@ -1,7 +1,5 @@
-// Sidebar.tsx
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { useMediaQuery } from 'react-responsive';
 import MobileSidebar from './MobileSidebar';
 import DesktopSidebar from './DesktopSidebar';
 
@@ -10,12 +8,14 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ imageryLayerOptions }) => {
-  const { isOpen } = useSelector((state: RootState) => state.sidebar);
-
+  const isDesktop = useMediaQuery({ minWidth: 768 }); 
   return (
     <>
-      <MobileSidebar isOpen={isOpen} imageryLayerOptions={imageryLayerOptions} />
-      <DesktopSidebar imageryLayerOptions={imageryLayerOptions} />
+      {isDesktop ? (
+        <DesktopSidebar imageryLayerOptions={imageryLayerOptions} />
+      ) : (
+        <MobileSidebar imageryLayerOptions={imageryLayerOptions} />
+      )}
     </>
   );
 };

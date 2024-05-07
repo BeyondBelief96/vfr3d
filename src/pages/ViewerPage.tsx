@@ -67,28 +67,24 @@ const ViewerPage = () => {
   return isLoading ? (
     <LoadingSpinner fullScreen={true} />
   ) : (
-    <div className="flex flex-col h-screen">
-      <div className="flex flex-1 overflow-hidden">
-        <div className="lg:block lg:w-[25rem] lg:overflow-y-auto">
-          <Sidebar imageryLayerOptions={IMAGERY_LAYER_OPTIONS} />
-        </div>
-        <div className="flex-1">
-          {airspace3dloading && <LoadingSpinner />}
-          <ResiumViewer
-            imageryProviderViewModels={imageryViewModels}
-            className="h-screen"
-            geocoder={false}
-            timeline={false}
-            infoBox={false}
-          >
-            <ImageryLayers />
-            <AirspaceComponent setIsLoading={setAirspace3dloading} />
-            <VisibleAirports />
-            <FlyTo />
-            <RouteComponent />
-          </ResiumViewer>
-          <AirportInfoPopup />
-        </div>
+    <div className="flex h-screen">
+      <Sidebar imageryLayerOptions={IMAGERY_LAYER_OPTIONS} />
+      <div className="flex-1">
+        {airspace3dloading && <LoadingSpinner />}
+        <ResiumViewer
+          imageryProviderViewModels={imageryViewModels}
+          className="h-full"
+          geocoder={false}
+          timeline={false}
+          infoBox={false}
+        >
+          <ImageryLayers />
+          <AirspaceComponent setIsLoading={setAirspace3dloading} />
+          <VisibleAirports />
+          <FlyTo />
+          <RouteComponent />
+        </ResiumViewer>
+        <AirportInfoPopup />
       </div>
     </div>
   );

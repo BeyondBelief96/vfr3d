@@ -1,19 +1,24 @@
-// MobileSidebar.tsx
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../../redux/slices/sidebarSlice';
 import MapOptions from './MapOptions';
 import AirportOptions from './AirportOptions';
 import RouteForm from '../../features/Routes/RouteForm';
 import AirspaceOptions from './AirspaceOptions';
+import HamburgerToggle from '../ReusableComponents/HamburgerToggle';
+import { RootState } from '../../redux/store';
 
 interface MobileSidebarProps {
-  isOpen: boolean;
   imageryLayerOptions: { value: string; label: string }[];
 }
 
-const MobileSidebar: React.FC<MobileSidebarProps> = ({ isOpen, imageryLayerOptions }) => {
+const MobileSidebar: React.FC<MobileSidebarProps> = ({ imageryLayerOptions }) => {
   const dispatch = useDispatch();
+  const isOpen = useSelector((state: RootState) => state.sidebar.isOpen);
+
+  const toggleSidebarHandler = () => {
+    dispatch(toggleSidebar());
+  };
 
   return (
     <div
@@ -22,22 +27,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ isOpen, imageryLayerOptio
       }`}
     >
       <div className="flex justify-end mb-4">
-        <button className="btn btn-ghost" onClick={() => dispatch(toggleSidebar())}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+        <HamburgerToggle isOpen={isOpen} onClick={toggleSidebarHandler} />
       </div>
       <div className="p-4">
         <MapOptions imageryLayerOptions={imageryLayerOptions} />

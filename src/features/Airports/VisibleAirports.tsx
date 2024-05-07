@@ -2,39 +2,66 @@
 import { useEffect } from 'react';
 import AirportEntity from './AirportEntity';
 import { getMetarStationIdFromAirport } from '../../utility/utils';
-import { useGetAirportsByStateQuery } from '../../redux/api/faa/faaApi';
+import {
+  useGetAirportByIcaoCodeOrIdentQuery,
+  useGetAirportsByStateQuery,
+} from '../../redux/api/faa/faaApi';
 import { useGetMetarsByStateQuery } from '../../redux/api/vfr3d/weatherApi';
 import { RootState } from '../../redux/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedState, setShowAirports } from '../../redux/slices/airportsSlice';
 
 const VisibleAirports: React.FC = () => {
+  const dispatch = useDispatch();
+  const airportQuery = useSelector((state: RootState) => state.search.airportQuery);
   const { showAirports, selectedState, refetchMETARs } = useSelector(
     (state: RootState) => state.airport
   );
+
+  const { data: searchedAirport } = useGetAirportByIcaoCodeOrIdentQuery(airportQuery, {
+    skip: !airportQuery,
+  });
 
   const { data: visibleAirports = [] } = useGetAirportsByStateQuery(selectedState, {
     skip: !showAirports,
   });
 
-  const { data: metarData = [], refetch: refetchMetars } = useGetMetarsByStateQuery(selectedState, {
+  const {
+    data: metarData = [],
+    refetch: refetchMetars,
+    isFetching: isMetarFetching,
+  } = useGetMetarsByStateQuery(selectedState, {
     skip: !showAirports,
   });
 
   useEffect(() => {
-    if (refetchMETARs) {
+    if (searchedAirport) {
+      dispatch(setSelectedState(searchedAirport.STATE));
+      dispatch(setShowAirports(true));
+    }
+  }, [dispatch, searchedAirport]);
+
+  useEffect(() => {
+    if (refetchMETARs && showAirports && !isMetarFetching) {
       refetchMetars();
     }
+  }, [refetchMETARs, refetchMetars, showAirports, isMetarFetching]);
 
-    const intervalId = setInterval(() => {
-      if (showAirports) {
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | undefined;
+
+    if (showAirports && !isMetarFetching) {
+      intervalId = setInterval(() => {
         refetchMetars();
-      }
-    }, 300000);
+      }, 300000);
+    }
 
     return () => {
-      clearInterval(intervalId);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
     };
-  }, [refetchMETARs, refetchMetars, showAirports]);
+  }, [refetchMetars, showAirports, isMetarFetching]);
 
   const metarMap = new Map(metarData.map((metar) => [metar.stationId, metar]));
 

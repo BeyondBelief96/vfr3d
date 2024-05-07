@@ -25,6 +25,9 @@ const airportSlice = createSlice({
       state.showAirports = !state.showAirports;
       state.refetchMETARs = !state.refetchMETARs;
     },
+    setShowAirports: (state, action: PayloadAction<boolean>) => {
+      state.showAirports = action.payload;
+    },
     setSelectedState: (state, action: PayloadAction<string>) => {
       state.selectedState = action.payload;
     },
@@ -34,6 +37,7 @@ const airportSlice = createSlice({
   },
 });
 
-export const { toggleShowAirports, setSelectedState, setSelectedAirport } = airportSlice.actions;
+export const { setShowAirports, toggleShowAirports, setSelectedState, setSelectedAirport } =
+  airportSlice.actions;
 
 export default airportSlice.reducer;

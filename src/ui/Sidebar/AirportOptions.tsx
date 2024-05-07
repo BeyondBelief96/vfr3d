@@ -1,7 +1,11 @@
 // AirportOptions.tsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedState, toggleShowAirports } from '../../redux/slices/airportsSlice';
+import {
+  setSelectedState,
+  setShowAirports,
+  toggleShowAirports,
+} from '../../redux/slices/airportsSlice';
 import { RootState } from '../../redux/store';
 import { states } from '../../utility/states';
 
@@ -42,7 +46,7 @@ const AirportOptions: React.FC = () => {
             id="airport-toggle"
             type="checkbox"
             checked={showAirports}
-            onChange={() => dispatch(toggleShowAirports())}
+            onChange={() => dispatch(setShowAirports(!showAirports))}
             className="toggle toggle-primary"
           />
         </div>

@@ -46,7 +46,6 @@ const ImageryLayers: React.FC = () => {
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
           imageryProvider={vfrImagery}
-          dayAlpha={currentImageryAlpha}
         />
       )}
       {selectedImageryLayer === 'vfrTerminal' && vfrTerminal && (
@@ -58,7 +57,6 @@ const ImageryLayers: React.FC = () => {
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
           imageryProvider={vfrTerminal}
-          dayAlpha={currentImageryAlpha}
         />
       )}
       {selectedImageryLayer === 'ifrLowImagery' && ifrLowImagery && (
@@ -68,9 +66,8 @@ const ImageryLayers: React.FC = () => {
           magnificationFilter={TextureMagnificationFilter.LINEAR}
           minificationFilter={TextureMinificationFilter.LINEAR}
           alpha={currentImageryAlpha ?? 1}
-          brightness={currentImageryAlpha ?? 1}
+          brightness={currentImageryBrightness ?? 1}
           imageryProvider={ifrLowImagery}
-          dayAlpha={currentImageryAlpha}
         />
       )}
       {selectedImageryLayer === 'ifrHighImagery' && ifrHighImagery && (
@@ -80,9 +77,8 @@ const ImageryLayers: React.FC = () => {
           magnificationFilter={TextureMagnificationFilter.LINEAR}
           minificationFilter={TextureMinificationFilter.LINEAR}
           alpha={currentImageryAlpha ?? 1}
-          brightness={currentImageryAlpha ?? 1}
+          brightness={currentImageryBrightness ?? 1}
           imageryProvider={ifrHighImagery}
-          dayAlpha={currentImageryAlpha}
         />
       )}
     </>

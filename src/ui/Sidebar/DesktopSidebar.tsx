@@ -1,5 +1,6 @@
-// DesktopSidebar.tsx
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 import MapOptions from './MapOptions';
 import AirportOptions from './AirportOptions';
 import RouteForm from '../../features/Routes/RouteForm';
@@ -10,13 +11,25 @@ interface DesktopSidebarProps {
 }
 
 const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ imageryLayerOptions }) => {
+  const isOpen = useSelector((state: RootState) => state.sidebar.isOpen);
+
   return (
-    <div className="hidden px-4 py-8 overflow-y-auto w-85 bg-base-100 lg:block">
-      <div className="p-4">
-        <MapOptions imageryLayerOptions={imageryLayerOptions} />
-        <AirportOptions />
-        <RouteForm />
-        <AirspaceOptions />
+    <div
+      className={`h-full py-8 overflow-hidden transition-all ease-in-out bg-base-100 ${
+        isOpen ? 'w-96' : 'w-0'
+      }`}
+    >
+      <div
+        className={`h-full overflow-scroll transition-transform ease-in-out ${
+          isOpen ? 'translate-x-0' : '-translate-x-96'
+        }`}
+      >
+        <div className="p-4">
+          <MapOptions imageryLayerOptions={imageryLayerOptions} />
+          <AirportOptions />
+          <RouteForm />
+          <AirspaceOptions />
+        </div>
       </div>
     </div>
   );
