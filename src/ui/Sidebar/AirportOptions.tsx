@@ -1,11 +1,7 @@
 // AirportOptions.tsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setSelectedState,
-  setShowAirports,
-  toggleShowAirports,
-} from '../../redux/slices/airportsSlice';
+import { setSelectedState, setShowAirports } from '../../redux/slices/airportsSlice';
 import { RootState } from '../../redux/store';
 import { states } from '../../utility/states';
 
