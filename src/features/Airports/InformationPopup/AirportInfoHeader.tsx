@@ -14,7 +14,11 @@ const AirportHeader: React.FC<AirportHeaderProps> = ({ airport, metar, handleClo
   return (
     <div className="px-4 py-2 bg-primary text-primary-content">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold">{airport.NAME}</h2>
+        <div className="flex flex-col">
+          <h1 className="text-xl">{airport.ICAO_ID || airport.IDENT}</h1>
+          <h2 className="text-xl font-bold">{airport.NAME}</h2>
+        </div>
+
         <div className="flex flex-col items-end">
           {metar && <MetarFlightCategoryBadge metar={metar} />}
           <CloseButton handleClose={handleClose} />

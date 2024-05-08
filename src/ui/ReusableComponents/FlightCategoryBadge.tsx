@@ -32,7 +32,9 @@ const MetarFlightCategoryBadge: React.FC<MetarFlightCategoryBadgeProps> = ({ met
       badgeClass = 'bg-gray-500';
   }
 
-  return <span className={`badge ${badgeClass} ${textClass}`}>{metar.flightCategory}</span>;
+  return (
+    <span className={`badge items-center ${badgeClass} ${textClass}`}>{metar.flightCategory}</span>
+  );
 };
 
 export default MetarFlightCategoryBadge;

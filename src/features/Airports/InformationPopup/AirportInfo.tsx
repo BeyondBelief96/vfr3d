@@ -6,46 +6,32 @@ interface AirportInfoProps {
 }
 
 const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
-  const {
-    IDENT,
-    NAME,
-    LATITUDE,
-    LONGITUDE,
-    ELEVATION,
-    ICAO_ID,
-    TYPE_CODE,
-    SERVCITY,
-    STATE,
-    COUNTRY,
-    IAPEXISTS,
-  } = airport;
-
   const { data: runwayInformation } = useGetRunwayInformationByAirportIdQuery(airport.GLOBAL_ID);
 
   return (
     <div className="space-y-4">
       <div className="p-4 rounded-md shadow-md bg-base-200">
-        <h3 className="mb-2 text-lg font-semibold">{NAME}</h3>
+        <h3 className="mb-2 text-lg font-semibold">{airport.NAME}</h3>
         <div className="grid grid-cols-2 gap-2">
-          {IDENT && (
+          {airport.IDENT && (
             <div>
-              <span className="font-semibold">IDENT:</span> {IDENT}
+              <span className="font-semibold">IDENT:</span> {airport.IDENT}
             </div>
           )}
-          {ICAO_ID && (
+          {airport.ICAO_ID && (
             <div>
-              <span className="font-semibold">ICAO Code:</span> {ICAO_ID}
+              <span className="font-semibold">ICAO Code:</span> {airport.ICAO_ID}
             </div>
           )}
-          {TYPE_CODE && (
+          {airport.TYPE_CODE && (
             <div>
-              <span className="font-semibold">Type:</span> {TYPE_CODE}
+              <span className="font-semibold">Type:</span> {airport.TYPE_CODE}
             </div>
           )}
-          {IAPEXISTS !== undefined && (
+          {airport.IAPEXISTS !== undefined && (
             <div>
               <span className="font-semibold">Instrument Approach:</span>{' '}
-              {IAPEXISTS ? 'Available' : 'Not Available'}
+              {airport.IAPEXISTS ? 'Available' : 'Not Available'}
             </div>
           )}
         </div>
@@ -53,34 +39,34 @@ const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
       <div className="p-4 rounded-md shadow-md bg-base-200">
         <h3 className="mb-2 text-lg font-semibold">Location</h3>
         <div className="grid grid-cols-2 gap-2">
-          {LATITUDE && (
+          {airport.LATITUDE && (
             <div>
-              <span className="font-semibold">Latitude:</span> {LATITUDE}
+              <span className="font-semibold">Latitude:</span> {airport.LATITUDE}
             </div>
           )}
-          {LONGITUDE && (
+          {airport.LONGITUDE && (
             <div>
-              <span className="font-semibold">Longitude:</span> {LONGITUDE}
+              <span className="font-semibold">Longitude:</span> {airport.LONGITUDE}
             </div>
           )}
-          {ELEVATION && (
+          {airport.ELEVATION && (
             <div>
-              <span className="font-semibold">Elevation:</span> {ELEVATION} ft
+              <span className="font-semibold">Elevation:</span> {airport.ELEVATION} ft
             </div>
           )}
-          {SERVCITY && (
+          {airport.SERVCITY && (
             <div>
-              <span className="font-semibold">City:</span> {SERVCITY}
+              <span className="font-semibold">City:</span> {airport.SERVCITY}
             </div>
           )}
-          {STATE && (
+          {airport.STATE && (
             <div>
-              <span className="font-semibold">State:</span> {STATE}
+              <span className="font-semibold">State:</span> {airport.STATE}
             </div>
           )}
-          {COUNTRY && (
+          {airport.COUNTRY && (
             <div>
-              <span className="font-semibold">Country:</span> {COUNTRY}
+              <span className="font-semibold">Country:</span> {airport.COUNTRY}
             </div>
           )}
         </div>

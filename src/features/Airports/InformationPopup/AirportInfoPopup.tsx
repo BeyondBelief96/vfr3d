@@ -1,4 +1,3 @@
-// AirportInfoPopup.tsx
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedAirport } from '../../../redux/slices/airportsSlice';
@@ -11,7 +10,7 @@ import {
 } from '../../../redux/api/vfr3d/weatherApi';
 import { ApiError } from '../../../redux/api/types';
 import AirportHeader from './AirportInfoHeader';
-import AirportTabs from './AirportInfoTabs';
+import Tabs from '../../../ui/ReusableComponents/Tabs';
 
 const AirportInfoPopup: React.FC = () => {
   const dispatch = useDispatch();
@@ -50,11 +49,16 @@ const AirportInfoPopup: React.FC = () => {
 
   if (!selectedAirport) return null;
 
+  const tabs = [
+    { id: 'info', label: 'Airport Info' },
+    { id: 'weather', label: 'Weather' },
+  ];
+
   return (
-    <div className="fixed top-1/2 right-4 transform -translate-y-1/2 w-96 h-[calc(50vh)] bg-base-100 rounded-lg shadow-lg overflow-hidden">
+    <div className="fixed top-0 bottom-0 sm:bottom-4 sm:right-4 sm:top-auto sm:transform-none z-10 w-full sm:w-96 h-screen sm:h-[calc(80vh)] bg-base-100 rounded-lg overflow-hidden shadow-lg">
       <div className="flex flex-col h-full">
         <AirportHeader airport={selectedAirport} metar={metar} handleClose={handleClose} />
-        <AirportTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
         <div className="flex-1 p-4 overflow-y-auto">
           {activeTab === 'info' && <AirportInfo airport={selectedAirport} />}
           {activeTab === 'weather' && (

@@ -8,7 +8,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ imageryLayerOptions }) => {
-  const isDesktop = useMediaQuery({ minWidth: 768 }); 
+  const isDesktop = useMediaQuery({ minWidth: 768 });
   return (
     <>
       {isDesktop ? (
