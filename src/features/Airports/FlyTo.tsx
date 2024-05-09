@@ -30,7 +30,7 @@ const FlyTo = () => {
             roll: 0,
           },
         });
-        viewer.camera.moveBackward(30000);
+        viewer.camera.moveBackward(100000);
       }
     }
   }, [airport, viewer, dispatch, triggerSearchCount]);

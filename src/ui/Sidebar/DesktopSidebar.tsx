@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import MapOptions from './MapOptions';
 import AirportOptions from './AirportOptions';
-import RouteForm from '../../features/Routes/RouteForm';
+import RouteOptions from './RouteOptions';
 import AirspaceOptions from './AirspaceOptions';
 
 interface DesktopSidebarProps {
@@ -27,7 +27,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ imageryLayerOptions }) 
         <div className="p-4">
           <MapOptions imageryLayerOptions={imageryLayerOptions} />
           <AirportOptions />
-          <RouteForm />
+          <RouteOptions />
           <AirspaceOptions />
         </div>
       </div>
