@@ -1,4 +1,3 @@
-import { TextureMagnificationFilter, TextureMinificationFilter } from 'cesium';
 import { useSelector } from 'react-redux';
 import { ImageryLayer } from 'resium';
 import { useArcGisImageryProviders } from '../../hooks/useImageryProviders';
