@@ -4,20 +4,17 @@ import Header from './ui/Header';
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
-  const hideFooterRoutes = ['/viewer'];
-
-  // Check if the current route is in the hideFooterRoutes array
-  const shouldHideFooter = hideFooterRoutes.includes(location.pathname);
+  const isViewerPage = location.pathname === '/viewer';
 
   return (
-    <div>
+    <div className={`${isViewerPage ? 'flex flex-col overflow-hidden h-screen' : ''}`}>
       <Header />
       <div>
         <main className="h-full ml-auto mr-auto">
           <Outlet />
         </main>
       </div>
-      {!shouldHideFooter && <Footer />}
+      {!isViewerPage && <Footer />}
     </div>
   );
 };
