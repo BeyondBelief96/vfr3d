@@ -1,6 +1,6 @@
 import { IonImageryProvider, ProviderViewModel, buildModuleUrl } from 'cesium';
 import { useEffect, useState } from 'react';
-import { Viewer as ResiumViewer } from 'resium';
+import { Globe, Viewer as ResiumViewer } from 'resium';
 import FlyTo from '../features/Airports/FlyTo';
 import VisibleAirports from '../features/Airports/VisibleAirports';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
@@ -79,6 +79,7 @@ const ViewerPage = () => {
           infoBox={false}
           animation={false}
         >
+          <Globe maximumScreenSpaceError={1.1} />
           <ImageryLayers />
           <AirspaceComponent setIsLoading={setAirspace3dloading} />
           <VisibleAirports />

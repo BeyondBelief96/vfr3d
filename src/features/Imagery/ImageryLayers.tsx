@@ -40,9 +40,7 @@ const ImageryLayers: React.FC = () => {
       {selectedImageryLayer === 'vfrImagery' && vfrImagery && (
         <ImageryLayer
           minimumTerrainLevel={7}
-          magnificationFilter={TextureMagnificationFilter.LINEAR}
-          minificationFilter={TextureMinificationFilter.LINEAR}
-          maximumTerrainLevel={13}
+          maximumTerrainLevel={11}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
           imageryProvider={vfrImagery}
@@ -52,8 +50,6 @@ const ImageryLayers: React.FC = () => {
         <ImageryLayer
           minimumTerrainLevel={9}
           maximumTerrainLevel={13}
-          magnificationFilter={TextureMagnificationFilter.LINEAR}
-          minificationFilter={TextureMinificationFilter.LINEAR}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
           imageryProvider={vfrTerminal}
@@ -61,10 +57,8 @@ const ImageryLayers: React.FC = () => {
       )}
       {selectedImageryLayer === 'ifrLowImagery' && ifrLowImagery && (
         <ImageryLayer
-          minimumTerrainLevel={5}
+          minimumTerrainLevel={7}
           maximumTerrainLevel={10}
-          magnificationFilter={TextureMagnificationFilter.LINEAR}
-          minificationFilter={TextureMinificationFilter.LINEAR}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
           imageryProvider={ifrLowImagery}
@@ -73,9 +67,7 @@ const ImageryLayers: React.FC = () => {
       {selectedImageryLayer === 'ifrHighImagery' && ifrHighImagery && (
         <ImageryLayer
           minimumTerrainLevel={4}
-          maximumTerrainLevel={9}
-          magnificationFilter={TextureMagnificationFilter.LINEAR}
-          minificationFilter={TextureMinificationFilter.LINEAR}
+          maximumTerrainLevel={8}
           alpha={currentImageryAlpha ?? 1}
           brightness={currentImageryBrightness ?? 1}
           imageryProvider={ifrHighImagery}
