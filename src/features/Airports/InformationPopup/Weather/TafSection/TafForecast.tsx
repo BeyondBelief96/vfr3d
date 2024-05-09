@@ -105,7 +105,6 @@ const TafForecast: React.FC<TafForecastProps> = ({ forecast }) => {
           </>
         )}
       </div>
-      <div className="divider"></div>
       {forecast.skyCondition && (
         <div>
           <p className="font-semibold">Sky Conditions:</p>
@@ -157,6 +156,7 @@ const TafForecast: React.FC<TafForecastProps> = ({ forecast }) => {
           </ul>
         </div>
       )}
+      <div className="divider"></div>
     </div>
   );
 };
