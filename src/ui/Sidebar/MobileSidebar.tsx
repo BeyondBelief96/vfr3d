@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../../redux/slices/sidebarSlice';
 import MapOptions from './MapOptions';
 import AirportOptions from './AirportOptions';
-import RouteOptions from './RouteOptions';
 import AirspaceOptions from './AirspaceOptions';
 import HamburgerToggle from '../ReusableComponents/HamburgerToggle';
 import { RootState } from '../../redux/store';
+import RouteForm from './RouteForm';
 
 interface MobileSidebarProps {
   imageryLayerOptions: { value: string; label: string }[];
@@ -32,7 +32,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ imageryLayerOptions }) =>
       <div className="p-4">
         <MapOptions imageryLayerOptions={imageryLayerOptions} />
         <AirportOptions />
-        <RouteOptions />
+        <RouteForm />
         <AirspaceOptions />
       </div>
     </div>

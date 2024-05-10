@@ -9,7 +9,7 @@ import {
   setRoute,
 } from '../../redux/slices/routeSlice';
 import { AppDispatch, RootState } from '../../redux/store';
-import { Route } from './Route';
+import { Route } from '../../features/Routes/Route';
 import { useGetAirportByIcaoCodeOrIdentQuery } from '../../redux/api/faa/faaApi';
 
 interface RouteFormProps {}
