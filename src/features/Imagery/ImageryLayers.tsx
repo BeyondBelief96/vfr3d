@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { ImageryLayer } from 'resium';
-import { useArcGisImageryProviders } from '../../hooks/useImageryProviders';
+import { useArcGisImageryProviders } from '../../hooks/useArcGisImageryProviders';
 import { RootState } from '../../redux/store';
 import {
   ARCGIS_FAA_IFR_HIGH_URL,
@@ -14,25 +14,13 @@ const ImageryLayers: React.FC = () => {
     (state: RootState) => state.viewer
   );
 
-  const { imagery: vfrImagery } = useArcGisImageryProviders(
-    import.meta.env.VITE_ARCGIS_API_KEY,
-    ARCGIS_FAA_VFR_SECTIONAL_URL
-  );
+  const { imagery: vfrImagery } = useArcGisImageryProviders(ARCGIS_FAA_VFR_SECTIONAL_URL);
 
-  const { imagery: ifrLowImagery } = useArcGisImageryProviders(
-    import.meta.env.VITE_ARCGIS_API_KEY,
-    ARCGIS_FAA_IFR_LOW_URL
-  );
+  const { imagery: ifrLowImagery } = useArcGisImageryProviders(ARCGIS_FAA_IFR_LOW_URL);
 
-  const { imagery: ifrHighImagery } = useArcGisImageryProviders(
-    import.meta.env.VITE_ARCGIS_API_KEY,
-    ARCGIS_FAA_IFR_HIGH_URL
-  );
+  const { imagery: ifrHighImagery } = useArcGisImageryProviders(ARCGIS_FAA_IFR_HIGH_URL);
 
-  const { imagery: vfrTerminal } = useArcGisImageryProviders(
-    import.meta.env.VITE_ARCGIS_API_KEY,
-    ARCGIS_FAA_VFR_TERMINAL_URL
-  );
+  const { imagery: vfrTerminal } = useArcGisImageryProviders(ARCGIS_FAA_VFR_TERMINAL_URL);
 
   return (
     <>

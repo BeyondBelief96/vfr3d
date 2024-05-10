@@ -73,6 +73,7 @@ const ViewerPage = () => {
       <div className="flex-1">
         {airspace3dloading && <LoadingSpinner />}
         <ResiumViewer
+          useBrowserRecommendedResolution={false}
           imageryProviderViewModels={imageryViewModels}
           className="h-full"
           geocoder={false}
