@@ -10,6 +10,7 @@ import LoadingSpinner from '../ui/ReusableComponents/LoadingSpinner';
 import Sidebar from '../ui/Sidebar/Sidebar';
 import { IMAGERY_LAYER_OPTIONS } from '../utility/constants';
 import AirportInfoPopup from '../features/Airports/InformationPopup/AirportInfoPopup';
+import { RoutesPanel } from '../features/Routes/RoutesPanel';
 
 const ViewerPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -86,6 +87,7 @@ const ViewerPage = () => {
           <FlyTo />
           <RouteComponent />
         </ResiumViewer>
+        <RoutesPanel />
         <AirportInfoPopup />
       </div>
     </div>
