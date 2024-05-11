@@ -145,9 +145,6 @@ export const RouteStringInput: React.FC = () => {
       <div className="flex flex-col space-y-4">
         <RouteStringBubbles />
         <div className="flex justify-start mb-4 sm:mb-0">
-          <button type="submit" className="mr-2 btn btn-primary">
-            Plot Route
-          </button>
           <button type="button" className="btn btn-primary" onClick={handleRouteStringClear}>
             Clear Route
           </button>

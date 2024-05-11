@@ -23,11 +23,11 @@ export const RoutesPanel: React.FC = () => {
       closeText={ROUTE_PLANNER_TEXT.close}
       initialArrowDirection="down"
     >
-      <div className="md:flex">
-        <div className="mb-4 md:w-96">
+      <div className="flex flex-col lg:flex-row">
+        <div className="mb-4 lg:w-96">
           <RouteStringInput />
         </div>
-        <div className="md:flex-1 md:ml-4">
+        <div className="md:flex-1 lg:ml-4">
           <div className="h-full overflow-y-auto">
             <NavLogTable />
           </div>

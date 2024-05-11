@@ -16,7 +16,7 @@ export const TableCell: React.FC<TableCellProps> = ({
   <td
     colSpan={colSpan}
     rowSpan={rowSpan}
-    className={`px-2 py-1 transition-colors duration-200 hover:bg-primary hover:text-primary-content ${className}`}
+    className={`px-2 py-3 transition-colors duration-200 hover:bg-primary hover:text-primary-content ${className}`}
     style={{ width: width ? `${width}px` : 'auto' }}
   >
     {children}

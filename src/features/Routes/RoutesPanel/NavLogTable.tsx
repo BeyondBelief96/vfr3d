@@ -52,7 +52,7 @@ export const NavLogTable: React.FC = () => {
           <thead className="sticky top-0 font-semibold text-center text-primary-content bg-primary">
             <tr>
               <TableHeaderCell rowSpan={2} width={120}>
-                Check Points <br /> (Fixes)
+                Legs
               </TableHeaderCell>
               <TableHeaderCell rowSpan={2} width={60}>
                 Ident
@@ -119,7 +119,7 @@ export const NavLogTable: React.FC = () => {
             {navLogLegs.map((leg, index) => (
               <tr key={index}>
                 <TableCell width={120}>
-                  {leg.FROM_FIX} → {leg.TO_FIX}
+                  {leg.FROM_FIX} ➨ {leg.TO_FIX}
                 </TableCell>
                 <InputCell width={60} />
                 <InputCell width={80} />
