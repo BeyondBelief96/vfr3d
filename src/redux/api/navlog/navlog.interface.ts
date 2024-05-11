@@ -1,5 +1,6 @@
 export interface NavLog {
-  NAME: string;
+  FROM_FIX: string;
+  TO_FIX: string;
   VOR_IDENT: string;
   VOR_COURSE: string;
   VOR_DIST: string;

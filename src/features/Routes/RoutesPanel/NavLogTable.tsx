@@ -4,36 +4,46 @@ import { TableHeaderCell } from '../../../ui/ReusableComponents/Table/TableHeade
 import { AppState } from '../../../redux/store';
 import { Airport } from '../../../redux/api/faa/faa.interface';
 import { NavLog } from '../../../redux/api/navlog/navlog.interface';
+import { TableCell } from '../../../ui/ReusableComponents/Table/TableCell';
 
-function mapAirportToNavLog(airport: Airport): NavLog {
-  return {
-    NAME: airport.ICAO_ID || airport.IDENT,
-    VOR_IDENT: '',
-    VOR_COURSE: '',
-    VOR_DIST: '',
-    WIND_DIR: '',
-    WIND_VEL: '',
-    CAS: '',
-    TAS: '',
-    TC: '',
-    TH: '',
-    MH: '',
-    DIST_LEG: '',
-    DIST_REM: '',
-    GS: '',
-    ETE: '',
-    ETA: '',
-    ATA: '',
-    GPH_ACT: '',
-    GPH_EST: '',
-    GPH_FUEL: '',
-    GPH_REM: '',
-  };
+function mapAirportToNavLog(airports: Airport[]): NavLog[] {
+  const navLogs: NavLog[] = [];
+
+  for (let i = 0; i < airports.length - 1; i++) {
+    const leg: NavLog = {
+      FROM_FIX: airports[i].ICAO_ID || airports[i].IDENT,
+      TO_FIX: airports[i + 1].ICAO_ID || airports[i + 1].IDENT,
+      VOR_IDENT: '',
+      VOR_COURSE: '',
+      VOR_DIST: '',
+      WIND_DIR: '',
+      WIND_VEL: '',
+      CAS: '',
+      TAS: '',
+      TC: '',
+      TH: '',
+      MH: '',
+      DIST_LEG: '',
+      DIST_REM: '',
+      GS: '',
+      ETE: '',
+      ETA: '',
+      ATA: '',
+      GPH_ACT: '',
+      GPH_EST: '',
+      GPH_FUEL: '',
+      GPH_REM: '',
+    };
+
+    navLogs.push(leg);
+  }
+
+  return navLogs;
 }
 
 export const NavLogTable: React.FC = () => {
   const { routePoints } = useSelector((state: AppState) => state.route);
-  const navLogPoints = routePoints.map((airport) => mapAirportToNavLog(airport));
+  const navLogLegs = mapAirportToNavLog(routePoints);
 
   return (
     <div className="overflow-x-auto rounded-lg shadow-md">
@@ -41,7 +51,7 @@ export const NavLogTable: React.FC = () => {
         <table className="table w-full text-xs" style={{ tableLayout: 'fixed' }}>
           <thead className="sticky top-0 font-semibold text-center text-primary-content bg-primary">
             <tr>
-              <TableHeaderCell rowSpan={2} width={80}>
+              <TableHeaderCell rowSpan={2} width={120}>
                 Check Points <br /> (Fixes)
               </TableHeaderCell>
               <TableHeaderCell rowSpan={2} width={60}>
@@ -106,9 +116,11 @@ export const NavLogTable: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {navLogPoints.map((navPoint, index) => (
+            {navLogLegs.map((leg, index) => (
               <tr key={index}>
-                <InputCell defaultValue={navPoint.NAME} width={120} />
+                <TableCell width={120}>
+                  {leg.FROM_FIX} → {leg.TO_FIX}
+                </TableCell>
                 <InputCell width={60} />
                 <InputCell width={80} />
                 <InputCell width={60} />
