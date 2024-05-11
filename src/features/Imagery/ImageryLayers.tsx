@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { ImageryLayer } from 'resium';
 import { useArcGisImageryProviders } from '../../hooks/useArcGisImageryProviders';
-import { RootState } from '../../redux/store';
+import { AppState } from '../../redux/store';
 import {
   ARCGIS_FAA_IFR_HIGH_URL,
   ARCGIS_FAA_IFR_LOW_URL,
@@ -11,7 +11,7 @@ import {
 
 const ImageryLayers: React.FC = () => {
   const { currentImageryAlpha, currentImageryBrightness, selectedImageryLayer } = useSelector(
-    (state: RootState) => state.viewer
+    (state: AppState) => state.viewer
   );
 
   const { imagery: vfrImagery } = useArcGisImageryProviders(ARCGIS_FAA_VFR_SECTIONAL_URL);

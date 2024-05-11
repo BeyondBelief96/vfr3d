@@ -2,13 +2,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedState, setShowAirports } from '../../redux/slices/airportsSlice';
-import { RootState } from '../../redux/store';
+import { AppState } from '../../redux/store';
 import { states } from '../../utility/states';
 
 const AirportOptions: React.FC = () => {
   const dispatch = useDispatch();
   const { showAirports, selectedState: selectedStateAirports } = useSelector(
-    (state: RootState) => state.airport
+    (state: AppState) => state.airport
   );
 
   const handleSelectedStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Airport } from '../../../redux/api/faa/faa.interface';
 import RouteStringBubbles from './RouteStringBubbles';
-import { RootState } from '../../../redux/store';
+import { AppState } from '../../../redux/store';
 import { FormEvent, useRef, useState } from 'react';
 import { useLazyGetAirportByIcaoCodeOrIdentLazyQuery } from '../../../redux/api/faa/faaApi';
 import {
@@ -13,11 +13,11 @@ import {
 
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();
-  const { routeString } = useSelector((state: RootState) => state.route);
+  const { routeString } = useSelector((state: AppState) => state.route);
   const formRef = useRef<HTMLFormElement>(null);
   const [fetchAirport] = useLazyGetAirportByIcaoCodeOrIdentLazyQuery();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [isLastCodeValid, setIsLastCodeValid] = useState(true);
+  const [isLastCodeValid, setIsLastCodeValid] = useState<boolean | null>(null);
 
   const handleRouteStringChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newRouteString = e.target.value;
@@ -71,6 +71,7 @@ export const RouteStringInput: React.FC = () => {
 
     // Validate the last code when the space key is pressed
     if (e.key === ' ') {
+      setIsLastCodeValid(null);
       const codes = routeString.trim().split(' ');
       const lastCode = codes[codes.length - 1];
 
@@ -102,7 +103,7 @@ export const RouteStringInput: React.FC = () => {
   const handleRouteStringClear = () => {
     dispatch(clearRouteString());
     dispatch(clearRoutePoints());
-    setIsLastCodeValid(true);
+    setIsLastCodeValid(null);
   };
 
   const isValidCode = (code: string) => {
@@ -134,11 +135,11 @@ export const RouteStringInput: React.FC = () => {
       <div className="flex mb-4 min-w-80">
         <textarea
           ref={textareaRef}
-          placeholder="Enter route string"
+          placeholder="Enter route string (e.g. KJWN KBWG KCLT)"
           value={routeString}
           onChange={handleRouteStringChange}
           onKeyDown={handleKeyDown}
-          className="w-full h-32 textarea textarea-primary input input-bordered max-h-40"
+          className="w-full border-4 rounded-lg h-28 textarea textarea-primary input input-bordered max-h-40"
         />
       </div>
       <div className="flex flex-col space-y-4">

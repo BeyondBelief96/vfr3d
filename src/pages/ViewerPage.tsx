@@ -1,6 +1,6 @@
 import { IonImageryProvider, ProviderViewModel, buildModuleUrl } from 'cesium';
 import { useEffect, useState } from 'react';
-import { Globe, Viewer as ResiumViewer } from 'resium';
+import { Camera, Globe, Viewer as ResiumViewer, Scene } from 'resium';
 import FlyTo from '../features/Airports/FlyTo';
 import VisibleAirports from '../features/Airports/VisibleAirports';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
@@ -10,6 +10,7 @@ import Sidebar from '../ui/Sidebar/Sidebar';
 import { IMAGERY_LAYER_OPTIONS } from '../utility/constants';
 import AirportInfoPopup from '../features/Airports/InformationPopup/AirportInfoPopup';
 import { RoutesPanel } from '../features/Routes/RoutesPanel/RoutesPanel';
+import RouteComponent from '../features/Routes/RouteComponent';
 
 const ViewerPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -84,6 +85,7 @@ const ViewerPage = () => {
           <ImageryLayers />
           <AirspaceComponent setIsLoading={setAirspace3dloading} />
           <VisibleAirports />
+          <RouteComponent />
           <FlyTo />
         </ResiumViewer>
         <RoutesPanel />

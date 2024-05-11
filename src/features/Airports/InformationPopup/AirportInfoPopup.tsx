@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedAirport } from '../../../redux/slices/airportsSlice';
-import { RootState } from '../../../redux/store';
+import { AppState } from '../../../redux/store';
 import AirportInfo from './AirportInfo';
 import AirportWeather from './Weather/AirportWeather';
 import {
@@ -14,7 +14,7 @@ import Tabs from '../../../ui/ReusableComponents/Tabs';
 
 const AirportInfoPopup: React.FC = () => {
   const dispatch = useDispatch();
-  const selectedAirport = useSelector((state: RootState) => state.airport.selectedAirport);
+  const selectedAirport = useSelector((state: AppState) => state.airport.selectedAirport);
   const [activeTab, setActiveTab] = useState('info');
   const icaoCodeOrIdent = selectedAirport?.ICAO_ID || selectedAirport?.IDENT;
 

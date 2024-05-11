@@ -2,15 +2,15 @@ import { Math } from 'cesium';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
-import { RootState } from '../../redux/store';
+import { AppState } from '../../redux/store';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
 import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { useGetAirportByIcaoCodeOrIdentQuery } from '../../redux/api/faa/faaApi';
 
 const FlyTo = () => {
   const { viewer } = useCesium();
-  const searchQuery = useSelector((state: RootState) => state.search.airportQuery);
-  const triggerSearchCount = useSelector((state: RootState) => state.search.triggerSearchCount);
+  const searchQuery = useSelector((state: AppState) => state.search.airportQuery);
+  const triggerSearchCount = useSelector((state: AppState) => state.search.triggerSearchCount);
   const dispatch = useDispatch();
 
   const { data: airport } = useGetAirportByIcaoCodeOrIdentQuery(searchQuery, {

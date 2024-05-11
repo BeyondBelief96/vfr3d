@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { toggleSidebar } from '../redux/slices/sidebarSlice';
-import { RootState } from '../redux/store';
+import { AppState } from '../redux/store';
 import DonationButton from './ReusableComponents/DonationButton';
 import SearchBar from './ReusableComponents/SearchBar';
 import ThemeController from './ReusableComponents/ThemeController';
@@ -12,7 +12,7 @@ import HamburgerToggle from './ReusableComponents/HamburgerToggle';
 const Header: React.FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const isOpen = useSelector((state: RootState) => state.sidebar.isOpen);
+  const isOpen = useSelector((state: AppState) => state.sidebar.isOpen);
   const isViewerPage = location.pathname === '/viewer';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

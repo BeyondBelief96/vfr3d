@@ -1,97 +1,52 @@
-import { Entity, ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium';
-import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useCesium } from 'resium';
-import { updateCurrentRouteEntityIds } from '../../redux/slices/entitiesSlice';
-import { AppDispatch, RootState } from '../../redux/store';
-import {
-  addPointToPolyline,
-  createPointEntity,
-  createPolylineEntity,
-  removeEntities,
-} from '../../utility/routeUtils';
+import { useSelector } from 'react-redux';
+import { Color } from 'cesium';
+import { AppState } from '../../redux/store';
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
+import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
+import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
 
 const RouteComponent: React.FC = () => {
-  // const { viewer } = useCesium();
-  // const dispatch = useDispatch<AppDispatch>();
-  // const currentRoute = useSelector((state: RootState) => state.route.currentRoute);
-  // const { lineColor, pointColor: endPointColor } = useSelector((state: RootState) => state.route);
-  // const entityRefs = useRef<Record<string, Entity>>({});
-  // const routePointEntityIds = useRef<string[]>([]);
+  const routePoints = useSelector((state: AppState) => state.route.routePoints);
+  const { lineColor, pointColor: endPointColor } = useSelector((state: AppState) => state.route);
 
-  // useEffect(() => {
-  //   const cleanupEntities = () => {
-  //     removeEntities(viewer, entityRefs.current, routePointEntityIds.current);
-  //     entityRefs.current = {};
-  //     routePointEntityIds.current = [];
-  //     dispatch(updateCurrentRouteEntityIds([]));
-  //   };
+  return (
+    <>
+      {routePoints.map((point) => {
+        const position = mapAirportDataToCartesian3(point);
+        if (!position) return null;
 
-  //   if (!viewer || !currentRoute) {
-  //     cleanupEntities();
-  //     return;
-  //   }
+        return (
+          <PointEntity
+            key={point.GLOBAL_ID}
+            position={position}
+            color={Color.fromCssColorString(endPointColor)}
+            id={`route-point-${point.GLOBAL_ID}`}
+          />
+        );
+      })}
 
-  //   const { fromAirport, toAirport } = currentRoute;
-  //   const fromPosition = mapAirportDataToCartesian3(fromAirport);
-  //   const toPosition = mapAirportDataToCartesian3(toAirport);
+      {routePoints.map((point, index) => {
+        if (index === 0) return null;
 
-  //   if (!fromPosition || !toPosition) return;
+        const prevPoint = routePoints[index - 1];
+        const prevPosition = mapAirportDataToCartesian3(prevPoint);
+        const currPosition = mapAirportDataToCartesian3(point);
 
-  //   const polylineEntity = createPolylineEntity(viewer, fromPosition, toPosition, lineColor);
-  //   const fromPointEntity = createPointEntity(viewer, fromPosition, endPointColor);
-  //   const toPointEntity = createPointEntity(viewer, toPosition, endPointColor);
+        if (!prevPosition || !currPosition) return null;
 
-  //   const polylineId = `polyline-${fromAirport.GLOBAL_ID}-${toAirport.GLOBAL_ID}`;
-  //   entityRefs.current = {
-  //     [polylineId]: polylineEntity,
-  //     [fromAirport.GLOBAL_ID]: fromPointEntity,
-  //     [toAirport.GLOBAL_ID]: toPointEntity,
-  //   };
+        const polylineId = `route-polyline-${prevPoint.GLOBAL_ID}-${point.GLOBAL_ID}`;
 
-  //   routePointEntityIds.current = [polylineId, fromAirport.GLOBAL_ID, toAirport.GLOBAL_ID];
-
-  //   dispatch(updateCurrentRouteEntityIds(routePointEntityIds.current));
-
-  //   const doubleClickHandler = (event: ScreenSpaceEventHandler.PositionedEvent) => {
-  //     addPointToPolyline(
-  //       viewer,
-  //       event,
-  //       polylineEntity,
-  //       endPointColor,
-  //       routePointEntityIds,
-  //       dispatch
-  //     );
-  //   };
-
-  //   // Add touch event handler
-  //   const touchHandler = (event: ScreenSpaceEventHandler.PositionedEvent) => {
-  //     const now = Date.now();
-  //     const timeSinceLastTouch = now - (touchHandler.lastTouchTime || 0);
-
-  //     if (timeSinceLastTouch >= 200 && timeSinceLastTouch <= 500) {
-  //       doubleClickHandler(event);
-  //     }
-
-  //     touchHandler.lastTouchTime = now;
-  //   };
-
-  //   viewer.screenSpaceEventHandler.setInputAction(
-  //     doubleClickHandler,
-  //     ScreenSpaceEventType.LEFT_DOUBLE_CLICK
-  //   );
-  //   touchHandler.lastTouchTime = 0;
-  //   viewer.screenSpaceEventHandler.setInputAction(touchHandler, ScreenSpaceEventType.LEFT_CLICK);
-
-  //   return () => {
-  //     cleanupEntities();
-  //     viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-  //     viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
-  //   };
-  // }, [viewer, currentRoute, lineColor, endPointColor, dispatch]);
-
-  return null;
+        return (
+          <PolylineEntity
+            key={polylineId}
+            positions={[prevPosition, currPosition]}
+            color={Color.fromCssColorString(lineColor)}
+            id={polylineId}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 export default RouteComponent;

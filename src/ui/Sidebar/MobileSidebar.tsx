@@ -5,7 +5,7 @@ import MapOptions from './MapOptions';
 import AirportOptions from './AirportOptions';
 import AirspaceOptions from './AirspaceOptions';
 import HamburgerToggle from '../ReusableComponents/HamburgerToggle';
-import { RootState } from '../../redux/store';
+import { AppState } from '../../redux/store';
 import RouteOptions from './RouteOptions';
 
 interface MobileSidebarProps {
@@ -14,7 +14,7 @@ interface MobileSidebarProps {
 
 const MobileSidebar: React.FC<MobileSidebarProps> = ({ imageryLayerOptions }) => {
   const dispatch = useDispatch();
-  const isOpen = useSelector((state: RootState) => state.sidebar.isOpen);
+  const isOpen = useSelector((state: AppState) => state.sidebar.isOpen);
 
   const toggleSidebarHandler = () => {
     dispatch(toggleSidebar());

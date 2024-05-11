@@ -11,7 +11,7 @@ interface RouteState {
 
 const initialState: RouteState = {
   lineColor: 'rgba(0, 255, 255, 1)', // Aqua
-  pointColor: 'rgba(255, 255, 0, 1)', // Yellow
+  pointColor: 'rgba(255, 0, 255, 1)', // Magenta
   routeString: '',
   routePoints: [],
 };

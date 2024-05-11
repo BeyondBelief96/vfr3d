@@ -19,7 +19,7 @@ const Drawer: React.FC<DrawerProps> = ({
   children,
 }) => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-20 flex justify-center">
+    <div className="fixed bottom-0 left-0 right-0 z-20 flex justify-center rounded-lg">
       <div
         className={`bg-base-100 bg-opacity-95 rounded-t-lg cursor-pointer transition-all duration-300 ${
           isOpen ? 'h-96 w-full sm:w-8/12' : 'h-8 w-full sm:w-8/12'

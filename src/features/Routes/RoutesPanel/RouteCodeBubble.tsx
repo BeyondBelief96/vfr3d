@@ -1,6 +1,6 @@
 // RouteCodeBubble.tsx
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../redux/store';
+import { AppState } from '../../../redux/store';
 import { removeRoutePointByCode } from '../../../redux/slices/routeSlice';
 
 interface RouteCodeBubbleProps {
@@ -9,8 +9,7 @@ interface RouteCodeBubbleProps {
 
 const RouteCodeBubble: React.FC<RouteCodeBubbleProps> = ({ code }) => {
   const dispatch = useDispatch();
-  const { routePoints } = useSelector((state: RootState) => state.route);
-  console.log(routePoints);
+  const { routePoints } = useSelector((state: AppState) => state.route);
 
   const isValid = routePoints.some((point) => point.IDENT === code || point.ICAO_ID === code);
 
@@ -23,7 +22,7 @@ const RouteCodeBubble: React.FC<RouteCodeBubbleProps> = ({ code }) => {
   return (
     <span
       className={`px-2 py-1 rounded-md ${
-        isValid ? 'bg-green-800 text-green-200' : 'bg-red-800 text-red-200'
+        isValid ? 'bg-success text-secondary-content' : 'bg-error text-primary-content'
       }`}
       onClick={handleRemoveRoutePoint}
     >

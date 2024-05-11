@@ -7,15 +7,15 @@ import {
   useGetAirportsByStateQuery,
 } from '../../redux/api/faa/faaApi';
 import { useGetMetarsByStateQuery } from '../../redux/api/vfr3d/weatherApi';
-import { RootState } from '../../redux/store';
+import { AppState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedState, setShowAirports } from '../../redux/slices/airportsSlice';
 
 const VisibleAirports: React.FC = () => {
   const dispatch = useDispatch();
-  const airportQuery = useSelector((state: RootState) => state.search.airportQuery);
+  const airportQuery = useSelector((state: AppState) => state.search.airportQuery);
   const { showAirports, selectedState, selectedAirport, refetchMETARs } = useSelector(
-    (state: RootState) => state.airport
+    (state: AppState) => state.airport
   );
 
   const { data: searchedAirport } = useGetAirportByIcaoCodeOrIdentQuery(airportQuery, {

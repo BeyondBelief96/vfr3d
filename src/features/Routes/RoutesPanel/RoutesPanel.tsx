@@ -16,26 +16,23 @@ export const RoutesPanel: React.FC = () => {
   };
 
   return (
-    <div className="w-full">
-      <Drawer
-        isOpen={isExpanded}
-        toggleOpen={toggleExpansion}
-        openText={ROUTE_PLANNER_TEXT.open}
-        closeText={ROUTE_PLANNER_TEXT.close}
-        initialArrowDirection="down"
-      >
-        <h2 className="mb-4 text-2xl font-bold">Routes Panel</h2>
-        <div className="md:flex">
-          <div className="mb-4 md:w-96">
-            <RouteStringInput />
-          </div>
-          <div className="md:flex-1 md:ml-4">
-            <div className="h-full overflow-y-auto">
-              <RoutesTable />
-            </div>
+    <Drawer
+      isOpen={isExpanded}
+      toggleOpen={toggleExpansion}
+      openText={ROUTE_PLANNER_TEXT.open}
+      closeText={ROUTE_PLANNER_TEXT.close}
+      initialArrowDirection="down"
+    >
+      <div className="md:flex">
+        <div className="mb-4 md:w-96">
+          <RouteStringInput />
+        </div>
+        <div className="md:flex-1 md:ml-4">
+          <div className="h-full overflow-y-auto">
+            <RoutesTable />
           </div>
         </div>
-      </Drawer>
-    </div>
+      </div>
+    </Drawer>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { AppState } from '../../redux/store';
 import MapOptions from './MapOptions';
 import AirportOptions from './AirportOptions';
 import AirspaceOptions from './AirspaceOptions';
@@ -11,7 +11,7 @@ interface DesktopSidebarProps {
 }
 
 const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ imageryLayerOptions }) => {
-  const isOpen = useSelector((state: RootState) => state.sidebar.isOpen);
+  const isOpen = useSelector((state: AppState) => state.sidebar.isOpen);
 
   return (
     <div
