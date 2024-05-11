@@ -1,14 +1,16 @@
-// RouteString.tsx
+// RouteStringBubbles.tsx
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 import RouteCodeBubble from './RouteCodeBubble';
 
-interface RouteStringBubblesProps {
-  routeString: string;
-}
-
-const RouteStringBubbles: React.FC<RouteStringBubblesProps> = ({ routeString }) => {
+const RouteStringBubbles: React.FC = () => {
+  const { routeString } = useSelector((state: RootState) => state.route);
   const codes = routeString.trim().split(' ');
 
-  if (!routeString) return <></>;
+  if (!routeString) {
+    return null;
+  }
+
   return (
     <div className="flex flex-wrap gap-2">
       {codes.map((code, index) => (

@@ -38,13 +38,26 @@ const routeSlice = createSlice({
     clearRouteString: (state) => {
       state.routeString = '';
     },
+    setRoutePoints: (state, action: PayloadAction<Airport[]>) => {
+      state.routePoints = action.payload;
+    },
     pushRoutePoint: (state, action: PayloadAction<Airport>) => {
       state.routePoints.push(action.payload);
     },
-    removeRoutePoint: (state, action: PayloadAction<string>) => {
+    removeRoutePointByCode: (state, action: PayloadAction<string>) => {
       state.routePoints = state.routePoints.filter(
         (point) => point.IDENT !== action.payload && point.ICAO_ID !== action.payload
       );
+    },
+    insertRoutePointAtIndex: (
+      state,
+      action: PayloadAction<{ airport: Airport; index: number }>
+    ) => {
+      const { airport, index } = action.payload;
+      state.routePoints.splice(index, 0, airport);
+    },
+    removeRoutePointAtIndex: (state, action: PayloadAction<number>) => {
+      state.routePoints.splice(action.payload, 1);
     },
     clearRoutePoints: (state) => {
       state.routePoints = [];
@@ -76,9 +89,12 @@ export const {
   clearRouteString,
   setLineColor,
   setEndPointColor,
+  setRoutePoints,
   pushRoutePoint,
-  removeRoutePoint,
+  removeRoutePointByCode,
   clearRoutePoints,
+  insertRoutePointAtIndex,
+  removeRoutePointAtIndex,
 } = routeSlice.actions;
 
 export default routeSlice.reducer;
