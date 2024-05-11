@@ -13,18 +13,11 @@ import {
 
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();
-  const { routeString, routePoints } = useSelector((state: RootState) => state.route);
+  const { routeString } = useSelector((state: RootState) => state.route);
   const formRef = useRef<HTMLFormElement>(null);
   const [fetchAirport] = useLazyGetAirportByIcaoCodeOrIdentLazyQuery();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isLastCodeValid, setIsLastCodeValid] = useState(true);
-
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
-    }
-  }, [routeString]);
 
   const handleRouteStringChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newRouteString = e.target.value;
@@ -32,7 +25,7 @@ export const RouteStringInput: React.FC = () => {
     const codes = trimmedNewRouteString.split(' ');
     const lastCode = codes[codes.length - 1];
 
-    if (isLastCodeValid && (lastCode.length < 3 || isValidCode(lastCode))) {
+    if (lastCode.length < 3 || isValidCode(lastCode)) {
       dispatch(setRouteString(newRouteString));
 
       const updatedRoutePoints: Airport[] = [];
@@ -47,17 +40,6 @@ export const RouteStringInput: React.FC = () => {
 
       dispatch(setRoutePoints(updatedRoutePoints));
     }
-  };
-
-  const handleRouteStringSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Your logic to handle the submitted route string
-  };
-
-  const handleRouteStringClear = () => {
-    dispatch(clearRouteString());
-    dispatch(clearRoutePoints());
-    setIsLastCodeValid(true);
   };
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -77,11 +59,11 @@ export const RouteStringInput: React.FC = () => {
       textarea.setSelectionRange(routeStringLength, routeStringLength);
     }
 
-    // Allow deletion of characters if the last code is invalid
+    // Prevent deletion of characters in route string except for the end. Moves
+    // cursor to end of route string if deletion is attempted anywhere else.
     if (
       (e.key === 'Backspace' || e.key === 'Delete') &&
-      (selectionStart !== routeStringLength || selectionEnd !== routeStringLength) &&
-      isLastCodeValid
+      (selectionStart !== routeStringLength || selectionEnd !== routeStringLength)
     ) {
       e.preventDefault();
       textarea.setSelectionRange(routeStringLength, routeStringLength);
@@ -100,17 +82,27 @@ export const RouteStringInput: React.FC = () => {
 
       const isValid = await validateCode(lastCode);
       setIsLastCodeValid(isValid);
-      console.log(`Validating code ${lastCode}: ${isValid}`); // Add this line for logging
-
       if (!isValid) {
         e.preventDefault();
       }
     }
 
-    // Prevent typing if the last code is invalid
-    if (!isLastCodeValid) {
+    // Prevent typing if the last code is invalid, except for backspace and delete
+    if (!isLastCodeValid && e.key !== 'Backspace' && e.key !== 'Delete') {
       e.preventDefault();
+      setIsLastCodeValid(true);
     }
+  };
+
+  const handleRouteStringSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Your logic to handle the submitted route string
+  };
+
+  const handleRouteStringClear = () => {
+    dispatch(clearRouteString());
+    dispatch(clearRoutePoints());
+    setIsLastCodeValid(true);
   };
 
   const isValidCode = (code: string) => {
@@ -120,7 +112,6 @@ export const RouteStringInput: React.FC = () => {
   const validateCode = async (code: string): Promise<boolean> => {
     try {
       const airport = await fetchAirportByCode(code);
-      console.log(`Fetched airport for code ${code}:`, airport);
       return !!airport;
     } catch (error) {
       console.error('Error validating code:', error);

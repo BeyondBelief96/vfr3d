@@ -23,7 +23,7 @@ const RouteCodeBubble: React.FC<RouteCodeBubbleProps> = ({ code }) => {
   return (
     <span
       className={`px-2 py-1 rounded-md ${
-        isValid ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+        isValid ? 'bg-green-800 text-green-200' : 'bg-red-800 text-red-200'
       }`}
       onClick={handleRemoveRoutePoint}
     >
