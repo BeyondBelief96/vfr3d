@@ -19,6 +19,7 @@ const FlyTo = () => {
     skip: !searchQuery,
   });
 
+  // useEffect that handles setting camera position to initial point of route.
   useEffect(() => {
     if (routePoints.length === 0) {
       setFlyToInitialRoutePoint(true);
@@ -35,6 +36,7 @@ const FlyTo = () => {
     }
   }, [routePoints, flyToInitialRoutePoint, viewer]);
 
+  // useEffect that handles setting camera to airport location based on search bar query.
   useEffect(() => {
     if (airport) {
       dispatch(setSelectedAirport(airport));

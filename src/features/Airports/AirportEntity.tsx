@@ -1,13 +1,13 @@
 // AirportEntity.tsx
 import { Color, NearFarScalar } from 'cesium';
 import React, { useCallback } from 'react';
-import { mapAirportDataToCartesian3 } from '../../utility/utils';
 import { MetarDTO } from 'vfr3d-shared';
 import { FlightCategories } from '../../utility/constants';
 import { Airport } from '../../redux/api/faa/faa.interface';
 import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 import { useDispatch } from 'react-redux';
+import { mapAirportDataToCartesian3 } from '../../utility/cesiumUtils';
 
 interface AirportEntityProps {
   airport: Airport;

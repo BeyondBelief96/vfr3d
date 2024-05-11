@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RouteStringInput } from './RouteStringInput';
-import { RoutesTable } from './RoutesTable';
 import Drawer from '../../../ui/ReusableComponents/BottomDrawer';
+import { NavLogTable } from './NavLogTable';
 
 const ROUTE_PLANNER_TEXT = {
   open: 'Open Route Planner',
@@ -29,7 +29,7 @@ export const RoutesPanel: React.FC = () => {
         </div>
         <div className="md:flex-1 md:ml-4">
           <div className="h-full overflow-y-auto">
-            <RoutesTable />
+            <NavLogTable />
           </div>
         </div>
       </div>

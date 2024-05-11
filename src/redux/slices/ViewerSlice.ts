@@ -9,7 +9,7 @@ interface ViewerState {
 const initialState: ViewerState = {
   currentImageryAlpha: 1,
   currentImageryBrightness: 1,
-  selectedImageryLayer: 'None',
+  selectedImageryLayer: 'vfrImagery',
 };
 
 const viewerSlice = createSlice({
