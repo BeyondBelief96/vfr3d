@@ -1,10 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Route } from '../../features/Routes/Route';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Airport } from '../api/faa/faa.interface';
-import { states } from '../../utility/states';
+import { faaApi } from '../api/faa/faaApi';
 
 interface RouteState {
-  currentRoute: Route | null | undefined;
   lineColor: string;
   pointColor: string;
   routeString: string;
@@ -12,12 +10,23 @@ interface RouteState {
 }
 
 const initialState: RouteState = {
-  currentRoute: null,
   lineColor: 'rgba(0, 255, 255, 1)', // Aqua
   pointColor: 'rgba(255, 255, 0, 1)', // Yellow
   routeString: '',
   routePoints: [],
 };
+
+export const fetchAirportByCode = createAsyncThunk(
+  'route/fetchAirportByCode',
+  async (code: string, { dispatch }) => {
+    if (code.length >= 3 && code.length <= 4) {
+      const { data: airport } = await dispatch(
+        faaApi.endpoints.getAirportByIcaoCodeOrIdent.initiate(code)
+      );
+      return airport;
+    }
+  }
+);
 
 const routeSlice = createSlice({
   name: 'route',
@@ -34,17 +43,11 @@ const routeSlice = createSlice({
     },
     removeRoutePoint: (state, action: PayloadAction<string>) => {
       state.routePoints = state.routePoints.filter(
-        (airport) => airport.IDENT !== action.payload && airport.ICAO_ID !== action.payload
+        (point) => point.IDENT !== action.payload && point.ICAO_ID !== action.payload
       );
     },
     clearRoutePoints: (state) => {
       state.routePoints = [];
-    },
-    setRoute: (state, action: PayloadAction<Route | undefined>) => {
-      state.currentRoute = action.payload;
-    },
-    clearRoute: (state) => {
-      state.currentRoute = null;
     },
     setLineColor: (state, action: PayloadAction<string>) => {
       state.lineColor = action.payload;
@@ -53,11 +56,22 @@ const routeSlice = createSlice({
       state.pointColor = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchAirportByCode.fulfilled, (state, action) => {
+      const airport = action.payload;
+      if (airport) {
+        const existingAirport = state.routePoints.find(
+          (point) => point.IDENT === airport.IDENT || point.ICAO_ID === airport.ICAO_ID
+        );
+        if (!existingAirport) {
+          state.routePoints.push(airport);
+        }
+      }
+    });
+  },
 });
 
 export const {
-  setRoute,
-  clearRoute,
   setRouteString,
   clearRouteString,
   setLineColor,

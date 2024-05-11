@@ -1,70 +1,38 @@
-import { useState, FormEvent, useRef, useEffect } from 'react';
+import { FormEvent, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import {
   clearRouteString,
-  pushRoutePoint,
   setRouteString,
   clearRoutePoints,
+  pushRoutePoint,
   removeRoutePoint,
 } from '../../../redux/slices/routeSlice';
-import RouteStringBubbles from './RouteString';
-import { useGetAirportByIcaoCodeOrIdentQuery } from '../../../redux/api/faa/faaApi';
+import RouteStringBubbles from './RouteStringBubbles';
+import { useLazyGetAirportByIcaoCodeOrIdentLazyQuery } from '../../../redux/api/faa/faaApi';
 
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();
   const { routeString, routePoints } = useSelector((state: RootState) => state.route);
-  console.log(routePoints);
-  const [lastCode, setLastCode] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
-
-  const {
-    data: airport,
-    isError,
-    isSuccess,
-    refetch,
-  } = useGetAirportByIcaoCodeOrIdentQuery(lastCode, {
-    skip: lastCode === '',
-  });
+  const [fetchAirport] = useLazyGetAirportByIcaoCodeOrIdentLazyQuery();
+  const prevRouteStringRef = useRef('');
 
   useEffect(() => {
-    if (airport && !isError && isSuccess) {
-      const existingAirport = routePoints.find(
-        (point) => point.IDENT === airport.IDENT || point.ICAO_ID === airport.ICAO_ID
-      );
-      if (!existingAirport) {
-        dispatch(pushRoutePoint(airport));
-      }
+    if (routeString !== prevRouteStringRef.current) {
+      const currentCodes = routeString.trim().split(' ');
+      const prevCodes = prevRouteStringRef.current.trim().split(' ');
+      const removedCodes = prevCodes.filter((code) => !currentCodes.includes(code));
+      removedCodes.forEach((code) => {
+        dispatch(removeRoutePoint(code));
+      });
+      prevRouteStringRef.current = routeString;
     }
-  }, [airport, isError, isSuccess, dispatch, routePoints]);
+  }, [routeString, dispatch]);
 
   const handleRouteStringChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newRouteString = e.target.value;
     dispatch(setRouteString(newRouteString));
-
-    if (newRouteString.trim() === '') {
-      dispatch(clearRoutePoints());
-      setLastCode('');
-    } else {
-      handleCodeDeletion(newRouteString);
-    }
-  };
-
-  const handleCodeDeletion = (value: string) => {
-    const codes = value.trim().split(' ');
-    const lastCodeInString = codes[codes.length - 1];
-
-    if (lastCodeInString !== lastCode) {
-      const deletedCode = lastCode.slice(0, lastCodeInString.length);
-      dispatch(removeRoutePoint(deletedCode));
-      setLastCode(lastCodeInString);
-    }
-  };
-
-  const handleRouteStringClear = () => {
-    dispatch(clearRouteString());
-    dispatch(clearRoutePoints());
-    setLastCode('');
   };
 
   const handleRouteStringSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -72,25 +40,24 @@ export const RouteStringInput: React.FC = () => {
     // Your logic to handle the submitted route string
   };
 
-  const parseLastCodeFromRouteString = (routeString: string) => {
-    const codes = routeString.trim().split(' ');
-    const lastCode = codes[codes.length - 1];
-    return lastCode;
+  const handleRouteStringClear = () => {
+    dispatch(clearRouteString());
+    dispatch(clearRoutePoints());
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      formRef.current?.requestSubmit();
-    } else if (e.key === ' ') {
-      const lastCode = parseLastCodeFromRouteString(routeString);
-      if (lastCode && lastCode.length >= 3 && lastCode.length <= 4) {
-        const existingAirport = routePoints.find(
-          (point) => point.IDENT === lastCode || point.ICAO_ID === lastCode
-        );
-        if (!existingAirport) {
-          setLastCode(lastCode);
-          refetch();
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === ' ') {
+      const codes = routeString.trim().split(' ');
+      const lastCode = codes[codes.length - 1];
+      if (lastCode.length >= 3 && lastCode.length <= 4) {
+        const { data: airport } = await fetchAirport(lastCode);
+        if (airport) {
+          const existingAirport = routePoints.find(
+            (point) => point.IDENT === airport.IDENT || point.ICAO_ID === airport.ICAO_ID
+          );
+          if (!existingAirport) {
+            dispatch(pushRoutePoint(airport));
+          }
         }
       }
     }
@@ -98,19 +65,19 @@ export const RouteStringInput: React.FC = () => {
 
   return (
     <form ref={formRef} onSubmit={handleRouteStringSubmit}>
-      <div className="mb-4 flex min-w-80">
+      <div className="flex mb-4 min-w-80">
         <textarea
           placeholder="Enter route string"
           value={routeString}
           onChange={handleRouteStringChange}
           onKeyDown={handleKeyDown}
-          className="textarea textarea-primary input input-bordered w-full max-h-40 h-32"
+          className="w-full h-32 textarea textarea-primary input input-bordered max-h-40"
         />
       </div>
       <div className="flex flex-col space-y-4">
-        <RouteStringBubbles routePoints={routePoints} routeString={routeString} />
+        <RouteStringBubbles routeString={routeString} />
         <div className="flex justify-start mb-4 sm:mb-0">
-          <button type="submit" className="btn btn-primary mr-2">
+          <button type="submit" className="mr-2 btn btn-primary">
             Plot Route
           </button>
           <button type="button" className="btn btn-primary" onClick={handleRouteStringClear}>

@@ -13,83 +13,83 @@ import {
 import { mapAirportDataToCartesian3 } from '../../utility/utils';
 
 const RouteComponent: React.FC = () => {
-  const { viewer } = useCesium();
-  const dispatch = useDispatch<AppDispatch>();
-  const currentRoute = useSelector((state: RootState) => state.route.currentRoute);
-  const { lineColor, pointColor: endPointColor } = useSelector((state: RootState) => state.route);
-  const entityRefs = useRef<Record<string, Entity>>({});
-  const routePointEntityIds = useRef<string[]>([]);
+  // const { viewer } = useCesium();
+  // const dispatch = useDispatch<AppDispatch>();
+  // const currentRoute = useSelector((state: RootState) => state.route.currentRoute);
+  // const { lineColor, pointColor: endPointColor } = useSelector((state: RootState) => state.route);
+  // const entityRefs = useRef<Record<string, Entity>>({});
+  // const routePointEntityIds = useRef<string[]>([]);
 
-  useEffect(() => {
-    const cleanupEntities = () => {
-      removeEntities(viewer, entityRefs.current, routePointEntityIds.current);
-      entityRefs.current = {};
-      routePointEntityIds.current = [];
-      dispatch(updateCurrentRouteEntityIds([]));
-    };
+  // useEffect(() => {
+  //   const cleanupEntities = () => {
+  //     removeEntities(viewer, entityRefs.current, routePointEntityIds.current);
+  //     entityRefs.current = {};
+  //     routePointEntityIds.current = [];
+  //     dispatch(updateCurrentRouteEntityIds([]));
+  //   };
 
-    if (!viewer || !currentRoute) {
-      cleanupEntities();
-      return;
-    }
+  //   if (!viewer || !currentRoute) {
+  //     cleanupEntities();
+  //     return;
+  //   }
 
-    const { fromAirport, toAirport } = currentRoute;
-    const fromPosition = mapAirportDataToCartesian3(fromAirport);
-    const toPosition = mapAirportDataToCartesian3(toAirport);
+  //   const { fromAirport, toAirport } = currentRoute;
+  //   const fromPosition = mapAirportDataToCartesian3(fromAirport);
+  //   const toPosition = mapAirportDataToCartesian3(toAirport);
 
-    if (!fromPosition || !toPosition) return;
+  //   if (!fromPosition || !toPosition) return;
 
-    const polylineEntity = createPolylineEntity(viewer, fromPosition, toPosition, lineColor);
-    const fromPointEntity = createPointEntity(viewer, fromPosition, endPointColor);
-    const toPointEntity = createPointEntity(viewer, toPosition, endPointColor);
+  //   const polylineEntity = createPolylineEntity(viewer, fromPosition, toPosition, lineColor);
+  //   const fromPointEntity = createPointEntity(viewer, fromPosition, endPointColor);
+  //   const toPointEntity = createPointEntity(viewer, toPosition, endPointColor);
 
-    const polylineId = `polyline-${fromAirport.GLOBAL_ID}-${toAirport.GLOBAL_ID}`;
-    entityRefs.current = {
-      [polylineId]: polylineEntity,
-      [fromAirport.GLOBAL_ID]: fromPointEntity,
-      [toAirport.GLOBAL_ID]: toPointEntity,
-    };
+  //   const polylineId = `polyline-${fromAirport.GLOBAL_ID}-${toAirport.GLOBAL_ID}`;
+  //   entityRefs.current = {
+  //     [polylineId]: polylineEntity,
+  //     [fromAirport.GLOBAL_ID]: fromPointEntity,
+  //     [toAirport.GLOBAL_ID]: toPointEntity,
+  //   };
 
-    routePointEntityIds.current = [polylineId, fromAirport.GLOBAL_ID, toAirport.GLOBAL_ID];
+  //   routePointEntityIds.current = [polylineId, fromAirport.GLOBAL_ID, toAirport.GLOBAL_ID];
 
-    dispatch(updateCurrentRouteEntityIds(routePointEntityIds.current));
+  //   dispatch(updateCurrentRouteEntityIds(routePointEntityIds.current));
 
-    const doubleClickHandler = (event: ScreenSpaceEventHandler.PositionedEvent) => {
-      addPointToPolyline(
-        viewer,
-        event,
-        polylineEntity,
-        endPointColor,
-        routePointEntityIds,
-        dispatch
-      );
-    };
+  //   const doubleClickHandler = (event: ScreenSpaceEventHandler.PositionedEvent) => {
+  //     addPointToPolyline(
+  //       viewer,
+  //       event,
+  //       polylineEntity,
+  //       endPointColor,
+  //       routePointEntityIds,
+  //       dispatch
+  //     );
+  //   };
 
-    // Add touch event handler
-    const touchHandler = (event: ScreenSpaceEventHandler.PositionedEvent) => {
-      const now = Date.now();
-      const timeSinceLastTouch = now - (touchHandler.lastTouchTime || 0);
+  //   // Add touch event handler
+  //   const touchHandler = (event: ScreenSpaceEventHandler.PositionedEvent) => {
+  //     const now = Date.now();
+  //     const timeSinceLastTouch = now - (touchHandler.lastTouchTime || 0);
 
-      if (timeSinceLastTouch >= 200 && timeSinceLastTouch <= 500) {
-        doubleClickHandler(event);
-      }
+  //     if (timeSinceLastTouch >= 200 && timeSinceLastTouch <= 500) {
+  //       doubleClickHandler(event);
+  //     }
 
-      touchHandler.lastTouchTime = now;
-    };
+  //     touchHandler.lastTouchTime = now;
+  //   };
 
-    viewer.screenSpaceEventHandler.setInputAction(
-      doubleClickHandler,
-      ScreenSpaceEventType.LEFT_DOUBLE_CLICK
-    );
-    touchHandler.lastTouchTime = 0;
-    viewer.screenSpaceEventHandler.setInputAction(touchHandler, ScreenSpaceEventType.LEFT_CLICK);
+  //   viewer.screenSpaceEventHandler.setInputAction(
+  //     doubleClickHandler,
+  //     ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+  //   );
+  //   touchHandler.lastTouchTime = 0;
+  //   viewer.screenSpaceEventHandler.setInputAction(touchHandler, ScreenSpaceEventType.LEFT_CLICK);
 
-    return () => {
-      cleanupEntities();
-      viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-      viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
-    };
-  }, [viewer, currentRoute, lineColor, endPointColor, dispatch]);
+  //   return () => {
+  //     cleanupEntities();
+  //     viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+  //     viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
+  //   };
+  // }, [viewer, currentRoute, lineColor, endPointColor, dispatch]);
 
   return null;
 };

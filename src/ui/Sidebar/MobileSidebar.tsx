@@ -6,7 +6,7 @@ import AirportOptions from './AirportOptions';
 import AirspaceOptions from './AirspaceOptions';
 import HamburgerToggle from '../ReusableComponents/HamburgerToggle';
 import { RootState } from '../../redux/store';
-import RouteForm from './RouteForm';
+import RouteOptions from './RouteOptions';
 
 interface MobileSidebarProps {
   imageryLayerOptions: { value: string; label: string }[];
@@ -32,7 +32,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ imageryLayerOptions }) =>
       <div className="p-4">
         <MapOptions imageryLayerOptions={imageryLayerOptions} />
         <AirportOptions />
-        <RouteForm />
+        <RouteOptions />
         <AirspaceOptions />
       </div>
     </div>

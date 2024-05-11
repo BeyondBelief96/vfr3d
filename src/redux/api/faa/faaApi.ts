@@ -52,6 +52,25 @@ export const faaApi = baseApi.injectEndpoints({
         return response.features[0].attributes;
       },
     }),
+
+    getAirportByIcaoCodeOrIdentLazy: builder.query<Airport, string>({
+      query: (icaoCodeOrIdent) => ({
+        url: `${FAA_BASE_URL}/US_Airport/FeatureServer/0/query`,
+        params: {
+          where: `ICAO_ID = '${icaoCodeOrIdent}' OR IDENT = '${icaoCodeOrIdent}'`,
+          outFields: '*',
+          outSR: 4326,
+          f: 'json',
+          lazy: true,
+        },
+      }),
+      transformResponse: (response: ApiResponse<Airport>) => {
+        if (response.features.length === 0) {
+          throw new Error('Airport not found');
+        }
+        return response.features[0].attributes;
+      },
+    }),
     getRunwayInformationByAirportId: builder.query<Runway[], string>({
       query: (airportId) => ({
         url: `${FAA_BASE_URL}/Runways/FeatureServer/0/query`,
@@ -72,5 +91,6 @@ export const {
   useGetAirportsByStateQuery,
   useGetAllAirportsQuery,
   useGetAirportByIcaoCodeOrIdentQuery,
+  useLazyGetAirportByIcaoCodeOrIdentLazyQuery,
   useGetRunwayInformationByAirportIdQuery,
 } = faaApi;

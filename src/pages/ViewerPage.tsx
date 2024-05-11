@@ -5,7 +5,6 @@ import FlyTo from '../features/Airports/FlyTo';
 import VisibleAirports from '../features/Airports/VisibleAirports';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import ImageryLayers from '../features/Imagery/ImageryLayers';
-import RouteComponent from '../features/Routes/RouteComponent';
 import LoadingSpinner from '../ui/ReusableComponents/LoadingSpinner';
 import Sidebar from '../ui/Sidebar/Sidebar';
 import { IMAGERY_LAYER_OPTIONS } from '../utility/constants';
@@ -86,7 +85,6 @@ const ViewerPage = () => {
           <AirspaceComponent setIsLoading={setAirspace3dloading} />
           <VisibleAirports />
           <FlyTo />
-          <RouteComponent />
         </ResiumViewer>
         <RoutesPanel />
         <AirportInfoPopup />
