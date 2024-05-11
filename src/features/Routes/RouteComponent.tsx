@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 import { Color } from 'cesium';
 import { AppState } from '../../redux/store';
-import { mapAirportDataToCartesian3 } from '../../utility/utils';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
+import { mapAirportDataToCartesian3 } from '../../utility/cesiumUtils';
 
 const RouteComponent: React.FC = () => {
   const routePoints = useSelector((state: AppState) => state.route.routePoints);
