@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Airport } from '../../../redux/api/faa/faa.interface';
 import RouteStringBubbles from './RouteStringBubbles';
 import { RootState } from '../../../redux/store';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { useLazyGetAirportByIcaoCodeOrIdentLazyQuery } from '../../../redux/api/faa/faaApi';
 import {
   clearRoutePoints,
