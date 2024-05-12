@@ -27,21 +27,20 @@ graph LR
 ## Frontend
 The VFR3D frontend is built using the following technologies:
 
-React: A popular JavaScript library for building user interfaces.
-Vite: A fast build tool that provides an optimized development experience.
-TypeScript: A typed superset of JavaScript that enhances code reliability and maintainability.
+- React: A popular JavaScript library for building user interfaces.
+- Vite: A fast build tool that provides an optimized development experience.
+- TypeScript: A typed superset of JavaScript that enhances code reliability and maintainability.
 
 ## Backend
 The VFR3D backend consists of two main services:
 
-vfr3d-cron-service: This NestJS service is responsible for fetching weather data from FAA APIs and storing it in the PostgreSQL database. It runs periodically to ensure the data is up to date.
-vfr3d-api: This NestJS service serves as the client-facing API for the VFR3D frontend. It provides endpoints for retrieving data from the PostgreSQL database and handling other application-specific functionalities. The vfr3d-api service includes the following modules:
-
-METAR Module: Handles retrieval and processing of METAR (Meteorological Aerodrome Report) data.
-TAF Module: Manages TAF (Terminal Aerodrome Forecast) data retrieval and processing.
-PIREP Module: Deals with PIREP (Pilot Report) data retrieval and processing.
-AIRSIGMET Module: Handles AIRSIGMET (Significant Meteorological Information) data retrieval and processing.
-NAVLOG Module: Manages navigation log data and related functionalities.
+- vfr3d-cron-service: This NestJS service is responsible for fetching weather data from FAA APIs and storing it in the PostgreSQL database. It runs periodically to ensure the data is up to date.
+- vfr3d-api: This NestJS service serves as the client-facing API for the VFR3D frontend. It provides endpoints for retrieving data from the PostgreSQL database and handling other application-specific functionalities. The vfr3d-api service includes the following modules:
+  - METAR Module: Handles retrieval and processing of METAR (Meteorological Aerodrome Report) data.
+  - TAF Module: Manages TAF (Terminal Aerodrome Forecast) data retrieval and processing.
+  - PIREP Module: Deals with PIREP (Pilot Report) data retrieval and processing.
+  - AIRSIGMET Module: Handles AIRSIGMET (Significant Meteorological Information) data retrieval and processing.
+  - NAVLOG Module: Manages navigation log data and related functionalities.
 
 Database
 VFR3D utilizes a PostgreSQL database hosted on AWS to store and retrieve data efficiently. The database serves as the central repository for weather data fetched from FAA APIs and other application-specific data.
