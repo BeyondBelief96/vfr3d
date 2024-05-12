@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { faaApi } from '../api/faa/faaApi';
 import { mapAirportToWaypoint } from '../../utility/utils';
-import { Route, Waypoint } from '../../features/Routes/route.interface';
+import { Route, Waypoint } from '../../features/Routes/Route.interface';
 
 interface RouteState {
   lineColor: string;
@@ -59,7 +59,7 @@ const routeSlice = createSlice({
     removeRoutePointByName: (state, action: PayloadAction<string>) => {
       if (state.route) {
         state.route.routePoints = state.route.routePoints.filter(
-          (point) => point.name !== action.payload
+          (point: Waypoint) => point.name !== action.payload
         );
       }
     },
@@ -94,7 +94,7 @@ const routeSlice = createSlice({
       const airport = action.payload;
       if (airport && state.route) {
         const existingAirport = state.route.routePoints.find(
-          (point) => point.name === airport.IDENT || point.name === airport.ICAO_ID
+          (point: Waypoint) => point.name === airport.IDENT || point.name === airport.ICAO_ID
         );
         if (!existingAirport) {
           state.route.routePoints.push(mapAirportToWaypoint(airport));

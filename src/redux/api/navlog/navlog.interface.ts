@@ -1,4 +1,4 @@
-import { Waypoint } from '../../../features/Routes/route.interface';
+import { Waypoint } from '../../../features/Routes/Route.interface';
 
 export interface NavigationLeg {
   from_point: Waypoint;

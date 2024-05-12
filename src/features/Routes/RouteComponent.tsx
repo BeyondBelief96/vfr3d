@@ -4,13 +4,14 @@ import { AppState } from '../../redux/store';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
 import { mapWaypointToCartesian3 } from '../../utility/cesiumUtils';
+import { Waypoint } from './Route.interface';
 
 const RouteComponent: React.FC = () => {
   const routePoints = useSelector((state: AppState) => state.route.route?.routePoints);
   const { lineColor, pointColor: endPointColor } = useSelector((state: AppState) => state.route);
   return (
     <>
-      {routePoints?.map((point) => {
+      {routePoints?.map((point: Waypoint) => {
         const position = mapWaypointToCartesian3(point);
         if (!position) return null;
 
@@ -24,7 +25,7 @@ const RouteComponent: React.FC = () => {
         );
       })}
 
-      {routePoints?.map((point, index) => {
+      {routePoints?.map((point: Waypoint, index: number) => {
         if (index === 0) return null;
 
         const prevPoint = routePoints[index - 1];

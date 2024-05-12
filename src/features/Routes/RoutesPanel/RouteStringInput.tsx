@@ -11,7 +11,7 @@ import {
   setRouteString,
 } from '../../../redux/slices/routeSlice';
 import { mapAirportToWaypoint } from '../../../utility/utils';
-import { Waypoint } from '../route.interface';
+import { Waypoint } from '../Route.interface';
 
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();

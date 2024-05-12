@@ -1,7 +1,7 @@
 import { Cartesian3, Math, Viewer } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
 import { convertDMSToDecimal } from './utils';
-import { Waypoint } from '../features/Routes/route.interface';
+import { Waypoint } from '../features/Routes/Route.interface';
 
 export const flyToPoint = (viewer: Viewer | undefined, point: Cartesian3) => {
   if (point && viewer) {

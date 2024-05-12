@@ -4,7 +4,7 @@ import { TableHeaderCell } from '../../../ui/ReusableComponents/Table/TableHeade
 import { AppState } from '../../../redux/store';
 import { NavigationLeg } from '../../../redux/api/navlog/navlog.interface';
 import { TableCell } from '../../../ui/ReusableComponents/Table/TableCell';
-import { Waypoint } from '../route.interface';
+import { Waypoint } from '../Route.interface';
 
 function mapWaypointsToNavLegs(waypoints: Waypoint[]): NavigationLeg[] {
   const navLogs: NavigationLeg[] = [];
