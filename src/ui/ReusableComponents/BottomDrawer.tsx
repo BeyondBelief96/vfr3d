@@ -32,7 +32,7 @@ const Drawer: React.FC<DrawerProps> = ({
         </div>
         {isOpen && (
           <div
-            className={`p-4 overflow-y-auto z-20 ${isOpen ? 'h-80 lg:h-auto' : ''}`}
+            className={`p-4 overflow-y-auto z-20 ${isOpen ? 'lg:h-auto' : ''}`}
             onClick={(e) => e.stopPropagation()}
           >
             {children}

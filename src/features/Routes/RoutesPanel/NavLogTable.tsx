@@ -46,9 +46,9 @@ export const NavLogTable: React.FC = () => {
   const navLogLegs = mapAirportToNavLog(routePoints);
 
   return (
-    <div className="overflow-x-auto rounded-lg shadow-md">
+    <div className="rounded-lg shadow-md ">
       <div className="overflow-y-auto max-h-96">
-        <table className="table w-full text-xs" style={{ tableLayout: 'fixed' }}>
+        <table className="table text-xs" style={{ tableLayout: 'fixed' }}>
           <thead className="sticky top-0 font-semibold text-center text-primary-content bg-primary">
             <tr>
               <TableHeaderCell rowSpan={2} width={120}>

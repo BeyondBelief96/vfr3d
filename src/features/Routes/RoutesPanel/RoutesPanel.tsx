@@ -28,7 +28,7 @@ export const RoutesPanel: React.FC = () => {
           <RouteStringInput />
         </div>
         <div className="md:flex-1 lg:ml-4">
-          <div className="h-full overflow-y-auto">
+          <div className="h-full">
             <NavLogTable />
           </div>
         </div>

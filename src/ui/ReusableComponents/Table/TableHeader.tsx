@@ -13,8 +13,6 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
   children,
   bar,
 }) => {
-  const underlineWidth = colSpan && width ? colSpan * width : 0;
-
   return (
     <th
       colSpan={colSpan}
@@ -23,12 +21,6 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
       style={{ width: width ? `${width}px` : 'auto' }}
     >
       {children}
-      {bar && (
-        <div
-          className="absolute ml-2 mr-2  bottom-0 left-0 h-0.5 bg-primary-content"
-          style={{ width: `${underlineWidth}px` }}
-        />
-      )}
     </th>
   );
 };
