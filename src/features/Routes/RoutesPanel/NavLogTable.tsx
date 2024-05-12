@@ -47,7 +47,7 @@ export const NavLogTable: React.FC = () => {
 
   return (
     <div className="rounded-lg shadow-md ">
-      <div className="overflow-y-auto max-h-96">
+      <div className="overflow-y-auto max-h-48 md:max-h-80">
         <table className="table text-xs" style={{ tableLayout: 'fixed' }}>
           <thead className="sticky top-0 font-semibold text-center text-primary-content bg-primary">
             <tr>
