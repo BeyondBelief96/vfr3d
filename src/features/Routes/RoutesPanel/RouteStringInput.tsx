@@ -29,11 +29,16 @@ export const RouteStringInput: React.FC = () => {
       dispatch(setRouteString(newRouteString));
 
       const updatedRoutePoints: Airport[] = [];
+      const seenCodes = new Set<string>();
+
       for (const code of codes) {
         if (isValidCode(code)) {
-          const airport = await fetchAirportByCode(code);
-          if (airport) {
-            updatedRoutePoints.push(airport);
+          if (!seenCodes.has(code)) {
+            seenCodes.add(code);
+            const airport = await fetchAirportByCode(code);
+            if (airport) {
+              updatedRoutePoints.push(airport);
+            }
           }
         }
       }
@@ -69,9 +74,8 @@ export const RouteStringInput: React.FC = () => {
       textarea.setSelectionRange(routeStringLength, routeStringLength);
     }
 
-    // Validate the last code when the space key is pressed
+    // Handle duplicate codes when the space key is pressed
     if (e.key === ' ') {
-      setIsLastCodeValid(null);
       const codes = routeString.trim().split(' ');
       const lastCode = codes[codes.length - 1];
 
@@ -81,10 +85,24 @@ export const RouteStringInput: React.FC = () => {
         return;
       }
 
-      const isValid = await validateCode(lastCode);
-      setIsLastCodeValid(isValid);
-      if (!isValid) {
+      const uniqueCodes = Array.from(new Set(codes));
+      const newRouteString = uniqueCodes.join(' ');
+
+      if (newRouteString !== routeString) {
         e.preventDefault();
+        dispatch(setRouteString(newRouteString));
+
+        const updatedRoutePoints: Airport[] = [];
+        for (const code of uniqueCodes) {
+          if (isValidCode(code)) {
+            const airport = await fetchAirportByCode(code);
+            if (airport) {
+              updatedRoutePoints.push(airport);
+            }
+          }
+        }
+
+        dispatch(setRoutePoints(updatedRoutePoints));
       }
     }
 
@@ -110,16 +128,6 @@ export const RouteStringInput: React.FC = () => {
 
   const isValidCode = (code: string) => {
     return code.length >= 3 && code.length <= 4;
-  };
-
-  const validateCode = async (code: string): Promise<boolean> => {
-    try {
-      const airport = await fetchAirportByCode(code);
-      return !!airport;
-    } catch (error) {
-      console.error('Error validating code:', error);
-      return false;
-    }
   };
 
   const fetchAirportByCode = async (code: string): Promise<Airport | undefined> => {
