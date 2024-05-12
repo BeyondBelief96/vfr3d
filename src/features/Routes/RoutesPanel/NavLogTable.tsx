@@ -2,37 +2,36 @@ import { useSelector } from 'react-redux';
 import { InputCell } from '../../../ui/ReusableComponents/Table/InputCell';
 import { TableHeaderCell } from '../../../ui/ReusableComponents/Table/TableHeader';
 import { AppState } from '../../../redux/store';
-import { Airport } from '../../../redux/api/faa/faa.interface';
-import { NavLog } from '../../../redux/api/navlog/navlog.interface';
+import { NavigationLeg } from '../../../redux/api/navlog/navlog.interface';
 import { TableCell } from '../../../ui/ReusableComponents/Table/TableCell';
+import { Waypoint } from '../route.interface';
 
-function mapAirportToNavLog(airports: Airport[]): NavLog[] {
-  const navLogs: NavLog[] = [];
+function mapWaypointsToNavLegs(waypoints: Waypoint[]): NavigationLeg[] {
+  const navLogs: NavigationLeg[] = [];
 
-  for (let i = 0; i < airports.length - 1; i++) {
-    const leg: NavLog = {
-      FROM_FIX: airports[i].ICAO_ID || airports[i].IDENT,
-      TO_FIX: airports[i + 1].ICAO_ID || airports[i + 1].IDENT,
-      VOR_IDENT: '',
-      VOR_COURSE: '',
-      VOR_DIST: '',
-      WIND_DIR: '',
-      WIND_VEL: '',
-      CAS: '',
-      TAS: '',
-      TC: '',
-      TH: '',
-      MH: '',
-      DIST_LEG: '',
-      DIST_REM: '',
-      GS: '',
-      ETE: '',
-      ETA: '',
-      ATA: '',
-      GPH_ACT: '',
-      GPH_EST: '',
-      GPH_FUEL: '',
-      GPH_REM: '',
+  for (let i = 0; i < waypoints.length - 1; i++) {
+    const leg: NavigationLeg = {
+      from_point: waypoints[i],
+      to_point: waypoints[i + 1],
+      altitude: 1000,
+      wind_direction: 90,
+      wind_velocity: 12,
+      temp_c: 15,
+      calibrated_air_speed: 108,
+      true_air_speed: 110,
+      true_course: 230,
+      true_heading: 225,
+      magnetic_heading: 227,
+      leg_distance: 48,
+      distance_remaining: 120,
+      ground_speed: 100,
+      estimated_time_enroute: new Date(),
+      estimated_time_arrival: new Date(),
+      actual_time_arrival: new Date(),
+      gallons_per_hour_act: 0,
+      gallons_per_hour_est: 10,
+      fuel_burned: 6,
+      fuel_remaining: 28,
     };
 
     navLogs.push(leg);
@@ -42,8 +41,8 @@ function mapAirportToNavLog(airports: Airport[]): NavLog[] {
 }
 
 export const NavLogTable: React.FC = () => {
-  const { routePoints } = useSelector((state: AppState) => state.route);
-  const navLogLegs = mapAirportToNavLog(routePoints);
+  const routePoints = useSelector((state: AppState) => state.route.route?.routePoints);
+  const navLegPoints = mapWaypointsToNavLegs(routePoints);
 
   return (
     <div className="rounded-lg shadow-md ">
@@ -54,7 +53,7 @@ export const NavLogTable: React.FC = () => {
               <TableHeaderCell rowSpan={2} width={120}>
                 Legs
               </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
+              <TableHeaderCell rowSpan={2} width={70}>
                 Altitude
               </TableHeaderCell>
               <TableHeaderCell colSpan={3} width={180} bar={true}>
@@ -84,8 +83,8 @@ export const NavLogTable: React.FC = () => {
               <TableHeaderCell rowSpan={2} width={60}>
                 GS
               </TableHeaderCell>
-              <TableHeaderCell colSpan={3} width={180} bar={true}>
-                Time Off
+              <TableHeaderCell colSpan={3} width={300} bar={true}>
+                Leg Times
               </TableHeaderCell>
               <TableHeaderCell colSpan={2} width={120} bar={true}>
                 GPH
@@ -103,38 +102,38 @@ export const NavLogTable: React.FC = () => {
               <TableHeaderCell width={60}>ETE</TableHeaderCell>
               <TableHeaderCell width={60}>ETA</TableHeaderCell>
               <TableHeaderCell width={60}>ATA</TableHeaderCell>
-              <TableHeaderCell width={60}>Act</TableHeaderCell>
               <TableHeaderCell width={60}>Est</TableHeaderCell>
+              <TableHeaderCell width={60}>Act</TableHeaderCell>
               <TableHeaderCell width={60}>Fuel</TableHeaderCell>
               <TableHeaderCell width={60}>Rem</TableHeaderCell>
             </tr>
           </thead>
           <tbody>
-            {navLogLegs.map((leg, index) => (
+            {navLegPoints.map((leg, index) => (
               <tr key={index}>
-                <TableCell width={120}>
-                  {leg.FROM_FIX} ➨ {leg.TO_FIX}
+                <TableCell>
+                  {leg.from_point.name} ➨ {leg.to_point.name}
                 </TableCell>
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={80} />
-                <InputCell width={80} />
-                <InputCell width={80} />
-                <InputCell width={80} />
-                <InputCell width={80} />
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={80} />
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={60} />
-                <InputCell width={60} />
+                <InputCell defaultValue={leg.altitude.toString()} />
+                <InputCell defaultValue={leg.wind_direction.toString()} />
+                <InputCell defaultValue={leg.wind_velocity.toString()} />
+                <InputCell defaultValue={leg.temp_c.toString()} />
+                <InputCell defaultValue={leg.calibrated_air_speed.toString()} />
+                <InputCell defaultValue={leg.true_air_speed.toString()} />
+                <InputCell defaultValue={leg.true_course.toString()} />
+                <InputCell defaultValue={leg.true_heading.toString()} />
+                <InputCell defaultValue={leg.magnetic_heading.toString()} />
+                <InputCell defaultValue={leg.magnetic_heading.toString()} />
+                <InputCell defaultValue={leg.leg_distance.toString()} />
+                <InputCell defaultValue={leg.distance_remaining?.toString()} />
+                <InputCell defaultValue={leg.ground_speed.toString()} />
+                <InputCell defaultValue={leg.estimated_time_enroute.toString()} />
+                <InputCell defaultValue={leg.estimated_time_arrival.toString()} />
+                <InputCell defaultValue={leg.actual_time_arrival.toString()} />
+                <InputCell defaultValue={leg.gallons_per_hour_est.toString()} />
+                <InputCell defaultValue={leg.gallons_per_hour_act.toString()} />
+                <InputCell defaultValue={leg.fuel_burned.toString()} />
+                <InputCell defaultValue={leg.fuel_remaining.toString()} />
               </tr>
             ))}
           </tbody>

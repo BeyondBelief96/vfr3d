@@ -1,5 +1,6 @@
 import { Color } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
+import { Waypoint } from '../features/Routes/route.interface';
 
 export const convertDMSToDecimal = (dms: string): number => {
   const hemisphere = dms.slice(-1);
@@ -44,4 +45,26 @@ export const colorSerializer = {
   deserialize: (colorData: Record<string, number>) => {
     return new Color(colorData.red, colorData.green, colorData.blue, colorData.alpha);
   },
+};
+
+export function mapAirportsToWaypoints(airports: Airport[]): Waypoint[] {
+  const waypoints: Waypoint[] = [];
+  for (let i = 0; i < airports.length - 1; i++) {
+    const waypoint = mapAirportToWaypoint(airports[i]);
+    waypoints.push(waypoint);
+  }
+
+  return waypoints;
+}
+
+export const mapAirportToWaypoint = (airport: Airport): Waypoint => {
+  const waypoint: Waypoint = {
+    id: airport.GLOBAL_ID,
+    name: airport.ICAO_ID || airport.IDENT,
+    latitude: airport.LATITUDE,
+    longitude: airport.LONGITUDE,
+    altitude: airport.ELEVATION,
+  };
+
+  return waypoint;
 };

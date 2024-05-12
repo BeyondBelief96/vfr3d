@@ -13,6 +13,7 @@
     "@emailjs/browser": "^4.3.3",
     "@esri/arcgis-rest-feature-service": "^4.0.5",
     "@esri/arcgis-rest-request": "^4.2.1",
+    "@react-pdf/renderer": "^3.4.4",
     "@reduxjs/toolkit": "^2.2.3",
     "axios": "^1.6.8",
     "cesium": "^1.116.0",
@@ -29,6 +30,7 @@
     "resium": "^1.17.3",
     "swiper": "^11.1.1",
     "tailwindcss": "^3.4.3",
+    "uuid": "^9.0.1",
     "vfr3d-shared": "^1.4.0"
   },
   "devDependencies": {
@@ -36,6 +38,7 @@
     "@types/react": "^18.2.66",
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18.2.22",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",

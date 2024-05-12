@@ -1,6 +1,6 @@
 import { IonImageryProvider, ProviderViewModel, buildModuleUrl } from 'cesium';
 import { useEffect, useState } from 'react';
-import { Camera, Globe, Viewer as ResiumViewer, Scene } from 'resium';
+import { Globe, Viewer as ResiumViewer } from 'resium';
 import FlyTo from '../features/Airports/FlyTo';
 import VisibleAirports from '../features/Airports/VisibleAirports';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';

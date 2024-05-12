@@ -1,19 +1,24 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Airport } from '../api/faa/faa.interface';
 import { faaApi } from '../api/faa/faaApi';
+import { mapAirportToWaypoint } from '../../utility/utils';
+import { Route, Waypoint } from '../../features/Routes/route.interface';
 
 interface RouteState {
   lineColor: string;
   pointColor: string;
   routeString: string;
-  routePoints: Airport[];
+  route: Route;
 }
 
 const initialState: RouteState = {
   lineColor: 'rgba(0, 255, 255, 1)', // Aqua
   pointColor: 'rgba(255, 0, 255, 1)', // Magenta
   routeString: '',
-  routePoints: [],
+  route: {
+    id: '1',
+    name: 'my-route',
+    routePoints: [],
+  },
 };
 
 export const fetchAirportByCode = createAsyncThunk(
@@ -38,29 +43,44 @@ const routeSlice = createSlice({
     clearRouteString: (state) => {
       state.routeString = '';
     },
-    setRoutePoints: (state, action: PayloadAction<Airport[]>) => {
-      state.routePoints = action.payload;
+    setRoute: (state, action: PayloadAction<Route>) => {
+      state.route = action.payload;
     },
-    pushRoutePoint: (state, action: PayloadAction<Airport>) => {
-      state.routePoints.push(action.payload);
+    setRoutePoints: (state, action: PayloadAction<Waypoint[]>) => {
+      if (state.route) {
+        state.route.routePoints = action.payload;
+      }
     },
-    removeRoutePointByCode: (state, action: PayloadAction<string>) => {
-      state.routePoints = state.routePoints.filter(
-        (point) => point.IDENT !== action.payload && point.ICAO_ID !== action.payload
-      );
+    pushRoutePoint: (state, action: PayloadAction<Waypoint>) => {
+      if (state.route) {
+        state.route.routePoints.push(action.payload);
+      }
+    },
+    removeRoutePointByName: (state, action: PayloadAction<string>) => {
+      if (state.route) {
+        state.route.routePoints = state.route.routePoints.filter(
+          (point) => point.name !== action.payload
+        );
+      }
     },
     insertRoutePointAtIndex: (
       state,
-      action: PayloadAction<{ airport: Airport; index: number }>
+      action: PayloadAction<{ waypoint: Waypoint; index: number }>
     ) => {
-      const { airport, index } = action.payload;
-      state.routePoints.splice(index, 0, airport);
+      if (state.route) {
+        const { waypoint, index } = action.payload;
+        state.route.routePoints.splice(index, 0, waypoint);
+      }
     },
     removeRoutePointAtIndex: (state, action: PayloadAction<number>) => {
-      state.routePoints.splice(action.payload, 1);
+      if (state.route) {
+        state.route.routePoints.splice(action.payload, 1);
+      }
     },
     clearRoutePoints: (state) => {
-      state.routePoints = [];
+      if (state.route) {
+        state.route.routePoints = [];
+      }
     },
     setLineColor: (state, action: PayloadAction<string>) => {
       state.lineColor = action.payload;
@@ -72,12 +92,12 @@ const routeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAirportByCode.fulfilled, (state, action) => {
       const airport = action.payload;
-      if (airport) {
-        const existingAirport = state.routePoints.find(
-          (point) => point.IDENT === airport.IDENT || point.ICAO_ID === airport.ICAO_ID
+      if (airport && state.route) {
+        const existingAirport = state.route.routePoints.find(
+          (point) => point.name === airport.IDENT || point.name === airport.ICAO_ID
         );
         if (!existingAirport) {
-          state.routePoints.push(airport);
+          state.route.routePoints.push(mapAirportToWaypoint(airport));
         }
       }
     });
@@ -85,13 +105,14 @@ const routeSlice = createSlice({
 });
 
 export const {
+  setRoute,
   setRouteString,
   clearRouteString,
   setLineColor,
   setEndPointColor,
   setRoutePoints,
   pushRoutePoint,
-  removeRoutePointByCode,
+  removeRoutePointByName,
   clearRoutePoints,
   insertRoutePointAtIndex,
   removeRoutePointAtIndex,

@@ -10,6 +10,8 @@ import {
   setRoutePoints,
   setRouteString,
 } from '../../../redux/slices/routeSlice';
+import { mapAirportToWaypoint } from '../../../utility/utils';
+import { Waypoint } from '../route.interface';
 
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ export const RouteStringInput: React.FC = () => {
     if (lastCode.length < 3 || isValidCode(lastCode)) {
       dispatch(setRouteString(newRouteString));
 
-      const updatedRoutePoints: Airport[] = [];
+      const waypoints: Waypoint[] = [];
       const seenCodes = new Set<string>();
 
       for (const code of codes) {
@@ -37,13 +39,14 @@ export const RouteStringInput: React.FC = () => {
             seenCodes.add(code);
             const airport = await fetchAirportByCode(code);
             if (airport) {
-              updatedRoutePoints.push(airport);
+              waypoints.push(mapAirportToWaypoint(airport));
             }
           }
         }
       }
 
-      dispatch(setRoutePoints(updatedRoutePoints));
+      console.log(`Handle Change-Setting Route Points: ${waypoints}`);
+      dispatch(setRoutePoints(waypoints));
     }
   };
 
@@ -91,21 +94,20 @@ export const RouteStringInput: React.FC = () => {
       if (newRouteString !== routeString) {
         e.preventDefault();
         dispatch(setRouteString(newRouteString));
+      }
 
-        const updatedRoutePoints: Airport[] = [];
-        for (const code of uniqueCodes) {
-          if (isValidCode(code)) {
-            const airport = await fetchAirportByCode(code);
-            if (airport) {
-              updatedRoutePoints.push(airport);
-            }
+      const updatedRoutePoints: Waypoint[] = [];
+      for (const code of uniqueCodes) {
+        if (isValidCode(code)) {
+          const airport = await fetchAirportByCode(code);
+          if (airport) {
+            updatedRoutePoints.push(mapAirportToWaypoint(airport));
           }
         }
-
-        dispatch(setRoutePoints(updatedRoutePoints));
       }
-    }
 
+      dispatch(setRoutePoints(updatedRoutePoints));
+    }
     // Prevent typing if the last code is invalid, except for backspace and delete
     if (!isLastCodeValid && e.key !== 'Backspace' && e.key !== 'Delete') {
       e.preventDefault();

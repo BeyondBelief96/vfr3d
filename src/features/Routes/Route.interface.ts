@@ -1,5 +1,13 @@
-import { Airport } from '../../redux/api/faa/faa.interface';
+export interface Route {
+  id: string;
+  name?: string;
+  routePoints: Waypoint[];
+}
 
-export interface RoutePoint {
-  
+export interface Waypoint {
+  id: string;
+  name?: string;
+  latitude: string;
+  longitude: string;
+  altitude: number;
 }

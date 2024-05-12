@@ -4,13 +4,17 @@ import { useCesium } from 'resium';
 import { AppState } from '../../redux/store';
 import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { useGetAirportByIcaoCodeOrIdentQuery } from '../../redux/api/faa/faaApi';
-import { flyToPoint, mapAirportDataToCartesian3 } from '../../utility/cesiumUtils';
+import {
+  flyToPoint,
+  mapAirportDataToCartesian3,
+  mapWaypointToCartesian3,
+} from '../../utility/cesiumUtils';
 
 const FlyTo = () => {
   const { viewer } = useCesium();
   const searchQuery = useSelector((state: AppState) => state.search.airportQuery);
   const triggerSearchCount = useSelector((state: AppState) => state.search.triggerSearchCount);
-  const routePoints = useSelector((state: AppState) => state.route.routePoints);
+  const routePoints = useSelector((state: AppState) => state.route.route?.routePoints);
   const dispatch = useDispatch();
 
   const [flyToInitialRoutePoint, setFlyToInitialRoutePoint] = useState(true);
@@ -21,13 +25,14 @@ const FlyTo = () => {
 
   // useEffect that handles setting camera position to initial point of route.
   useEffect(() => {
+    if (!routePoints) return;
     if (routePoints.length === 0) {
       setFlyToInitialRoutePoint(true);
       return;
     }
 
     if (flyToInitialRoutePoint) {
-      const position = mapAirportDataToCartesian3(routePoints[0]);
+      const position = mapWaypointToCartesian3(routePoints[0]);
       if (position) {
         flyToPoint(viewer, position);
 

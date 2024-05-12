@@ -1,24 +1,26 @@
-export interface NavLog {
-  FROM_FIX: string;
-  TO_FIX: string;
-  VOR_IDENT: string;
-  VOR_COURSE: string;
-  VOR_DIST: string;
-  WIND_DIR: string;
-  WIND_VEL: string;
-  CAS: string;
-  TAS: string;
-  TC: string;
-  TH: string;
-  MH: string;
-  DIST_LEG: string;
-  DIST_REM: string;
-  GS: string;
-  ETE: string;
-  ETA: string;
-  ATA: string;
-  GPH_ACT: string;
-  GPH_EST: string;
-  GPH_FUEL: string;
-  GPH_REM: string;
+import { Waypoint } from '../../../features/Routes/route.interface';
+
+export interface NavigationLeg {
+  from_point: Waypoint;
+  to_point: Waypoint;
+  altitude: number;
+  wind_direction: number;
+  wind_velocity: number;
+  temp_c: number;
+  calibrated_air_speed: number;
+  true_air_speed: number;
+  true_course: number;
+  true_heading: number;
+  magnetic_heading: number;
+  route_total_distance?: number;
+  leg_distance: number;
+  distance_remaining?: number;
+  ground_speed: number;
+  estimated_time_enroute: Date;
+  estimated_time_arrival: Date;
+  actual_time_arrival: Date;
+  gallons_per_hour_act: number;
+  gallons_per_hour_est: number;
+  fuel_burned: number;
+  fuel_remaining: number;
 }
