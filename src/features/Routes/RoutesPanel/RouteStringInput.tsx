@@ -95,7 +95,9 @@ export const RouteStringInput: React.FC = () => {
     }
   };
 
-  const handleRouteStringSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleRouteStringSubmit = (
+    e: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     // Your logic to handle the submitted route string
   };
@@ -144,9 +146,12 @@ export const RouteStringInput: React.FC = () => {
       </div>
       <div className="flex flex-col space-y-4">
         <RouteStringBubbles />
-        <div className="flex justify-start mb-4 sm:mb-0">
+        <div className="flex justify-start gap-2 mb-4 sm:mb-0">
           <button type="button" className="btn btn-primary" onClick={handleRouteStringClear}>
             Clear Route
+          </button>
+          <button type="submit" className="btn btn-primary" onSubmit={handleRouteStringSubmit}>
+            Generate Nav Log
           </button>
         </div>
       </div>
