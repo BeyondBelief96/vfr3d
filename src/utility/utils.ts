@@ -2,7 +2,7 @@ import { Color } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
 import { Waypoint } from 'vfr3d-shared';
 
-export const convertDMSToDecimal = (dms: string): number => {
+export const convertDMSToDD = (dms: string): number => {
   const hemisphere = dms.slice(-1);
   const [degrees, minutes, seconds] = dms.slice(0, -1).split('-').map(parseFloat);
 

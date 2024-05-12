@@ -1,6 +1,6 @@
 import { Cartesian3, Math, Viewer } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
-import { convertDMSToDecimal } from './utils';
+import { convertDMSToDD } from './utils';
 import { Waypoint } from 'vfr3d-shared';
 
 export const flyToPoint = (viewer: Viewer | undefined, point: Cartesian3) => {
@@ -18,8 +18,8 @@ export const flyToPoint = (viewer: Viewer | undefined, point: Cartesian3) => {
 };
 
 export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null => {
-  const longitude = convertDMSToDecimal(airport.LONGITUDE);
-  const latitude = convertDMSToDecimal(airport.LATITUDE);
+  const longitude = convertDMSToDD(airport.LONGITUDE);
+  const latitude = convertDMSToDD(airport.LATITUDE);
   const elevation = 0;
 
   if (
@@ -37,8 +37,8 @@ export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null 
 };
 
 export const mapWaypointToCartesian3 = (waypoint: Waypoint): Cartesian3 | null => {
-  const longitude = convertDMSToDecimal(waypoint.longitude.toString());
-  const latitude = convertDMSToDecimal(waypoint.latitude.toString());
+  const longitude = convertDMSToDD(waypoint.longitude.toString());
+  const latitude = convertDMSToDD(waypoint.latitude.toString());
   const elevation = waypoint.altitude;
 
   if (
