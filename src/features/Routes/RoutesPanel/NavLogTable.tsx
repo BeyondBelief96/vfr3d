@@ -55,15 +55,9 @@ export const NavLogTable: React.FC = () => {
                 Legs
               </TableHeaderCell>
               <TableHeaderCell rowSpan={2} width={60}>
-                Ident
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
-                Course <br /> (Radio)
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
                 Altitude
               </TableHeaderCell>
-              <TableHeaderCell colSpan={3} width={180}>
+              <TableHeaderCell colSpan={3} width={180} bar={true}>
                 Wind
               </TableHeaderCell>
               <TableHeaderCell rowSpan={2} width={60}>
@@ -84,19 +78,19 @@ export const NavLogTable: React.FC = () => {
               <TableHeaderCell rowSpan={2} width={60}>
                 CH <br /> MH ± Dev <br />
               </TableHeaderCell>
-              <TableHeaderCell colSpan={2} width={120}>
+              <TableHeaderCell colSpan={2} width={120} bar={true}>
                 Dist
               </TableHeaderCell>
               <TableHeaderCell rowSpan={2} width={60}>
                 GS
               </TableHeaderCell>
-              <TableHeaderCell colSpan={3} width={180}>
+              <TableHeaderCell colSpan={3} width={180} bar={true}>
                 Time Off
               </TableHeaderCell>
-              <TableHeaderCell colSpan={2} width={120}>
+              <TableHeaderCell colSpan={2} width={120} bar={true}>
                 GPH
               </TableHeaderCell>
-              <TableHeaderCell colSpan={2} width={120}>
+              <TableHeaderCell colSpan={2} width={120} bar={true}>
                 Fuel
               </TableHeaderCell>
             </tr>
@@ -121,8 +115,6 @@ export const NavLogTable: React.FC = () => {
                 <TableCell width={120}>
                   {leg.FROM_FIX} ➨ {leg.TO_FIX}
                 </TableCell>
-                <InputCell width={60} />
-                <InputCell width={80} />
                 <InputCell width={60} />
                 <InputCell width={60} />
                 <InputCell width={60} />
