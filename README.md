@@ -54,11 +54,6 @@ Install dependencies for the frontend and backend services.
 Configure the necessary environment variables for the backend services.
 Run the development server for the frontend and backend services.
 
-Detailed instructions and configuration guidelines can be found in the respective service directories.
-Contributing
-We welcome contributions from the community! If you'd like to contribute to VFR3D, please follow our contribution guidelines and submit a pull request.
-License
-VFR3D is released under the MIT License.
-Contact
+## Contact
 For any inquiries or feedback, please reach out to us at brandonberisford@gmail.com.
 Happy flight planning with VFR3D!
