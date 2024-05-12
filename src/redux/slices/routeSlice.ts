@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { faaApi } from '../api/faa/faaApi';
 import { mapAirportToWaypoint } from '../../utility/utils';
-import { Route, Waypoint } from '../../features/Routes/Route.interface';
+import { Route, Waypoint } from 'vfr3d-shared';
 
 interface RouteState {
   lineColor: string;

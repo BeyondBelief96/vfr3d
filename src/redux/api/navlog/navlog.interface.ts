@@ -1,4 +1,4 @@
-import { Waypoint } from '../../../features/Routes/Route.interface';
+import { Waypoint } from 'vfr3d-shared';
 
 export interface NavigationLeg {
   from_point: Waypoint;

@@ -2,6 +2,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../../../redux/store';
 import { removeRoutePointByName } from '../../../redux/slices/routeSlice';
+import { Waypoint } from 'vfr3d-shared';
 
 interface RouteCodeBubbleProps {
   code: string;
@@ -12,7 +13,7 @@ const RouteCodeBubble: React.FC<RouteCodeBubbleProps> = ({ code }) => {
   const routePoints = useSelector((state: AppState) => state.route.route?.routePoints);
   if (!routePoints) return;
 
-  const isValid = routePoints.some((point) => point.name === code);
+  const isValid = routePoints.some((point: Waypoint) => point.name === code);
 
   const handleRemoveRoutePoint = () => {
     if (!isValid) {

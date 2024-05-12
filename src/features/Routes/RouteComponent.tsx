@@ -4,7 +4,7 @@ import { AppState } from '../../redux/store';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
 import { mapWaypointToCartesian3 } from '../../utility/cesiumUtils';
-import { Waypoint } from './Route.interface';
+import { Waypoint } from 'vfr3d-shared';
 
 const RouteComponent: React.FC = () => {
   const routePoints = useSelector((state: AppState) => state.route.route?.routePoints);
