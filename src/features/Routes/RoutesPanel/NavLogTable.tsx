@@ -2,47 +2,45 @@ import { useSelector } from 'react-redux';
 import { InputCell } from '../../../ui/ReusableComponents/Table/InputCell';
 import { TableHeaderCell } from '../../../ui/ReusableComponents/Table/TableHeader';
 import { AppState } from '../../../redux/store';
-import { NavigationLeg } from '../../../redux/api/navlog/navlog.interface';
 import { TableCell } from '../../../ui/ReusableComponents/Table/TableCell';
 import { Waypoint } from 'vfr3d-shared';
 
-function mapWaypointsToNavLegs(waypoints: Waypoint[]): NavigationLeg[] {
-  const navLogs: NavigationLeg[] = [];
+// function mapWaypointsToNavLegs(waypoints: Waypoint[]): NavigationLeg[] {
+//   const navLogs: NavigationLeg[] = [];
 
-  for (let i = 0; i < waypoints.length - 1; i++) {
-    const leg: NavigationLeg = {
-      from_point: waypoints[i],
-      to_point: waypoints[i + 1],
-      altitude: 1000,
-      wind_direction: 90,
-      wind_velocity: 12,
-      temp_c: 15,
-      calibrated_air_speed: 108,
-      true_air_speed: 110,
-      true_course: 230,
-      true_heading: 225,
-      magnetic_heading: 227,
-      leg_distance: 48,
-      distance_remaining: 120,
-      ground_speed: 100,
-      estimated_time_enroute: new Date(),
-      estimated_time_arrival: new Date(),
-      actual_time_arrival: new Date(),
-      gallons_per_hour_act: 0,
-      gallons_per_hour_est: 10,
-      fuel_burned: 6,
-      fuel_remaining: 28,
-    };
+//   for (let i = 0; i < waypoints.length - 1; i++) {
+//     const leg: NavigationLeg = {
+//       from_point: waypoints[i],
+//       to_point: waypoints[i + 1],
+//       altitude: 1000,
+//       wind_direction: 90,
+//       wind_velocity: 12,
+//       temp_c: 15,
+//       calibrated_air_speed: 108,
+//       true_air_speed: 110,
+//       true_course: 230,
+//       true_heading: 225,
+//       magnetic_heading: 227,
+//       leg_distance: 48,
+//       distance_remaining: 120,
+//       ground_speed: 100,
+//       estimated_time_enroute: new Date(),
+//       estimated_time_arrival: new Date(),
+//       actual_time_arrival: new Date(),
+//       gallons_per_hour_act: 0,
+//       gallons_per_hour_est: 10,
+//       fuel_burned: 6,
+//       fuel_remaining: 28,
+//     };
 
-    navLogs.push(leg);
-  }
+//     navLogs.push(leg);
+//   }
 
-  return navLogs;
-}
+//   return navLogs;
+// }
 
 export const NavLogTable: React.FC = () => {
   const routePoints = useSelector((state: AppState) => state.route.route?.routePoints);
-  const navLegPoints = mapWaypointsToNavLegs(routePoints);
 
   return (
     <div className="rounded-lg shadow-md ">
@@ -87,9 +85,6 @@ export const NavLogTable: React.FC = () => {
                 Leg Times
               </TableHeaderCell>
               <TableHeaderCell colSpan={2} width={120} bar={true}>
-                GPH
-              </TableHeaderCell>
-              <TableHeaderCell colSpan={2} width={120} bar={true}>
                 Fuel
               </TableHeaderCell>
             </tr>
@@ -102,14 +97,12 @@ export const NavLogTable: React.FC = () => {
               <TableHeaderCell width={60}>ETE</TableHeaderCell>
               <TableHeaderCell width={60}>ETA</TableHeaderCell>
               <TableHeaderCell width={60}>ATA</TableHeaderCell>
-              <TableHeaderCell width={60}>Est</TableHeaderCell>
-              <TableHeaderCell width={60}>Act</TableHeaderCell>
               <TableHeaderCell width={60}>Fuel</TableHeaderCell>
               <TableHeaderCell width={60}>Rem</TableHeaderCell>
             </tr>
           </thead>
           <tbody>
-            {navLegPoints.map((leg, index) => (
+            {/* {navLegPoints.map((leg, index) => (
               <tr key={index}>
                 <TableCell>
                   {leg.from_point.name} ➨ {leg.to_point.name}
@@ -135,7 +128,7 @@ export const NavLogTable: React.FC = () => {
                 <InputCell defaultValue={leg.fuel_burned.toString()} />
                 <InputCell defaultValue={leg.fuel_remaining.toString()} />
               </tr>
-            ))}
+            ))} */}
           </tbody>
         </table>
       </div>

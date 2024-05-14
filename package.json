@@ -15,6 +15,7 @@
     "@esri/arcgis-rest-request": "^4.2.1",
     "@react-pdf/renderer": "^3.4.4",
     "@reduxjs/toolkit": "^2.2.3",
+    "@types/react-datepicker": "^6.2.0",
     "axios": "^1.6.8",
     "cesium": "^1.116.0",
     "daisyui": "^4.10.2",
@@ -23,6 +24,7 @@
     "react-awesome-reveal": "^4.2.8",
     "react-color": "^2.19.3",
     "react-daisyui": "^5.0.0",
+    "react-datepicker": "^6.9.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.1.0",
     "react-responsive": "^10.0.0",
@@ -31,7 +33,7 @@
     "swiper": "^11.1.1",
     "tailwindcss": "^3.4.3",
     "uuid": "^9.0.1",
-    "vfr3d-shared": "^1.5.0"
+    "vfr3d-shared": "^1.6.5"
   },
   "devDependencies": {
     "@types/cesium": "^1.70.0",

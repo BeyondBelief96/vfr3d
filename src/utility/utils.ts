@@ -61,8 +61,8 @@ export const mapAirportToWaypoint = (airport: Airport): Waypoint => {
   const waypoint: Waypoint = {
     id: airport.GLOBAL_ID,
     name: airport.ICAO_ID || airport.IDENT,
-    latitude: airport.LATITUDE,
-    longitude: airport.LONGITUDE,
+    latitude: convertDMSToDD(airport.LATITUDE),
+    longitude: convertDMSToDD(airport.LONGITUDE),
     altitude: airport.ELEVATION,
   };
 
