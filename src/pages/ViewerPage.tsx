@@ -5,11 +5,12 @@ import FlyTo from '../features/Airports/FlyTo';
 import VisibleAirports from '../features/Airports/VisibleAirports';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import ImageryLayers from '../features/Imagery/ImageryLayers';
-import RouteComponent from '../features/Routes/RouteComponent';
 import LoadingSpinner from '../ui/ReusableComponents/LoadingSpinner';
 import Sidebar from '../ui/Sidebar/Sidebar';
 import { IMAGERY_LAYER_OPTIONS } from '../utility/constants';
 import AirportInfoPopup from '../features/Airports/InformationPopup/AirportInfoPopup';
+import { RoutesPanel } from '../features/Routes/RoutesPanel/RoutesPanel';
+import RouteComponent from '../features/Routes/RouteComponent';
 
 const ViewerPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -72,6 +73,7 @@ const ViewerPage = () => {
       <div className="flex-1">
         {airspace3dloading && <LoadingSpinner />}
         <ResiumViewer
+          useBrowserRecommendedResolution={false}
           imageryProviderViewModels={imageryViewModels}
           className="h-full"
           geocoder={false}
@@ -83,9 +85,10 @@ const ViewerPage = () => {
           <ImageryLayers />
           <AirspaceComponent setIsLoading={setAirspace3dloading} />
           <VisibleAirports />
-          <FlyTo />
           <RouteComponent />
+          <FlyTo />
         </ResiumViewer>
+        <RoutesPanel />
         <AirportInfoPopup />
       </div>
     </div>

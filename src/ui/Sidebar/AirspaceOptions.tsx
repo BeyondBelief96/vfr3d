@@ -2,11 +2,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleAirspace3d } from '../../redux/slices/airspaceSlice';
-import { RootState } from '../../redux/store';
+import { AppState } from '../../redux/store';
 
 const AirspaceOptions: React.FC = () => {
   const dispatch = useDispatch();
-  const { airspace3dEnabled } = useSelector((state: RootState) => state.airspace);
+  const { airspace3dEnabled } = useSelector((state: AppState) => state.airspace);
 
   return (
     <div className="mt-6 mb-6">

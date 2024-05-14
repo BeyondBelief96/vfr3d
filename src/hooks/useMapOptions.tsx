@@ -7,10 +7,10 @@ import {
   setImageryBrightness,
   setSelectedLayer,
 } from '../redux/slices/ViewerSlice';
-import { RootState } from '../redux/store';
+import { AppState } from '../redux/store';
 
 const selectSelectedImageryLayer = createSelector(
-  (state: RootState) => state.viewer.selectedImageryLayer,
+  (state: AppState) => state.viewer.selectedImageryLayer,
   (selectedImageryLayer) => selectedImageryLayer
 );
 

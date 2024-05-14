@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedAirport } from '../../../redux/slices/airportsSlice';
-import { RootState } from '../../../redux/store';
+import { AppState } from '../../../redux/store';
 import AirportInfo from './AirportInfo';
 import AirportWeather from './Weather/AirportWeather';
 import {
@@ -14,7 +14,7 @@ import Tabs from '../../../ui/ReusableComponents/Tabs';
 
 const AirportInfoPopup: React.FC = () => {
   const dispatch = useDispatch();
-  const selectedAirport = useSelector((state: RootState) => state.airport.selectedAirport);
+  const selectedAirport = useSelector((state: AppState) => state.airport.selectedAirport);
   const [activeTab, setActiveTab] = useState('info');
   const icaoCodeOrIdent = selectedAirport?.ICAO_ID || selectedAirport?.IDENT;
 
@@ -55,7 +55,7 @@ const AirportInfoPopup: React.FC = () => {
   ];
 
   return (
-    <div className="fixed top-0 bottom-0 sm:bottom-4 sm:right-4 sm:top-auto sm:transform-none z-10 w-full sm:w-96 h-screen sm:h-[calc(80vh)] bg-base-100 rounded-lg overflow-hidden shadow-lg">
+    <div className="fixed top-0 bottom-0 sm:bottom-10 sm:right-4 sm:top-auto sm:transform-none w-full sm:w-96 h-screen sm:h-[calc(80vh)] bg-base-100 rounded-lg overflow-hidden shadow-lg">
       <div className="flex flex-col h-full">
         <AirportHeader airport={selectedAirport} metar={metar} handleClose={handleClose} />
         <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />

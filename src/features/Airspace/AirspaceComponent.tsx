@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
 import { updateCurrentAirspaceEntityIds } from '../../redux/slices/entitiesSlice';
-import { AppDispatch, RootState } from '../../redux/store';
+import { AppDispatch, AppState } from '../../redux/store';
 
 interface AirspaceComponentProps {
   setIsLoading: (isLoading: boolean) => void;
@@ -12,7 +12,7 @@ interface AirspaceComponentProps {
 const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) => {
   const { viewer } = useCesium();
   const dispatch = useDispatch<AppDispatch>();
-  const { airspace3dEnabled } = useSelector((state: RootState) => state.airspace);
+  const { airspace3dEnabled } = useSelector((state: AppState) => state.airspace);
   const entityRefs = useRef<Record<string, Entity>>({});
 
   useEffect(() => {

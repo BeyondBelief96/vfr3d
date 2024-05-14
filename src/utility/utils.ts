@@ -1,7 +1,8 @@
-import { Cartesian3, Color } from 'cesium';
+import { Color } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
+import { Waypoint } from 'vfr3d-shared';
 
-const convertDMSToDecimal = (dms: string): number => {
+export const convertDMSToDD = (dms: string): number => {
   const hemisphere = dms.slice(-1);
   const [degrees, minutes, seconds] = dms.slice(0, -1).split('-').map(parseFloat);
 
@@ -12,25 +13,6 @@ const convertDMSToDecimal = (dms: string): number => {
   }
 
   return decimalDegrees;
-};
-
-export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null => {
-  const longitude = convertDMSToDecimal(airport.LONGITUDE);
-  const latitude = convertDMSToDecimal(airport.LATITUDE);
-  const elevation = 0;
-
-  if (
-    longitude === null ||
-    latitude === null ||
-    elevation === null ||
-    isNaN(latitude) ||
-    isNaN(longitude) ||
-    isNaN(elevation)
-  ) {
-    return null;
-  }
-
-  return Cartesian3.fromDegrees(longitude, latitude, elevation);
 };
 
 export function getMetarStationIdFromAirport(airport: Airport): string | undefined {
@@ -63,4 +45,26 @@ export const colorSerializer = {
   deserialize: (colorData: Record<string, number>) => {
     return new Color(colorData.red, colorData.green, colorData.blue, colorData.alpha);
   },
+};
+
+export function mapAirportsToWaypoints(airports: Airport[]): Waypoint[] {
+  const waypoints: Waypoint[] = [];
+  for (let i = 0; i < airports.length - 1; i++) {
+    const waypoint = mapAirportToWaypoint(airports[i]);
+    waypoints.push(waypoint);
+  }
+
+  return waypoints;
+}
+
+export const mapAirportToWaypoint = (airport: Airport): Waypoint => {
+  const waypoint: Waypoint = {
+    id: airport.GLOBAL_ID,
+    name: airport.ICAO_ID || airport.IDENT,
+    latitude: airport.LATITUDE,
+    longitude: airport.LONGITUDE,
+    altitude: airport.ELEVATION,
+  };
+
+  return waypoint;
 };

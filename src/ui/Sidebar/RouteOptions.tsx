@@ -2,10 +2,10 @@ import { Color } from 'cesium';
 import { useDispatch, useSelector } from 'react-redux';
 import { HuePicker } from 'react-color';
 import { setEndPointColor, setLineColor } from '../../redux/slices/routeSlice';
-import { AppDispatch, RootState } from '../../redux/store';
+import { AppDispatch, AppState } from '../../redux/store';
 
 const RouteOptions: React.FC = () => {
-  const { lineColor, pointColor: endPointColor } = useSelector((state: RootState) => state.route);
+  const { lineColor, pointColor: endPointColor } = useSelector((state: AppState) => state.route);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleLineColorChange = (color: Color) => {
