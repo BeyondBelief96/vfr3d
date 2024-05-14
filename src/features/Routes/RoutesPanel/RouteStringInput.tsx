@@ -44,8 +44,6 @@ export const RouteStringInput: React.FC = () => {
           }
         }
       }
-
-      console.log(`Handle Change-Setting Route Points: ${waypoints}`);
       dispatch(setRoutePoints(waypoints));
     }
   };

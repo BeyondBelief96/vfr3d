@@ -13,7 +13,6 @@ const RouteComponent: React.FC = () => {
     <>
       {routePoints?.map((point: Waypoint) => {
         const position = mapWaypointToCartesian3(point);
-        console.log(position);
         if (!position) return null;
 
         return (
