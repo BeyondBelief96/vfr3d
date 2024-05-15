@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteStringInput } from './RouteStringInput';
 import Drawer from '../../../ui/ReusableComponents/BottomDrawer';
 import { NavLogTable } from './NavLogTable';
@@ -6,7 +6,11 @@ import { AircraftPerformanceConfigurationComponent } from './AircraftPerformance
 import { NavlogControls } from './AltitudeAndDepartureControls';
 import LoadingSpinner from '../../../ui/ReusableComponents/LoadingSpinner';
 import { useDispatch, useSelector } from 'react-redux';
-import { setNavlogReady, validateNavlogFields } from '../../../redux/slices/navlogSlice';
+import {
+  setNavlogCalculationEnabled,
+  setNavlogReady,
+  validateNavlogFields,
+} from '../../../redux/slices/navlogSlice';
 import { AppState } from '../../../redux/store';
 import { useCalculateNavLogMutation } from '../../../redux/api/vfr3d/navlog.api';
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -21,7 +25,7 @@ export const RoutesPanel: React.FC = () => {
   const dispatch = useDispatch();
   const {
     errors,
-    isNavlogReady,
+    isNavlogCalculationEnabled,
     aircraftPerformanceProfile,
     plannedCruisingAltitude,
     timeOfDepartureUtc,
@@ -31,6 +35,16 @@ export const RoutesPanel: React.FC = () => {
   const [calculateNavLog, { isLoading: navlogLoading }] = useCalculateNavLogMutation();
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+
+  useEffect(() => {
+    dispatch(setNavlogReady(currentStep === 3));
+  }, [dispatch, currentStep]);
+
+  useEffect(() => {
+    const hasErrors = Object.values(errors).some((error) => error);
+    const hasEnoughRoutePoints = route.routePoints.length >= 2;
+    dispatch(setNavlogCalculationEnabled(!hasErrors && hasEnoughRoutePoints));
+  }, [dispatch, errors, route.routePoints]);
 
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
@@ -55,14 +69,11 @@ export const RoutesPanel: React.FC = () => {
           plannedCruisingAltitude,
           timeOfDeparture: new Date(timeOfDepartureUtc),
         });
-        dispatch(setNavlogReady(true));
       } catch (error) {
         console.error('Error calculating nav log:', error);
       }
     }
   };
-
-  const hasErrors = Object.values(errors).some((error) => error);
 
   return (
     <Drawer
@@ -82,7 +93,7 @@ export const RoutesPanel: React.FC = () => {
         {currentStep === 2 ? (
           <>
             <button
-              className={`btn btn-primary w-32 ${hasErrors || !isNavlogReady ? 'btn-disabled' : ''}`}
+              className={`btn btn-primary w-32 ${isNavlogCalculationEnabled ? '' : 'btn-disabled'}`}
               onClick={handleCalculateNavLog}
             >
               Calculate Nav Log

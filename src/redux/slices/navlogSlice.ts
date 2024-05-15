@@ -22,10 +22,12 @@ interface NavlogState {
   };
   navlog: NavLogResponseDTO;
   isNavlogReady: boolean;
+  isNavlogCalculationEnabled: boolean;
 }
 
 const initialState: NavlogState = {
   isNavlogReady: false,
+  isNavlogCalculationEnabled: false,
   aircraftPerformanceProfile: {
     climbTrueAirspeed: 72,
     cruiseTrueAirspeed: 108,
@@ -67,6 +69,9 @@ const navlogSlice = createSlice({
   reducers: {
     setNavlogReady: (state, action: PayloadAction<boolean>) => {
       state.isNavlogReady = action.payload;
+    },
+    setNavlogCalculationEnabled: (state, action: PayloadAction<boolean>) => {
+      state.isNavlogCalculationEnabled = action.payload;
     },
     setAircraftPerformanceProfile: (
       state,
@@ -127,6 +132,7 @@ export const {
   setTimeOfDepartureUtc,
   validateNavlogFields,
   setNavlogReady,
+  setNavlogCalculationEnabled,
 } = navlogSlice.actions;
 
 export default navlogSlice.reducer;
