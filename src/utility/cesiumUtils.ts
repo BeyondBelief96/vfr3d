@@ -37,20 +37,5 @@ export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null 
 };
 
 export const mapWaypointToCartesian3 = (waypoint: Waypoint): Cartesian3 | null => {
-  const longitude = convertDMSToDD(waypoint.longitude.toString());
-  const latitude = convertDMSToDD(waypoint.latitude.toString());
-  const elevation = waypoint.altitude;
-
-  if (
-    longitude === null ||
-    latitude === null ||
-    elevation === null ||
-    isNaN(latitude) ||
-    isNaN(longitude) ||
-    isNaN(elevation)
-  ) {
-    return null;
-  }
-
-  return Cartesian3.fromDegrees(longitude, latitude, elevation);
+  return Cartesian3.fromDegrees(waypoint.longitude, waypoint.latitude, waypoint.altitude);
 };

@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Fade } from 'react-awesome-reveal';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 const FeaturesSection: React.FC = () => {
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('left');
+
+  const handleSlideNextTransitionStart = () => {
+    setSlideDirection('right');
+  };
+
+  const handleSlidePrevTransitionStart = () => {
+    setSlideDirection('left');
+  };
   return (
     <section className="py-20 bg-base-100">
       <div className="container mx-auto">
@@ -28,13 +37,15 @@ const FeaturesSection: React.FC = () => {
             },
           }}
           className="mySwiper"
+          onSlideNextTransitionStart={handleSlideNextTransitionStart}
+          onSlidePrevTransitionStart={handleSlidePrevTransitionStart}
         >
           <SwiperSlide>
-            <Fade direction="left">
+            <Fade direction={slideDirection}>
               <div className="h-full p-4 shadow-xl card bg-base-200 sm:h-96 sm:p-6">
                 <div className="card-body">
                   <h3 className="text-2xl font-semibold card-title">3D Visualization</h3>
-                  <p className="mb-4">
+                  <p>
                     Experience a truly immersive and interactive way of visualizing VFR Sectionals,
                     TAC Charts, and IFR charts in stunning 3D. Using cutting-edge technology powered
                     by Cesium, we allow you to explore these charts from every angle, providing a
@@ -45,11 +56,11 @@ const FeaturesSection: React.FC = () => {
             </Fade>
           </SwiperSlide>
           <SwiperSlide>
-            <Fade direction="right">
+            <Fade direction={slideDirection}>
               <div className="h-full p-4 shadow-xl card bg-base-200 sm:h-96 sm:p-6">
                 <div className="card-body">
                   <h3 className="text-2xl font-semibold card-title">Seamless Map Integration</h3>
-                  <p className="mb-4">
+                  <p>
                     Seamlessly blend your sectional charts with various map options, including
                     OpenStreetMaps and Bing Maps. This comprehensive integration provides a holistic
                     view, combining the detailed chart information with the latest map data for
@@ -60,13 +71,13 @@ const FeaturesSection: React.FC = () => {
             </Fade>
           </SwiperSlide>
           <SwiperSlide>
-            <Fade direction="right">
-              <div className="h-full p-4 shadow-xl card bg-base-200 sm:h-96 sm:p-6">
+            <Fade direction={slideDirection}>
+              <div className="h-full p-2 shadow-xl card bg-base-200 sm:h-96">
                 <div className="card-body">
                   <h3 className="text-2xl font-semibold card-title">
                     Realistic Airspace Visualization
                   </h3>
-                  <p className="mb-4">
+                  <p>
                     Witness airspace like never before with our experimental 3D airspace
                     visualization feature. Powered by data from{' '}
                     <a
@@ -80,9 +91,6 @@ const FeaturesSection: React.FC = () => {
                     , you can now visualize airspace in its true three-dimensional form, enhancing
                     your understanding of complex airspace structures.
                   </p>
-                  <a className="btn btn-primary" href="https://3dairspace.org.uk/">
-                    Learn More
-                  </a>
                 </div>
               </div>
             </Fade>

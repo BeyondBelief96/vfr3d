@@ -1,144 +1,157 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { InputCell } from '../../../ui/ReusableComponents/Table/InputCell';
-import { TableHeaderCell } from '../../../ui/ReusableComponents/Table/TableHeader';
 import { AppState } from '../../../redux/store';
-import { NavigationLeg } from '../../../redux/api/navlog/navlog.interface';
-import { TableCell } from '../../../ui/ReusableComponents/Table/TableCell';
-import { Waypoint } from 'vfr3d-shared';
-
-function mapWaypointsToNavLegs(waypoints: Waypoint[]): NavigationLeg[] {
-  const navLogs: NavigationLeg[] = [];
-
-  for (let i = 0; i < waypoints.length - 1; i++) {
-    const leg: NavigationLeg = {
-      from_point: waypoints[i],
-      to_point: waypoints[i + 1],
-      altitude: 1000,
-      wind_direction: 90,
-      wind_velocity: 12,
-      temp_c: 15,
-      calibrated_air_speed: 108,
-      true_air_speed: 110,
-      true_course: 230,
-      true_heading: 225,
-      magnetic_heading: 227,
-      leg_distance: 48,
-      distance_remaining: 120,
-      ground_speed: 100,
-      estimated_time_enroute: new Date(),
-      estimated_time_arrival: new Date(),
-      actual_time_arrival: new Date(),
-      gallons_per_hour_act: 0,
-      gallons_per_hour_est: 10,
-      fuel_burned: 6,
-      fuel_remaining: 28,
-    };
-
-    navLogs.push(leg);
-  }
-
-  return navLogs;
-}
+import { useMediaQuery } from 'react-responsive';
 
 export const NavLogTable: React.FC = () => {
-  const routePoints = useSelector((state: AppState) => state.route.route?.routePoints);
-  const navLegPoints = mapWaypointsToNavLegs(routePoints);
+  const navlog = useSelector((state: AppState) => state.navlog.navlog);
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString();
+  };
+
+  const formatTotalRouteTime = (timeInHours: number): string => {
+    if (timeInHours < 1) {
+      const minutes = Math.round(timeInHours * 60);
+      return `${minutes} min`;
+    } else {
+      const hours = Math.floor(timeInHours);
+      const minutes = Math.round((timeInHours - hours) * 60);
+      return `${hours} hr ${minutes} min`;
+    }
+  };
+
+  const formatData = (data: number | undefined): string => {
+    return data ? data.toFixed(0) : '---';
+  };
 
   return (
-    <div className="rounded-lg shadow-md ">
-      <div className="overflow-y-auto max-h-48 md:max-h-80">
-        <table className="table text-xs" style={{ tableLayout: 'fixed' }}>
-          <thead className="sticky top-0 font-semibold text-center text-primary-content bg-primary">
-            <tr>
-              <TableHeaderCell rowSpan={2} width={120}>
-                Legs
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={70}>
-                Altitude
-              </TableHeaderCell>
-              <TableHeaderCell colSpan={3} width={180} bar={true}>
-                Wind
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
-                CAS
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
-                TAS
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
-                TC
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
-                TH <br /> -L/+R <br /> WCA <br />
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
-                MH <br /> -E/+W <br />
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
-                CH <br /> MH ± Dev <br />
-              </TableHeaderCell>
-              <TableHeaderCell colSpan={2} width={120} bar={true}>
-                Dist
-              </TableHeaderCell>
-              <TableHeaderCell rowSpan={2} width={60}>
-                GS
-              </TableHeaderCell>
-              <TableHeaderCell colSpan={3} width={300} bar={true}>
-                Leg Times
-              </TableHeaderCell>
-              <TableHeaderCell colSpan={2} width={120} bar={true}>
-                GPH
-              </TableHeaderCell>
-              <TableHeaderCell colSpan={2} width={120} bar={true}>
-                Fuel
-              </TableHeaderCell>
-            </tr>
-            <tr>
-              <TableHeaderCell width={60}>Dir</TableHeaderCell>
-              <TableHeaderCell width={60}>Vel</TableHeaderCell>
-              <TableHeaderCell width={60}>Temp</TableHeaderCell>
-              <TableHeaderCell width={60}>Leg</TableHeaderCell>
-              <TableHeaderCell width={60}>Rem</TableHeaderCell>
-              <TableHeaderCell width={60}>ETE</TableHeaderCell>
-              <TableHeaderCell width={60}>ETA</TableHeaderCell>
-              <TableHeaderCell width={60}>ATA</TableHeaderCell>
-              <TableHeaderCell width={60}>Est</TableHeaderCell>
-              <TableHeaderCell width={60}>Act</TableHeaderCell>
-              <TableHeaderCell width={60}>Fuel</TableHeaderCell>
-              <TableHeaderCell width={60}>Rem</TableHeaderCell>
-            </tr>
-          </thead>
-          <tbody>
-            {navLegPoints.map((leg, index) => (
-              <tr key={index}>
-                <TableCell>
-                  {leg.from_point.name} ➨ {leg.to_point.name}
-                </TableCell>
-                <InputCell defaultValue={leg.altitude.toString()} />
-                <InputCell defaultValue={leg.wind_direction.toString()} />
-                <InputCell defaultValue={leg.wind_velocity.toString()} />
-                <InputCell defaultValue={leg.temp_c.toString()} />
-                <InputCell defaultValue={leg.calibrated_air_speed.toString()} />
-                <InputCell defaultValue={leg.true_air_speed.toString()} />
-                <InputCell defaultValue={leg.true_course.toString()} />
-                <InputCell defaultValue={leg.true_heading.toString()} />
-                <InputCell defaultValue={leg.magnetic_heading.toString()} />
-                <InputCell defaultValue={leg.magnetic_heading.toString()} />
-                <InputCell defaultValue={leg.leg_distance.toString()} />
-                <InputCell defaultValue={leg.distance_remaining?.toString()} />
-                <InputCell defaultValue={leg.ground_speed.toString()} />
-                <InputCell defaultValue={leg.estimated_time_enroute.toString()} />
-                <InputCell defaultValue={leg.estimated_time_arrival.toString()} />
-                <InputCell defaultValue={leg.actual_time_arrival.toString()} />
-                <InputCell defaultValue={leg.gallons_per_hour_est.toString()} />
-                <InputCell defaultValue={leg.gallons_per_hour_act.toString()} />
-                <InputCell defaultValue={leg.fuel_burned.toString()} />
-                <InputCell defaultValue={leg.fuel_remaining.toString()} />
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+    <div className="max-w-full">
+      {isMobile ? (
+        <div className="rounded-lg shadow-md">
+          {navlog.legs.map((leg, index) => (
+            <div key={index} className="p-4 border-b border-gray-200 last:border-none">
+              <h3 className="text-lg font-semibold">
+                {leg.legStartPoint?.name} ➨ {leg.legEndPoint?.name}
+              </h3>
+              <div className="grid grid-cols-2 gap-4 mt-2">
+                <div>
+                  <p>Distance: {leg.legDistance.toFixed(1)} nm</p>
+                  <p>Remaining: {leg.distanceRemaining.toFixed(1)} nm</p>
+                  <p>TC: {leg.trueCourse.toFixed(0)}</p>
+                  <p>MC: {leg.magneticCourse.toFixed(0)}</p>
+                  <p>MH: {leg.magneticHeading.toFixed(0)}</p>
+                  <p>GS: {leg.groundSpeed.toFixed(0)} knots</p>
+                </div>
+                <div>
+                  <p>Start: {formatDate(leg.startLegTime.toString())}</p>
+                  <p>End: {formatDate(leg.endLegTime.toString())}</p>
+                  <p>Burn: {leg.legFuelBurnGals.toFixed(1)} gals</p>
+                  <p>Remaining: {leg.remainingFuelGals.toFixed(1)} gals</p>
+                </div>
+              </div>
+            </div>
+          ))}
+          <div className="mt-4">
+            <p>Total Route Time: {formatTotalRouteTime(navlog.totalRouteTimeHours)}</p>
+            <p>Total Distance: {navlog.totalRouteDistance.toFixed(1)} nm</p>
+          </div>
+        </div>
+      ) : (
+        <div className="overflow-auto rounded-lg shadow-md">
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs text-center">
+              <thead className="sticky top-0 font-semibold text-primary-content bg-primary">
+                <tr>
+                  <th className="px-2 py-1 min-w-[120px]">Checkpoints</th>
+                  <th className="px-2 py-1 min-w-[80px]">Distance (nm)</th>
+                  <th className="px-2 py-1 min-w-[80px]">Remaining (nm)</th>
+                  <th className="px-2 py-1 min-w-[50px]">TC</th>
+                  <th className="px-2 py-1 min-w-[50px]">MC</th>
+                  <th className="px-2 py-1 min-w-[50px]">MH</th>
+                  <th className="px-2 py-1 min-w-[80px]">GS (knots)</th>
+                  <th className="px-2 py-1 min-w-[50px]">WD</th>
+                  <th className="px-2 py-1 min-w-[50px]">WS</th>
+                  <th className="px-2 py-1 min-w-[50px]">Temp</th>
+                  <th className="py-1 border-l border-base-content min-w-[120px]">
+                    <div className="flex justify-around">
+                      <span>Start</span>
+                      <span>End</span>
+                    </div>
+                    Leg Times
+                  </th>
+                  <th className="py-1 border-l border-base-content min-w-[100px]">
+                    <div className="flex justify-around">
+                      <span>Burn</span>
+                      <span>Rem</span>
+                    </div>
+                    gals
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {navlog.legs.map((leg, index) => (
+                  <tr key={index}>
+                    <td className="px-2 py-1 border-b min-w-40">
+                      {leg.legStartPoint?.name} ➨ {leg.legEndPoint?.name}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l border-r">
+                      {leg.legDistance.toFixed(1)}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l border-r">
+                      {leg.distanceRemaining.toFixed(1)}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l border-r">
+                      {formatData(leg.trueCourse)}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l border-r">
+                      {formatData(leg.magneticCourse)}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l border-r">
+                      {formatData(leg.magneticHeading)}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l border-r">
+                      {formatData(leg.groundSpeed)}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l border-r">
+                      {formatData(leg.windDir)}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l border-r">
+                      {formatData(leg.windSpeed)}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l border-r">
+                      {formatData(leg.tempC)}
+                    </td>
+                    <td className="px-2 py-1 border-b border-l min-w-52 border-base-content">
+                      <div className="flex justify-around">
+                        <span>{formatDate(leg.startLegTime.toString())}</span>
+                        <span>{formatDate(leg.endLegTime.toString())}</span>
+                      </div>
+                    </td>
+                    <td className="py-1 border-b border-l min-w-[100px] border-base-content">
+                      <div className="flex justify-around">
+                        <span>{leg.legFuelBurnGals.toFixed(1)}</span>
+                        <span>{leg.remainingFuelGals.toFixed(1)}</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan={2} className="px-2 py-1 text-left">
+                    Total Route Time: {formatTotalRouteTime(navlog.totalRouteTimeHours)}
+                  </td>
+                  <td colSpan={1} className="px-2 py-1 text-left">
+                    Total Distance: {navlog.totalRouteDistance.toFixed(1)} nm
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

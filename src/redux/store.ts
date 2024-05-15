@@ -6,6 +6,7 @@ import entitiesReducer from './slices/entitiesSlice';
 import routeReducer from './slices/routeSlice';
 import searchReducer from './slices/searchSlice';
 import sidebarReducer from './slices/sidebarSlice';
+import navlogReducer from './slices/navlogSlice';
 import { baseApi } from './api/apiSlice';
 
 const store = configureStore({
@@ -17,6 +18,7 @@ const store = configureStore({
     airspace: airspaceReducer,
     search: searchReducer,
     sidebar: sidebarReducer,
+    navlog: navlogReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),

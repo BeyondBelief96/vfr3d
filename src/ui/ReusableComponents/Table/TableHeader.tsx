@@ -11,13 +11,12 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
   rowSpan,
   width,
   children,
-  bar,
 }) => {
   return (
     <th
       colSpan={colSpan}
       rowSpan={rowSpan}
-      className={`px-2 py-1 bg-primary relative ${bar ? 'pb-2' : ''}`}
+      className="relative no-underline bg-primary"
       style={{ width: width ? `${width}px` : 'auto' }}
     >
       {children}
