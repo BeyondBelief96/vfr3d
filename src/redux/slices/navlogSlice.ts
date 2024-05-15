@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AircraftPerformanceDTO } from 'vfr3d-shared';
+import { AircraftPerformanceDTO, NavLogResponseDTO } from 'vfr3d-shared';
+import { navlogApi } from '../api/vfr3d/navlog.api';
 
 interface NavlogState {
   aircraftPerformanceProfile: AircraftPerformanceDTO;
@@ -16,10 +17,10 @@ interface NavlogState {
     descentTrueAirSpeed: boolean;
     sttFuelGals: boolean;
     fuelOnBoardGals: boolean;
-    cruiseCalibratedAirspeed: boolean;
     plannedCruisingAltitude: boolean;
     timeOfDepartureUtc: boolean;
   };
+  navlog: NavLogResponseDTO;
 }
 
 const initialState: NavlogState = {
@@ -34,7 +35,6 @@ const initialState: NavlogState = {
     descentTrueAirSpeed: 0,
     sttFuelGals: 0,
     fuelOnBoardGals: 0,
-    cruiseCalibratedAirspeed: 0,
   },
   plannedCruisingAltitude: 4500,
   timeOfDepartureUtc: new Date().toUTCString(),
@@ -49,9 +49,13 @@ const initialState: NavlogState = {
     descentTrueAirSpeed: false,
     sttFuelGals: false,
     fuelOnBoardGals: false,
-    cruiseCalibratedAirspeed: false,
     plannedCruisingAltitude: false,
     timeOfDepartureUtc: false,
+  },
+  navlog: {
+    totalRouteDistance: 0,
+    totalRouteTimeHours: 0,
+    legs: [],
   },
 };
 
@@ -86,7 +90,6 @@ const navlogSlice = createSlice({
         descentTrueAirSpeed,
         sttFuelGals,
         fuelOnBoardGals,
-        cruiseCalibratedAirspeed,
       } = state.aircraftPerformanceProfile;
 
       state.errors.climbTrueAirspeed = climbTrueAirspeed === 0;
@@ -99,10 +102,17 @@ const navlogSlice = createSlice({
       state.errors.descentTrueAirSpeed = descentTrueAirSpeed === 0;
       state.errors.sttFuelGals = sttFuelGals === 0;
       state.errors.fuelOnBoardGals = fuelOnBoardGals === 0;
-      state.errors.cruiseCalibratedAirspeed = cruiseCalibratedAirspeed === 0;
       state.errors.plannedCruisingAltitude = state.plannedCruisingAltitude === 0;
       state.errors.timeOfDepartureUtc = state.timeOfDepartureUtc === '';
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      navlogApi.endpoints.calculateNavLog.matchFulfilled,
+      (state, action: PayloadAction<NavLogResponseDTO>) => {
+        state.navlog = action.payload;
+      }
+    );
   },
 });
 
