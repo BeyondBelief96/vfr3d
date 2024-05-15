@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
   underline: {
     borderBottomWidth: 1,
     borderBottomColor: '#1a202c',
-    marginBottom: 20,
+    marginBottom: 10,
+    marginTop: 10,
   },
   section: {
     marginBottom: 20,
@@ -125,9 +126,9 @@ export const NavLogPDF: React.FC<NavLogPDFProps> = ({ navlog }) => {
           <Text style={styles.flightDetails}>
             Planned Cruising Altitude: {navlog.legs[0].legEndPoint.altitude} ft
           </Text>
+          <View style={styles.underline} />
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Nav Log</Text>
           {navlog.legs.map((leg, index) => (
             <View key={index} style={styles.legSection}>
               <Text style={styles.legTitle}>
