@@ -31,7 +31,8 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             Climb TAS:
           </label>
           <input
-            type="text"
+            type="number"
+            step="1"
             id="climbTrueAirspeed"
             name="climbTrueAirspeed"
             value={aircraftPerformanceProfile.climbTrueAirspeed}
@@ -46,7 +47,8 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             Cruise TAS:
           </label>
           <input
-            type="text"
+            type="number"
+            step="1"
             id="cruiseTrueAirspeed"
             name="cruiseTrueAirspeed"
             value={aircraftPerformanceProfile.cruiseTrueAirspeed}
@@ -61,7 +63,8 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             Cruise GPH:
           </label>
           <input
-            type="text"
+            type="number"
+            step="0.1"
             id="cruiseFuelBurn"
             name="cruiseFuelBurn"
             value={aircraftPerformanceProfile.cruiseFuelBurn}
@@ -76,7 +79,8 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             Climb GPH:
           </label>
           <input
-            type="text"
+            type="number"
+            step="0.1"
             id="climbFuelBurn"
             name="climbFuelBurn"
             value={aircraftPerformanceProfile.climbFuelBurn}
@@ -91,7 +95,8 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             Descent GPH:
           </label>
           <input
-            type="text"
+            type="number"
+            step="0.1"
             id="descentFuelBurn"
             name="descentFuelBurn"
             value={aircraftPerformanceProfile.descentFuelBurn}
@@ -106,7 +111,8 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             Climb FPM:
           </label>
           <input
-            type="text"
+            type="number"
+            step="1"
             id="climbFpm"
             name="climbFpm"
             value={aircraftPerformanceProfile.climbFpm}
@@ -121,7 +127,8 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             Descent FPM:
           </label>
           <input
-            type="text"
+            type="number"
+            step="1"
             id="descentFpm"
             name="descentFpm"
             value={aircraftPerformanceProfile.descentFpm}
@@ -136,7 +143,8 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             Descent TAS:
           </label>
           <input
-            type="text"
+            type="number"
+            step="1"
             id="descentTrueAirSpeed"
             name="descentTrueAirSpeed"
             value={aircraftPerformanceProfile.descentTrueAirSpeed}
@@ -151,11 +159,12 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             STT Fuel (Gals):
           </label>
           <input
-            type="text"
+            type="number"
             id="sttFuelGals"
             name="sttFuelGals"
             value={aircraftPerformanceProfile.sttFuelGals}
             onChange={handleInputChange}
+            step="0.1" // Adjust the step value as needed
             className={`w-full p-2 border rounded border-base-content ${
               errors.sttFuelGals ? 'border-error' : ''
             }`}
@@ -166,7 +175,8 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             FOB (Gals):
           </label>
           <input
-            type="text"
+            type="number"
+            step="1"
             id="fuelOnBoardGals"
             name="fuelOnBoardGals"
             value={aircraftPerformanceProfile.fuelOnBoardGals}

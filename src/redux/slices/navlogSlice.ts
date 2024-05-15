@@ -21,20 +21,22 @@ interface NavlogState {
     timeOfDepartureUtc: boolean;
   };
   navlog: NavLogResponseDTO;
+  isNavlogReady: boolean;
 }
 
 const initialState: NavlogState = {
+  isNavlogReady: false,
   aircraftPerformanceProfile: {
-    climbTrueAirspeed: 0,
-    cruiseTrueAirspeed: 0,
-    cruiseFuelBurn: 0,
-    climbFuelBurn: 0,
-    descentFuelBurn: 0,
-    climbFpm: 0,
-    descentFpm: 0,
-    descentTrueAirSpeed: 0,
-    sttFuelGals: 0,
-    fuelOnBoardGals: 0,
+    climbTrueAirspeed: 72,
+    cruiseTrueAirspeed: 108,
+    cruiseFuelBurn: 8,
+    climbFuelBurn: 12,
+    descentFuelBurn: 8,
+    climbFpm: 645,
+    descentFpm: 500,
+    descentTrueAirSpeed: 108,
+    sttFuelGals: 1.5,
+    fuelOnBoardGals: 38,
   },
   plannedCruisingAltitude: 4500,
   timeOfDepartureUtc: new Date().toUTCString(),
@@ -63,6 +65,9 @@ const navlogSlice = createSlice({
   name: 'navlog',
   initialState,
   reducers: {
+    setNavlogReady: (state, action: PayloadAction<boolean>) => {
+      state.isNavlogReady = action.payload;
+    },
     setAircraftPerformanceProfile: (
       state,
       action: PayloadAction<Partial<AircraftPerformanceDTO>>
@@ -121,6 +126,7 @@ export const {
   setPlannedCruisingAltitude,
   setTimeOfDepartureUtc,
   validateNavlogFields,
+  setNavlogReady,
 } = navlogSlice.actions;
 
 export default navlogSlice.reducer;

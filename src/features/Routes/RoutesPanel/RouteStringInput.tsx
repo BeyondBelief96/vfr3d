@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Airport } from '../../../redux/api/faa/faa.interface';
 import RouteStringBubbles from './RouteStringBubbles';
 import { AppState } from '../../../redux/store';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLazyGetAirportByIcaoCodeOrIdentLazyQuery } from '../../../redux/api/faa/faaApi';
 import {
   clearRoutePoints,
@@ -12,14 +12,19 @@ import {
 } from '../../../redux/slices/routeSlice';
 import { mapAirportToWaypoint } from '../../../utility/utils';
 import { Waypoint } from 'vfr3d-shared';
-
+import { setNavlogReady } from '../../../redux/slices/navlogSlice';
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();
-  const { routeString } = useSelector((state: AppState) => state.route);
+  const { routeString, route } = useSelector((state: AppState) => state.route);
   const formRef = useRef<HTMLFormElement>(null);
   const [fetchAirport] = useLazyGetAirportByIcaoCodeOrIdentLazyQuery();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isLastCodeValid, setIsLastCodeValid] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (route.routePoints.length >= 2) dispatch(setNavlogReady(true));
+    else dispatch(setNavlogReady(false));
+  }, [dispatch, route]);
 
   const handleRouteStringChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newRouteString = e.target.value.toUpperCase();
@@ -79,7 +84,6 @@ export const RouteStringInput: React.FC = () => {
     if (e.key === ' ') {
       const codes = routeString.trim().split(' ');
       const lastCode = codes[codes.length - 1];
-
       // Prevent space if the last code has less than 3 characters
       if (lastCode.length < 3) {
         e.preventDefault();

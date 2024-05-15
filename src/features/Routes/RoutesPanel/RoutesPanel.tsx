@@ -6,7 +6,7 @@ import { AircraftPerformanceConfigurationComponent } from './AircraftPerformance
 import { NavlogControls } from './AltitudeAndDepartureControls';
 import LoadingSpinner from '../../../ui/ReusableComponents/LoadingSpinner';
 import { useDispatch, useSelector } from 'react-redux';
-import { validateNavlogFields } from '../../../redux/slices/navlogSlice';
+import { setNavlogReady, validateNavlogFields } from '../../../redux/slices/navlogSlice';
 import { AppState } from '../../../redux/store';
 import { useCalculateNavLogMutation } from '../../../redux/api/vfr3d/navlog.api';
 
@@ -17,8 +17,13 @@ const ROUTE_PLANNER_TEXT = {
 
 export const RoutesPanel: React.FC = () => {
   const dispatch = useDispatch();
-  const { errors, aircraftPerformanceProfile, plannedCruisingAltitude, timeOfDepartureUtc } =
-    useSelector((state: AppState) => state.navlog);
+  const {
+    errors,
+    isNavlogReady,
+    aircraftPerformanceProfile,
+    plannedCruisingAltitude,
+    timeOfDepartureUtc,
+  } = useSelector((state: AppState) => state.navlog);
   const { route } = useSelector((state: AppState) => state.route);
   const [calculateNavLog, { isLoading: navlogLoading }] = useCalculateNavLogMutation();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -47,6 +52,7 @@ export const RoutesPanel: React.FC = () => {
           plannedCruisingAltitude,
           timeOfDeparture: new Date(timeOfDepartureUtc),
         });
+        dispatch(setNavlogReady(true));
       } catch (error) {
         console.error('Error calculating nav log:', error);
       }
@@ -63,23 +69,25 @@ export const RoutesPanel: React.FC = () => {
       closeText={ROUTE_PLANNER_TEXT.close}
       initialArrowDirection="down"
     >
-      <div className="flex justify-center mt-4 space-x-4">
+      <div className="flex justify-center mb-4 space-x-4">
         <button
-          className={`btn btn-primary ${currentStep === 0 ? 'hidden' : ''}`}
+          className={`btn btn-primary w-32 ${currentStep === 0 ? 'hidden' : ''}`}
           onClick={handlePreviousStep}
         >
           Previous
         </button>
         {currentStep === 2 ? (
-          <button
-            className={`btn btn-primary ${hasErrors ? 'btn-disabled' : ''}`}
-            onClick={handleCalculateNavLog}
-          >
-            Calculate Nav Log
-          </button>
+          <>
+            <button
+              className={`btn btn-primary w-32 ${hasErrors || !isNavlogReady ? 'btn-disabled' : ''}`}
+              onClick={handleCalculateNavLog}
+            >
+              Calculate Nav Log
+            </button>
+          </>
         ) : (
           <button
-            className={`btn btn-primary ${currentStep === 3 ? 'hidden' : ''}`}
+            className={`btn btn-primary w-32 ${currentStep === 3 ? 'hidden' : ''}`}
             onClick={handleNextStep}
           >
             Next
