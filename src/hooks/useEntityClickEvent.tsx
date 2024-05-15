@@ -10,7 +10,7 @@ export const useEntityClickEvent = (callback: ClickCallback) => {
 
   useEffect(() => {
     if (!viewer) return;
-
+    
     const handler = new ScreenSpaceEventHandler(viewer.scene.canvas);
     handler.setInputAction(callback, ScreenSpaceEventType.LEFT_CLICK);
 

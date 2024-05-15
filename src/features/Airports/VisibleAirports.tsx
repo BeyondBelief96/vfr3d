@@ -1,7 +1,5 @@
 // VisibleAirports.tsx
 import { useEffect } from 'react';
-import AirportEntity from './AirportEntity';
-import { getMetarStationIdFromAirport } from '../../utility/utils';
 import {
   useGetAirportByIcaoCodeOrIdentQuery,
   useGetAirportsByStateQuery,
@@ -10,6 +8,7 @@ import { useGetMetarsByStateQuery } from '../../redux/api/vfr3d/weatherApi';
 import { AppState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedState, setShowAirports } from '../../redux/slices/airportsSlice';
+import AirportEntities from './AirportEntities';
 
 const VisibleAirports: React.FC = () => {
   const dispatch = useDispatch();
@@ -63,24 +62,17 @@ const VisibleAirports: React.FC = () => {
     };
   }, [refetchMetars, showAirports, isMetarFetching]);
 
-  const metarMap = new Map(metarData.map((metar) => [metar.stationId, metar]));
+  const metarMap = new Map(
+    metarData
+      .filter((metar) => metar.stationId !== undefined)
+      .map((metar) => [metar.stationId as string, metar])
+  );
 
   if (!showAirports) {
     return null;
   }
 
-  return (
-    <>
-      {visibleAirports.map((airport) => {
-        const stationId = getMetarStationIdFromAirport(airport);
-        let metar;
-        if (stationId) {
-          metar = metarMap.get(stationId);
-        }
-        return <AirportEntity key={airport.GLOBAL_ID} airport={airport} metar={metar} />;
-      })}
-    </>
-  );
+  return <AirportEntities airports={visibleAirports} metarMap={metarMap} />;
 };
 
 export default VisibleAirports;

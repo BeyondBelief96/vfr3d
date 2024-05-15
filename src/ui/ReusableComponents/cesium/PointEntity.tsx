@@ -6,14 +6,12 @@ import {
   NearFarScalar,
   Entity,
   HeightReference,
-  ScreenSpaceEventHandler,
   DistanceDisplayCondition,
   Cartesian3,
   Property,
 } from 'cesium';
 import React, { useEffect, useRef } from 'react';
 import { useCesium } from 'resium';
-import { useEntityClickEvent } from '../../../hooks/useEntityClickEvent';
 
 interface PointEntityProps {
   position: Cartesian3;
@@ -28,7 +26,6 @@ interface PointEntityProps {
   distanceDisplayCondition?: DistanceDisplayCondition | Property;
   disableDepthTestDistance?: number | Property;
   id: string;
-  onClick?: (entity: Entity) => void;
 }
 
 export const PointEntity: React.FC<PointEntityProps> = ({
@@ -44,7 +41,6 @@ export const PointEntity: React.FC<PointEntityProps> = ({
   distanceDisplayCondition,
   disableDepthTestDistance,
   id,
-  onClick,
 }) => {
   const { viewer } = useCesium();
   const entityRef = useRef<Entity | null>(null);
@@ -102,17 +98,6 @@ export const PointEntity: React.FC<PointEntityProps> = ({
     disableDepthTestDistance,
     id,
   ]);
-
-  const handleClick = (movement: ScreenSpaceEventHandler.PositionedEvent) => {
-    if (!entityRef.current) return;
-
-    const pickedObject = viewer?.scene.pick(movement.position);
-    if (pickedObject && pickedObject.id === entityRef.current) {
-      onClick && onClick(entityRef.current);
-    }
-  };
-
-  useEntityClickEvent(handleClick);
 
   return null;
 };

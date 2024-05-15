@@ -1,12 +1,10 @@
 // AirportEntity.tsx
 import { Color, NearFarScalar } from 'cesium';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { MetarDTO } from 'vfr3d-shared';
 import { FlightCategories } from '../../utility/constants';
 import { Airport } from '../../redux/api/faa/faa.interface';
-import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
-import { useDispatch } from 'react-redux';
 import { mapAirportDataToCartesian3 } from '../../utility/cesiumUtils';
 
 interface AirportEntityProps {
@@ -15,13 +13,7 @@ interface AirportEntityProps {
 }
 
 const AirportEntity: React.FC<AirportEntityProps> = React.memo(({ airport, metar }) => {
-  const dispatch = useDispatch();
   const position = mapAirportDataToCartesian3(airport);
-
-  const handleClick = useCallback(() => {
-    dispatch(setSelectedAirport(airport));
-  }, [airport, dispatch]);
-
   let color = Color.WHITE;
   if (metar) {
     switch (metar.flightCategory) {
@@ -46,7 +38,6 @@ const AirportEntity: React.FC<AirportEntityProps> = React.memo(({ airport, metar
       color={color}
       id={airport.GLOBAL_ID}
       scaleByDistance={new NearFarScalar(1000000, 2, 5000000, 1)}
-      onClick={handleClick}
     />
   ) : null;
 });
