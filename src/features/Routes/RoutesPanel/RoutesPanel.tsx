@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setNavlogReady, validateNavlogFields } from '../../../redux/slices/navlogSlice';
 import { AppState } from '../../../redux/store';
 import { useCalculateNavLogMutation } from '../../../redux/api/vfr3d/navlog.api';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { NavLogPDF } from './NavLogPdf';
 
 const ROUTE_PLANNER_TEXT = {
   open: 'Open Route Planner',
@@ -25,6 +27,7 @@ export const RoutesPanel: React.FC = () => {
     timeOfDepartureUtc,
   } = useSelector((state: AppState) => state.navlog);
   const { route } = useSelector((state: AppState) => state.route);
+  const { navlog } = useSelector((state: AppState) => state.navlog);
   const [calculateNavLog, { isLoading: navlogLoading }] = useCalculateNavLogMutation();
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -93,6 +96,15 @@ export const RoutesPanel: React.FC = () => {
             Next
           </button>
         )}
+        {currentStep === 3 && !navlogLoading ? (
+          <PDFDownloadLink
+            className="btn btn-primary"
+            document={<NavLogPDF navlog={navlog} />}
+            fileName="navlog.pdf"
+          >
+            {({ loading }) => (loading ? 'Generating PDF...' : 'Download PDF')}
+          </PDFDownloadLink>
+        ) : null}
       </div>
       <div className="flex flex-col h-full">
         <ul className="steps">
