@@ -12,6 +12,7 @@ import {
 } from '../../../redux/slices/routeSlice';
 import { mapAirportToWaypoint } from '../../../utility/utils';
 import { Waypoint } from 'vfr3d-shared';
+import { setSelectedState, toggleShowAirports } from '../../../redux/slices/airportsSlice';
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();
   const { routeString } = useSelector((state: AppState) => state.route);
@@ -82,6 +83,15 @@ export const RouteStringInput: React.FC = () => {
       if (lastCode.length < 3) {
         e.preventDefault();
         return;
+      }
+
+      // Makes the airports show up for the state their first airport code is in.
+      if (codes.length === 1) {
+        const airport = await fetchAirportByCode(codes[0]);
+        if (airport) {
+          dispatch(setSelectedState(airport.STATE));
+          dispatch(toggleShowAirports());
+        }
       }
 
       const uniqueCodes = Array.from(new Set(codes));

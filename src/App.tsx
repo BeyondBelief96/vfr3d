@@ -5,6 +5,7 @@ import { ContactMePage } from './pages/ContactMe';
 import DocumentationPage from './pages/DocumentationPage';
 import HomePage from './pages/Home';
 import ViewerPage from './pages/ViewerPage';
+import ErrorBoundary from './ui/ErrorBoundary';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
         element: <DocumentationPage />,
       },
     ],
+    errorElement: <ErrorBoundary />,
   },
 ]);
 

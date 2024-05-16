@@ -10,6 +10,7 @@ import {
 } from 'cesium';
 import { updateCurrentRouteEntityIds } from '../redux/slices/entitiesSlice';
 import { AppDispatch } from '../redux/store';
+import { Waypoint } from 'vfr3d-shared';
 
 export const createPolylineEntity = (
   viewer: Viewer,
@@ -24,6 +25,12 @@ export const createPolylineEntity = (
       material: Color.fromCssColorString(lineColor),
     },
   });
+};
+
+export const calculateDistance = (point1: Waypoint, point2: Waypoint): number => {
+  const cartesian1 = Cartesian3.fromDegrees(point1.longitude, point1.latitude, point1.altitude);
+  const cartesian2 = Cartesian3.fromDegrees(point2.longitude, point2.latitude, point2.altitude);
+  return Cartesian3.distance(cartesian1, cartesian2);
 };
 
 export const createPointEntity = (viewer: Viewer, position: Cartesian3, color: string): Entity => {

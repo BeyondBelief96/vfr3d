@@ -1,4 +1,12 @@
-import { Cartesian3, Color, ConstantProperty, Entity, PolylineGraphics } from 'cesium';
+import {
+  Cartesian3,
+  Color,
+  ConstantProperty,
+  Entity,
+  PolylineGraphics,
+  ScreenSpaceEventHandler,
+  ScreenSpaceEventType,
+} from 'cesium';
 import { useEffect, useRef } from 'react';
 import { useCesium } from 'resium';
 
@@ -7,6 +15,7 @@ interface PolylineEntityProps {
   color?: Color;
   width?: number;
   id: string;
+  onRightClick: (position: ScreenSpaceEventHandler.PositionedEvent) => void;
 }
 
 export const PolylineEntity: React.FC<PolylineEntityProps> = ({
@@ -14,6 +23,7 @@ export const PolylineEntity: React.FC<PolylineEntityProps> = ({
   color = Color.BLUE,
   width = 3,
   id,
+  onRightClick,
 }) => {
   const { viewer } = useCesium();
   const entityRef = useRef<Entity | null>(null);
@@ -33,12 +43,22 @@ export const PolylineEntity: React.FC<PolylineEntityProps> = ({
 
     entityRef.current = entity;
 
+    const handler = new ScreenSpaceEventHandler(viewer.scene.canvas);
+
+    handler.setInputAction((movement: ScreenSpaceEventHandler.PositionedEvent) => {
+      const pickedObject = viewer.scene.pick(movement.position);
+      if (pickedObject && pickedObject.id === entity) {
+        onRightClick(movement);
+      }
+    }, ScreenSpaceEventType.LEFT_CLICK);
+
     return () => {
       if (viewer && entity) {
         viewer.entities.remove(entity);
+        handler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
       }
     };
-  }, [viewer, positions, color, width, id]);
+  }, [viewer, positions, color, width, id, onRightClick]);
 
   return null;
 };

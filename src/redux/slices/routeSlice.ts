@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { faaApi } from '../api/faa/faaApi';
 import { mapAirportToWaypoint } from '../../utility/utils';
 import { Route, Waypoint } from 'vfr3d-shared';
+import { calculateDistance } from '../../utility/routeUtils';
 
 interface RouteState {
   lineColor: string;
@@ -72,6 +73,56 @@ const routeSlice = createSlice({
         state.route.routePoints.splice(index, 0, waypoint);
       }
     },
+    addCustomWaypoint: (state, action: PayloadAction<Waypoint>) => {
+      if (state.route) {
+        const { routePoints } = state.route;
+        const newWaypoint = action.payload;
+
+        // Find the appropriate index to insert the new waypoint based on the shortest distance
+        let insertIndex = 0;
+        let minDistance = Infinity;
+
+        for (let i = 0; i < routePoints.length - 1; i++) {
+          const startPoint = routePoints[i];
+          const endPoint = routePoints[i + 1];
+
+          const distanceToStart = calculateDistance(newWaypoint, startPoint);
+          const distanceToEnd = calculateDistance(newWaypoint, endPoint);
+          const totalDistance = distanceToStart + distanceToEnd;
+
+          if (totalDistance < minDistance) {
+            minDistance = totalDistance;
+            insertIndex = i + 1;
+          }
+        }
+
+        routePoints.splice(insertIndex, 0, newWaypoint);
+      }
+    },
+    removeCustomWaypoint: (state, action: PayloadAction<string>) => {
+      if (state.route) {
+        const { routePoints } = state.route;
+        const waypointId = action.payload;
+
+        // Find the index of the waypoint to remove
+        const removeIndex = routePoints.findIndex((point) => point.id === waypointId);
+
+        if (removeIndex !== -1) {
+          // Remove the waypoint at the found index
+          routePoints.splice(removeIndex, 1);
+        }
+      }
+    },
+    updateCustomWaypointName: (state, action: PayloadAction<{ id: string; name: string }>) => {
+      if (state.route) {
+        const { id, name } = action.payload;
+        const waypointIndex = state.route.routePoints.findIndex((point) => point.id === id);
+
+        if (waypointIndex !== -1) {
+          state.route.routePoints[waypointIndex].name = name;
+        }
+      }
+    },
     removeRoutePointAtIndex: (state, action: PayloadAction<number>) => {
       if (state.route) {
         state.route.routePoints.splice(action.payload, 1);
@@ -116,6 +167,9 @@ export const {
   clearRoutePoints,
   insertRoutePointAtIndex,
   removeRoutePointAtIndex,
+  addCustomWaypoint,
+  removeCustomWaypoint,
+  updateCustomWaypointName,
 } = routeSlice.actions;
 
 export default routeSlice.reducer;
