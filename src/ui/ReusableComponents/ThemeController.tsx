@@ -1,16 +1,4 @@
-import { useEffect, useState } from 'react';
-
 const ThemeController: React.FC = () => {
-  const [selectedTheme, setSelectedTheme] = useState('business');
-
-  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedTheme(event.target.value);
-  };
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', selectedTheme);
-  }, [selectedTheme]);
-
   return (
     <></>
     // <div className="dropdown">

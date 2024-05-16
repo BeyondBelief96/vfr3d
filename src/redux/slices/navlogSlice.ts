@@ -59,6 +59,8 @@ const initialState: NavlogState = {
   navlog: {
     totalRouteDistance: 0,
     totalRouteTimeHours: 0,
+    totalFuelUsed: 0,
+    averageWindComponent: 0,
     legs: [],
   },
 };
