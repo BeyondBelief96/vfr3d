@@ -14,7 +14,7 @@ interface RouteContextMenuProps {
   onClose: () => void;
 }
 
-const RouteContextMenu: React.FC<RouteContextMenuProps> = ({ position, onClose }) => {
+const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({ position, onClose }) => {
   const dispatch = useDispatch();
   const { viewer } = useCesium();
   const plannedCruisingAltitude = useSelector(
@@ -119,4 +119,4 @@ const RouteContextMenu: React.FC<RouteContextMenuProps> = ({ position, onClose }
   );
 };
 
-export default RouteContextMenu;
+export default AddWaypointContextMenu;

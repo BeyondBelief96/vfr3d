@@ -6,7 +6,7 @@ import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
 import { mapWaypointToCartesian3, mapWaypointToCartesian3Flat } from '../../utility/cesiumUtils';
 import { Waypoint } from 'vfr3d-shared';
-import RouteContextMenu from './RouteContextMenu';
+import AddWaypointContextMenu from './AddWaypointContextMenu';
 import { useCesium } from 'resium';
 
 const RouteComponent: React.FC = () => {
@@ -97,7 +97,7 @@ const RouteComponent: React.FC = () => {
       })}
 
       {showContextMenu && contextMenuPosition && (
-        <RouteContextMenu position={contextMenuPosition} onClose={handleCloseContextMenu} />
+        <AddWaypointContextMenu position={contextMenuPosition} onClose={handleCloseContextMenu} />
       )}
     </>
   );
