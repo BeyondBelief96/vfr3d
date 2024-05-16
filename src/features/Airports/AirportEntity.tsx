@@ -12,7 +12,7 @@ interface AirportEntityProps {
   metar?: MetarDTO;
 }
 
-const AirportEntity: React.FC<AirportEntityProps> = React.memo(({ airport, metar }) => {
+const AirportEntity: React.FC<AirportEntityProps> = ({ airport, metar }) => {
   const position = mapAirportDataToCartesian3(airport);
   let color = Color.WHITE;
   if (metar) {
@@ -40,6 +40,6 @@ const AirportEntity: React.FC<AirportEntityProps> = React.memo(({ airport, metar
       scaleByDistance={new NearFarScalar(1000000, 2, 5000000, 1)}
     />
   ) : null;
-});
+};
 
 export default AirportEntity;

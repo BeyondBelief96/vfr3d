@@ -101,6 +101,13 @@ export const NavLogPDF: React.FC<NavLogPDFProps> = ({ navlog }) => {
     return data ? data.toFixed(0) : '---';
   };
 
+  const formatWind = () => {
+    const headwindComponent = navlog.averageWindComponent;
+    if (headwindComponent < 0)
+      return `Average Tailwind: ${Math.abs(navlog.averageWindComponent).toFixed(1)} knots`;
+    else return `Average Headwind: ${navlog.averageWindComponent.toFixed(1)} knots`;
+  };
+
   if (navlog.legs?.length === 0) return;
 
   return (
@@ -123,6 +130,10 @@ export const NavLogPDF: React.FC<NavLogPDFProps> = ({ navlog }) => {
           <Text style={styles.flightDetails}>
             Total Distance: {navlog.totalRouteDistance.toFixed(1)} nm
           </Text>
+          <Text style={styles.flightDetails}>
+            Total Fuel Burned: {navlog.totalFuelUsed.toFixed(1)} gals
+          </Text>
+          <Text style={styles.flightDetails}>{formatWind()}</Text>
           <Text style={styles.flightDetails}>
             Planned Cruising Altitude: {navlog.legs[0].legEndPoint.altitude} ft
           </Text>

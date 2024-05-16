@@ -47,7 +47,7 @@ const AirportEntities: React.FC<AirportEntitiesProps> = ({ airports, metarMap })
   return (
     <>
       {airports.map((airport) => {
-        const metar = metarMap.get(airport.ICAO_ID || airport.IDENT);
+        const metar = metarMap.get(airport.ICAO_ID || 'K' + airport.IDENT);
         return <AirportEntity key={airport.GLOBAL_ID} airport={airport} metar={metar} />;
       })}
     </>

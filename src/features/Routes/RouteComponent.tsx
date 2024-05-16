@@ -68,6 +68,7 @@ const RouteComponent: React.FC = () => {
         return (
           <PointEntity
             key={entityKey}
+            pixelSize={15}
             position={position}
             color={Color.fromCssColorString(endPointColor)}
             id={`route-point-${entityKey}`}
@@ -91,6 +92,7 @@ const RouteComponent: React.FC = () => {
             positions={[prevPosition, currPosition]}
             color={Color.fromCssColorString(lineColor)}
             id={polylineId}
+            width={6}
             onRightClick={handleRouteLeftClick}
           />
         );

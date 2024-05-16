@@ -26,6 +26,13 @@ export const NavLogTable: React.FC = () => {
     return data ? data.toFixed(0) : '---';
   };
 
+  const formatWind = () => {
+    const headwindComponent = navlog.averageWindComponent;
+    if (headwindComponent < 0)
+      return `Average Tailwind: ${Math.abs(navlog.averageWindComponent).toFixed(1)} knots`;
+    else return `Average Headwind: ${navlog.averageWindComponent.toFixed(1)} knots`;
+  };
+
   return (
     <div className="max-w-full">
       {isMobile ? (
@@ -64,17 +71,17 @@ export const NavLogTable: React.FC = () => {
             <table className="w-full text-xs text-center">
               <thead className="sticky top-0 font-semibold text-primary-content bg-primary">
                 <tr>
-                  <th className="px-2 py-1 min-w-[120px]">Checkpoints</th>
-                  <th className="px-2 py-1 min-w-[80px]">Distance (nm)</th>
-                  <th className="px-2 py-1 min-w-[80px]">Remaining (nm)</th>
-                  <th className="px-2 py-1 min-w-[50px]">TC</th>
-                  <th className="px-2 py-1 min-w-[50px]">MC</th>
-                  <th className="px-2 py-1 min-w-[50px]">MH</th>
-                  <th className="px-2 py-1 min-w-[80px]">GS (knots)</th>
-                  <th className="px-2 py-1 min-w-[50px]">WD</th>
-                  <th className="px-2 py-1 min-w-[50px]">WS</th>
-                  <th className="px-2 py-1 min-w-[50px]">Temp</th>
-                  <th className="py-1 border-l border-base-content min-w-[120px]">
+                  <th className="px-2 py-1">Checkpoints</th>
+                  <th className="px-2 py-1">Distance (nm)</th>
+                  <th className="px-2 py-1">Remaining (nm)</th>
+                  <th className="px-2 py-1 ">TC</th>
+                  <th className="px-2 py-1">MC</th>
+                  <th className="px-2 py-1 ">MH</th>
+                  <th className="px-2 py-1 ">GS (knots)</th>
+                  <th className="px-2 py-1 ">WD</th>
+                  <th className="px-2 py-1 ">WS</th>
+                  <th className="px-2 py-1 ">Temp</th>
+                  <th className="py-1 border-l border-base-content ">
                     <div className="flex justify-around">
                       <span>Start</span>
                       <span>End</span>
@@ -138,17 +145,21 @@ export const NavLogTable: React.FC = () => {
                   </tr>
                 ))}
               </tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan={2} className="px-2 py-1 text-left">
-                    Total Route Time: {formatTotalRouteTime(navlog.totalRouteTimeHours)}
-                  </td>
-                  <td colSpan={1} className="px-2 py-1 text-left">
-                    Total Distance: {navlog.totalRouteDistance.toFixed(1)} nm
-                  </td>
-                </tr>
-              </tfoot>
             </table>
+            <div className="flex justify-center">
+              <td colSpan={1} className="px-2 py-1 text-sm font-semibold">
+                Total Route Time: {formatTotalRouteTime(navlog.totalRouteTimeHours)}
+              </td>
+              <td colSpan={1} className="px-2 py-1 text-sm font-semibold">
+                Total Distance: {navlog.totalRouteDistance.toFixed(1)} nm
+              </td>
+              <td colSpan={1} className="px-2 py-1 text-sm font-semibold">
+                Total Fuel Used: {navlog.totalFuelUsed.toFixed(1)} gals
+              </td>
+              <td colSpan={1} className="px-2 py-1 text-sm font-semibold">
+                {formatWind()}
+              </td>
+            </div>
           </div>
         </div>
       )}

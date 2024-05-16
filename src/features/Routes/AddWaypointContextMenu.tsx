@@ -78,6 +78,12 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({ position, onC
     onClose();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
+  };
+
   useEffect(() => {
     if (!viewer || !menuRef.current) return;
     const screenPosition = SceneTransforms.wgs84ToWindowCoordinates(viewer.scene, position);
@@ -97,6 +103,7 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({ position, onC
           setName(e.target.value);
           setNameError('');
         }}
+        onKeyDown={handleKeyDown}
         placeholder="Waypoint Name"
         className="px-2 py-1 mb-2 border rounded-md border-base-content focus:outline-none focus:ring-2"
       />
