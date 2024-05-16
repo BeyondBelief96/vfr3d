@@ -20,8 +20,8 @@ const RouteComponent: React.FC = () => {
     ? navlog.legs.flatMap((leg) => [leg.legStartPoint, leg.legEndPoint])
     : routePoints;
 
-  const [showContextMenu, setShowContextMenu] = useState(false);
-  const [contextMenuPosition, setContextMenuPosition] = useState<Cartesian3 | null>(null);
+  const [showAddWaypointMenu, setShowAddWaypointMenu] = useState(false);
+  const [addWaypointMenuPosition, setAddWaypointMenuPosition] = useState<Cartesian3 | null>(null);
 
   const handleRouteLeftClick = (event: ScreenSpaceEventHandler.PositionedEvent) => {
     if (!viewer || !scene || !camera) return;
@@ -39,15 +39,15 @@ const RouteComponent: React.FC = () => {
 
         if (!position) return;
 
-        setContextMenuPosition(position);
-        setShowContextMenu(true);
+        setAddWaypointMenuPosition(position);
+        setShowAddWaypointMenu(true);
       }
     }
   };
 
-  const handleCloseContextMenu = () => {
-    setShowContextMenu(false);
-    setContextMenuPosition(null);
+  const closeAddWaypointMenu = () => {
+    setShowAddWaypointMenu(false);
+    setAddWaypointMenuPosition(null);
   };
 
   const mapWaypointToPosition = isNavlogReady
@@ -96,8 +96,8 @@ const RouteComponent: React.FC = () => {
         );
       })}
 
-      {showContextMenu && contextMenuPosition && (
-        <AddWaypointContextMenu position={contextMenuPosition} onClose={handleCloseContextMenu} />
+      {showAddWaypointMenu && addWaypointMenuPosition && (
+        <AddWaypointContextMenu position={addWaypointMenuPosition} onClose={closeAddWaypointMenu} />
       )}
     </>
   );

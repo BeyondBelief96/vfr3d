@@ -50,8 +50,11 @@ const Navigation: React.FC = () => {
               </a>
             </li>
             <li>
-              <a href="#route-plotting" onClick={(event) => handleClick(event, '#route-plotting')}>
-                Route Plotting
+              <a
+                href="#vfr-navigation-log"
+                onClick={(event) => handleClick(event, '#vfr-navigation-log')}
+              >
+                VFR Navigation Log
               </a>
             </li>
             <li>
