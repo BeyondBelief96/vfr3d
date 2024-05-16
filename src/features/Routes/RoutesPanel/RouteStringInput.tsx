@@ -12,7 +12,7 @@ import {
 } from '../../../redux/slices/routeSlice';
 import { mapAirportToWaypoint } from '../../../utility/utils';
 import { Waypoint } from 'vfr3d-shared';
-import { setSelectedState, toggleShowAirports } from '../../../redux/slices/airportsSlice';
+import { setSelectedState, setShowAirports } from '../../../redux/slices/airportsSlice';
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();
   const { routeString } = useSelector((state: AppState) => state.route);
@@ -90,7 +90,7 @@ export const RouteStringInput: React.FC = () => {
         const airport = await fetchAirportByCode(codes[0]);
         if (airport) {
           dispatch(setSelectedState(airport.STATE));
-          dispatch(toggleShowAirports());
+          dispatch(setShowAirports(true));
         }
       }
 

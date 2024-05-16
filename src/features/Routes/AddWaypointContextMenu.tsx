@@ -101,16 +101,16 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({ position, onC
         className="px-2 py-1 mb-2 border rounded-md border-base-content focus:outline-none focus:ring-2"
       />
       {nameError && <p className="mb-2 text-sm text-error">{nameError}</p>}
-      <div className="flex justify-end space-x-2">
+      <div className="flex justify-between space-x-2">
         <button
           onClick={handleCancel}
-          className="px-4 py-2 rounded-md btn text-error-content btn-error focus:outline-none focus:ring-2"
+          className="w-24 px-4 py-2 btn text-error-content btn-primary focus:outline-none focus:ring-2"
         >
           Cancel
         </button>
         <button
           onClick={handleSubmit}
-          className="px-4 py-2 rounded-md btn btn-success text-success-content focus:outline-none focus:ring-2"
+          className="w-24 px-4 py-2 btn btn-primary text-primary-content focus:outline-none focus:ring-2"
         >
           Add Waypoint
         </button>
