@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { faaApi } from '../api/faa/faaApi';
 import { mapAirportToWaypoint } from '../../utility/utils';
 import { Route, Waypoint } from 'vfr3d-shared';
+import { calculateDistance } from '../../utility/routeUtils';
 
 interface RouteState {
   lineColor: string;
@@ -51,9 +52,13 @@ const routeSlice = createSlice({
         state.route.routePoints = action.payload;
       }
     },
-    pushRoutePoint: (state, action: PayloadAction<Waypoint>) => {
+    insertRoutePointAtIndex: (
+      state,
+      action: PayloadAction<{ waypoint: Waypoint; index: number }>
+    ) => {
       if (state.route) {
-        state.route.routePoints.push(action.payload);
+        const { waypoint, index } = action.payload;
+        state.route.routePoints.splice(index, 0, waypoint);
       }
     },
     removeRoutePointByName: (state, action: PayloadAction<string>) => {
@@ -63,13 +68,64 @@ const routeSlice = createSlice({
         );
       }
     },
-    insertRoutePointAtIndex: (
-      state,
-      action: PayloadAction<{ waypoint: Waypoint; index: number }>
-    ) => {
+    addCustomWaypoint: (state, action: PayloadAction<Waypoint>) => {
       if (state.route) {
-        const { waypoint, index } = action.payload;
-        state.route.routePoints.splice(index, 0, waypoint);
+        const { routePoints } = state.route;
+        const newWaypoint = action.payload;
+
+        // Find the appropriate index to insert the new waypoint based on the shortest distance
+        let insertIndex = routePoints.length; // Default to adding at the end
+        let minDistance = Infinity;
+
+        for (let i = 0; i < routePoints.length - 1; i++) {
+          const startPoint = routePoints[i];
+          const endPoint = routePoints[i + 1];
+
+          const distanceToStart = calculateDistance(newWaypoint, startPoint);
+          const distanceToEnd = calculateDistance(newWaypoint, endPoint);
+          const totalDistance = distanceToStart + distanceToEnd;
+
+          if (totalDistance < minDistance) {
+            minDistance = totalDistance;
+            insertIndex = i + 1;
+          }
+        }
+
+        // Check if the new waypoint should be added at the end
+        if (insertIndex === routePoints.length) {
+          const lastPoint = routePoints[routePoints.length - 1];
+          const distanceToLast = calculateDistance(newWaypoint, lastPoint);
+
+          if (distanceToLast < minDistance) {
+            insertIndex = routePoints.length;
+          }
+        }
+
+        routePoints.splice(insertIndex, 0, newWaypoint);
+      }
+    },
+    removeCustomWaypoint: (state, action: PayloadAction<string>) => {
+      if (state.route) {
+        const { routePoints } = state.route;
+        const waypointId = action.payload;
+
+        // Find the index of the waypoint to remove
+        const removeIndex = routePoints.findIndex((point) => point.id === waypointId);
+
+        if (removeIndex !== -1) {
+          // Remove the waypoint at the found index
+          routePoints.splice(removeIndex, 1);
+        }
+      }
+    },
+    updateCustomWaypointName: (state, action: PayloadAction<{ id: string; name: string }>) => {
+      if (state.route) {
+        const { id, name } = action.payload;
+        const waypointIndex = state.route.routePoints.findIndex((point) => point.id === id);
+
+        if (waypointIndex !== -1) {
+          state.route.routePoints[waypointIndex].name = name;
+        }
       }
     },
     removeRoutePointAtIndex: (state, action: PayloadAction<number>) => {
@@ -111,11 +167,13 @@ export const {
   setLineColor,
   setEndPointColor,
   setRoutePoints,
-  pushRoutePoint,
-  removeRoutePointByName,
   clearRoutePoints,
   insertRoutePointAtIndex,
   removeRoutePointAtIndex,
+  removeRoutePointByName,
+  addCustomWaypoint,
+  removeCustomWaypoint,
+  updateCustomWaypointName,
 } = routeSlice.actions;
 
 export default routeSlice.reducer;

@@ -43,6 +43,38 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
           />
         </div>
         <div>
+          <label htmlFor="climbFuelBurn" className="block mb-1 text-sm">
+            Climb GPH:
+          </label>
+          <input
+            type="number"
+            step="0.1"
+            id="climbFuelBurn"
+            name="climbFuelBurn"
+            value={aircraftPerformanceProfile.climbFuelBurn}
+            onChange={handleInputChange}
+            className={`w-full p-2 border rounded border-base-content ${
+              errors.climbFuelBurn ? 'border-error' : ''
+            }`}
+          />
+        </div>
+        <div>
+          <label htmlFor="climbFpm" className="block mb-1 text-sm">
+            Climb FPM:
+          </label>
+          <input
+            type="number"
+            step="1"
+            id="climbFpm"
+            name="climbFpm"
+            value={aircraftPerformanceProfile.climbFpm}
+            onChange={handleInputChange}
+            className={`w-full p-2 border rounded border-base-content ${
+              errors.climbFpm ? 'border-error' : ''
+            }`}
+          />
+        </div>
+        <div>
           <label htmlFor="cruiseTrueAirspeed" className="block mb-1 text-sm">
             Cruise TAS:
           </label>
@@ -74,22 +106,7 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             }`}
           />
         </div>
-        <div>
-          <label htmlFor="climbFuelBurn" className="block mb-1 text-sm">
-            Climb GPH:
-          </label>
-          <input
-            type="number"
-            step="0.1"
-            id="climbFuelBurn"
-            name="climbFuelBurn"
-            value={aircraftPerformanceProfile.climbFuelBurn}
-            onChange={handleInputChange}
-            className={`w-full p-2 border rounded border-base-content ${
-              errors.climbFuelBurn ? 'border-error' : ''
-            }`}
-          />
-        </div>
+
         <div>
           <label htmlFor="descentFuelBurn" className="block mb-1 text-sm">
             Descent GPH:
@@ -106,22 +123,7 @@ export const AircraftPerformanceConfigurationComponent: React.FC = () => {
             }`}
           />
         </div>
-        <div>
-          <label htmlFor="climbFpm" className="block mb-1 text-sm">
-            Climb FPM:
-          </label>
-          <input
-            type="number"
-            step="1"
-            id="climbFpm"
-            name="climbFpm"
-            value={aircraftPerformanceProfile.climbFpm}
-            onChange={handleInputChange}
-            className={`w-full p-2 border rounded border-base-content ${
-              errors.climbFpm ? 'border-error' : ''
-            }`}
-          />
-        </div>
+
         <div>
           <label htmlFor="descentFpm" className="block mb-1 text-sm">
             Descent FPM:

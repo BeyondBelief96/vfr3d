@@ -15,6 +15,7 @@ import { AppState } from '../../../redux/store';
 import { useCalculateNavLogMutation } from '../../../redux/api/vfr3d/navlog.api';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { NavLogPDF } from './NavLogPdf';
+import { RoutePointsStep } from './RoutePointsStep';
 
 const ROUTE_PLANNER_TEXT = {
   open: 'Open Route Planner',
@@ -37,7 +38,7 @@ export const RoutesPanel: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    dispatch(setNavlogReady(currentStep === 3));
+    dispatch(setNavlogReady(currentStep === 4));
   }, [dispatch, currentStep]);
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export const RoutesPanel: React.FC = () => {
         >
           Previous
         </button>
-        {currentStep === 2 ? (
+        {currentStep === 3 ? (
           <>
             <button
               className={`btn btn-primary w-32 ${isNavlogCalculationEnabled ? '' : 'btn-disabled'}`}
@@ -101,13 +102,13 @@ export const RoutesPanel: React.FC = () => {
           </>
         ) : (
           <button
-            className={`btn btn-primary w-32 ${currentStep === 3 ? 'hidden' : ''}`}
+            className={`btn btn-primary w-32 ${currentStep === 4 ? 'hidden' : ''}`}
             onClick={handleNextStep}
           >
             Next
           </button>
         )}
-        {currentStep === 3 && !navlogLoading ? (
+        {currentStep === 4 && !navlogLoading ? (
           <PDFDownloadLink
             className="btn btn-primary"
             document={<NavLogPDF navlog={navlog} />}
@@ -120,9 +121,10 @@ export const RoutesPanel: React.FC = () => {
       <div className="flex flex-col h-full">
         <ul className="steps">
           <li className={`step ${currentStep >= 0 ? 'step-primary' : ''}`}>Route</li>
-          <li className={`step ${currentStep >= 1 ? 'step-primary' : ''}`}>Performance</li>
-          <li className={`step ${currentStep >= 2 ? 'step-primary' : ''}`}>Altitude & Time</li>
-          <li className={`step ${currentStep >= 3 ? 'step-primary' : ''}`}>Nav Log</li>
+          <li className={`step ${currentStep >= 1 ? 'step-primary' : ''}`}>Add Waypoints</li>
+          <li className={`step ${currentStep >= 2 ? 'step-primary' : ''}`}>Performance</li>
+          <li className={`step ${currentStep >= 3 ? 'step-primary' : ''}`}>Altitude & Time</li>
+          <li className={`step ${currentStep >= 4 ? 'step-primary' : ''}`}>Nav Log</li>
         </ul>
         <div className="flex flex-col items-center justify-center flex-grow overflow-y-auto">
           <div className="mt-2">
@@ -135,12 +137,19 @@ export const RoutesPanel: React.FC = () => {
 
             {currentStep === 1 && (
               <div className="flex flex-col items-center">
+                <h3 className="mb-2 text-lg font-bold">Add Custom Waypoints</h3>
+                <RoutePointsStep />
+              </div>
+            )}
+
+            {currentStep === 2 && (
+              <div className="flex flex-col items-center">
                 <h3 className="mb-2 text-lg font-bold">Fill Out Aircraft Performance Info</h3>
                 <AircraftPerformanceConfigurationComponent />
               </div>
             )}
 
-            {currentStep === 2 && (
+            {currentStep === 3 && (
               <div className="flex flex-col items-center">
                 <h3 className="mb-2 text-lg font-bold">
                   Select Cruising Altitude and Departure Time
@@ -149,7 +158,7 @@ export const RoutesPanel: React.FC = () => {
               </div>
             )}
 
-            {currentStep === 3 && (
+            {currentStep === 4 && (
               <div className="flex flex-col items-center">
                 <h3 className="mb-2 text-lg font-bold">Nav Log</h3>
                 {navlogLoading ? <LoadingSpinner /> : <NavLogTable />}

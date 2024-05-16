@@ -118,79 +118,72 @@ const Features: React.FC = () => {
             </p>
           </div>
         </li>
-        <li id="route-plotting">
-          <h3 className="mb-2 text-xl font-bold">Route Plotting</h3>
+        <li id="vfr-navigation-log">
+          <h3 className="mb-2 text-xl font-bold">VFR Navigation Log</h3>
           <p className="mb-4">
-            The Route Plotting feature in VFR 3D allows you to plot routes between two airports and
-            customize the appearance of the route line and points.
+            The VFR Navigation Log feature in VFR 3D allows you to create a detailed flight plan and
+            generate a navigation log for your route. You can enter your route, add custom
+            waypoints, configure aircraft performance settings, and specify altitude and departure
+            time to generate a comprehensive navigation log.
           </p>
           <div className="ml-4">
-            <h4 className="mb-2 text-lg font-semibold">Plotting a Route:</h4>
+            <h4 className="mb-2 text-lg font-semibold">Creating a Navigation Log:</h4>
             <ol className="mb-4 ml-6 list-decimal">
-              <li>In the sidebar, locate the "Route Plotting" section.</li>
               <li>
-                Enter the ICAO code of the departure airport in the "From Airport" input field.
+                Open the Route Planner by clicking the "Open Route Planner" button in the sidebar.
               </li>
               <li>
-                Enter the ICAO code of the destination airport in the "To Airport" input field.
+                In the "Route" step, enter your route using the route string input. You can enter
+                airport codes separated by spaces (e.g., KJFK KLAX KSFO). The route will be
+                displayed on the map.
               </li>
-              <li>Click the "Plot Route" button to generate the route between the two airports.</li>
+              <li>
+                In the "Add Waypoints" step, you can add custom waypoints to your route by clicking
+                on the route line between existing waypoints. A context menu will appear, allowing
+                you to enter a name for the custom waypoint. Click "Add Waypoint" to add it to the
+                route.
+              </li>
+              <li>
+                In the "Performance" step, fill out the aircraft performance information, such as
+                climb true airspeed, climb fuel burn, cruise true airspeed, and more. This
+                information will be used to calculate the navigation log.
+              </li>
+              <li>
+                In the "Altitude & Time" step, select your planned cruising altitude and the time of
+                departure for your flight.
+              </li>
+              <li>
+                Click the "Calculate Nav Log" button to generate the navigation log based on your
+                route, custom waypoints, aircraft performance, and flight details.
+              </li>
             </ol>
-            <p>
-              The route will be displayed on the map as a line connecting the departure and
-              destination airports. The route points will be shown as markers at the airports'
-              locations.
-            </p>
           </div>
           <div className="mt-4 ml-4">
-            <h4 className="mb-2 text-lg font-semibold">Customizing Route Appearance:</h4>
+            <h4 className="mb-2 text-lg font-semibold">Navigation Log Table:</h4>
             <p className="mb-4">
-              You can customize the appearance of the route line and points using the color pickers
-              in the "Route Plotting" section of the sidebar:
+              Once the navigation log is generated, it will be displayed in a table format. The
+              table includes the following information for each leg of your route:
             </p>
             <ul className="mb-4 ml-6 list-disc">
-              <li>
-                <strong>Line Color:</strong> Use the color picker labeled "Line Color" to select the
-                desired color for the route line. The changes will be reflected immediately on the
-                map.
-              </li>
-              <li>
-                <strong>Route Points Color:</strong> Use the color picker labeled "Route Points
-                Color" to select the desired color for the route points (markers) at the airports.
-                The changes will be reflected immediately on the map.
-              </li>
-            </ul>
-          </div>
-          <div className="mt-4 ml-4">
-            <h4 className="mb-2 text-lg font-semibold">Adding Intermediate Points:</h4>
-            <p className="mb-4">
-              You can add intermediate points to the route by double-clicking or double-tapping on
-              the route line:
-            </p>
-            <ul className="mb-4 ml-6 list-disc">
-              <li>
-                <strong>Double-click (Desktop):</strong> Double-click on the route line at the
-                desired location to add an intermediate point. The point will be added, and the
-                route line will be adjusted accordingly.
-              </li>
-              {/* <li>
-                <strong>Double-tap (Mobile):</strong> Double-tap on the route line at the desired
-                location to add an intermediate point. The point will be added, and the route line
-                will be adjusted accordingly.
-              </li> */}
+              <li>Leg start and end points</li>
+              <li>Leg distance and remaining distance</li>
+              <li>True course, magnetic course, and magnetic heading</li>
+              <li>Ground speed</li>
+              <li>Wind direction, wind speed, and temperature</li>
+              <li>Leg start and end times</li>
+              <li>Estimated fuel burn and remaining fuel</li>
             </ul>
             <p>
-              The intermediate points allow you to create more complex routes with multiple
-              segments. You can add as many intermediate points as needed to define your desired
-              route.
+              The navigation log table provides a detailed breakdown of your flight, allowing you to
+              plan and execute your VFR flight with precision.
             </p>
           </div>
           <div className="mt-4 ml-4">
-            <h4 className="mb-2 text-lg font-semibold">Clearing the Route:</h4>
+            <h4 className="mb-2 text-lg font-semibold">Exporting the Navigation Log:</h4>
             <p>
-              To clear the current route and remove it from the map, click the "Clear Route" button
-              in the "Route Plotting" section of the sidebar. This will remove the route line and
-              all associated points from the map.
+              After generating the navigation log, you can export it as a PDF document by clicking
+              the "Download PDF" button. The PDF will include all the relevant information from the
+              navigation log table, making it easy to print or share with others.
             </p>
           </div>
         </li>

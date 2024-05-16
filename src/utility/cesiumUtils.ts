@@ -39,3 +39,7 @@ export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null 
 export const mapWaypointToCartesian3 = (waypoint: Waypoint): Cartesian3 | null => {
   return Cartesian3.fromDegrees(waypoint.longitude, waypoint.latitude, waypoint.altitude);
 };
+
+export const mapWaypointToCartesian3Flat = (waypoint: Waypoint): Cartesian3 | null => {
+  return Cartesian3.fromDegrees(waypoint.longitude, waypoint.latitude);
+};
