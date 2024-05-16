@@ -52,18 +52,6 @@ const routeSlice = createSlice({
         state.route.routePoints = action.payload;
       }
     },
-    pushRoutePoint: (state, action: PayloadAction<Waypoint>) => {
-      if (state.route) {
-        state.route.routePoints.push(action.payload);
-      }
-    },
-    removeRoutePointByName: (state, action: PayloadAction<string>) => {
-      if (state.route) {
-        state.route.routePoints = state.route.routePoints.filter(
-          (point: Waypoint) => point.name !== action.payload
-        );
-      }
-    },
     insertRoutePointAtIndex: (
       state,
       action: PayloadAction<{ waypoint: Waypoint; index: number }>
@@ -73,13 +61,20 @@ const routeSlice = createSlice({
         state.route.routePoints.splice(index, 0, waypoint);
       }
     },
+    removeRoutePointByName: (state, action: PayloadAction<string>) => {
+      if (state.route) {
+        state.route.routePoints = state.route.routePoints.filter(
+          (point: Waypoint) => point.name !== action.payload
+        );
+      }
+    },
     addCustomWaypoint: (state, action: PayloadAction<Waypoint>) => {
       if (state.route) {
         const { routePoints } = state.route;
         const newWaypoint = action.payload;
 
         // Find the appropriate index to insert the new waypoint based on the shortest distance
-        let insertIndex = 0;
+        let insertIndex = routePoints.length; // Default to adding at the end
         let minDistance = Infinity;
 
         for (let i = 0; i < routePoints.length - 1; i++) {
@@ -93,6 +88,16 @@ const routeSlice = createSlice({
           if (totalDistance < minDistance) {
             minDistance = totalDistance;
             insertIndex = i + 1;
+          }
+        }
+
+        // Check if the new waypoint should be added at the end
+        if (insertIndex === routePoints.length) {
+          const lastPoint = routePoints[routePoints.length - 1];
+          const distanceToLast = calculateDistance(newWaypoint, lastPoint);
+
+          if (distanceToLast < minDistance) {
+            insertIndex = routePoints.length;
           }
         }
 
@@ -162,11 +167,10 @@ export const {
   setLineColor,
   setEndPointColor,
   setRoutePoints,
-  pushRoutePoint,
-  removeRoutePointByName,
   clearRoutePoints,
   insertRoutePointAtIndex,
   removeRoutePointAtIndex,
+  removeRoutePointByName,
   addCustomWaypoint,
   removeCustomWaypoint,
   updateCustomWaypointName,

@@ -23,7 +23,7 @@ const RouteComponent: React.FC = () => {
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState<Cartesian3 | null>(null);
 
-  const handlePolylineRightClick = (event: ScreenSpaceEventHandler.PositionedEvent) => {
+  const handleRouteLeftClick = (event: ScreenSpaceEventHandler.PositionedEvent) => {
     if (!viewer || !scene || !camera) return;
 
     // Check if the camera is directly top-down
@@ -91,7 +91,7 @@ const RouteComponent: React.FC = () => {
             positions={[prevPosition, currPosition]}
             color={Color.fromCssColorString(lineColor)}
             id={polylineId}
-            onRightClick={handlePolylineRightClick}
+            onRightClick={handleRouteLeftClick}
           />
         );
       })}
