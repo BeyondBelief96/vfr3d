@@ -12,7 +12,7 @@ import {
   ScreenSpaceEventHandler,
   ScreenSpaceEventType,
 } from 'cesium';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useCesium } from 'resium';
 
 interface PointEntityProps {
@@ -109,6 +109,7 @@ export const PointEntity: React.FC<PointEntityProps> = ({
     return () => {
       if (viewer && entity) {
         viewer.entities.remove(entity);
+        console.log(`removed entity: ${entity.id}`);
 
         if (onRightClick && rightClickHandler.current) {
           rightClickHandler.current.removeInputAction(ScreenSpaceEventType.RIGHT_CLICK);

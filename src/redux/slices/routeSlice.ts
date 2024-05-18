@@ -3,7 +3,6 @@ import { faaApi } from '../api/faa/faaApi';
 import { mapAirportToWaypoint } from '../../utility/utils';
 import { Route, Waypoint } from 'vfr3d-shared';
 import { calculateDistance } from '../../utility/routeUtils';
-import { Cartesian3, Cartographic, Math } from 'cesium';
 
 interface RouteState {
   lineColor: string;

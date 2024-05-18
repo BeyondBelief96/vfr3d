@@ -128,13 +128,15 @@ const RouteComponent: React.FC = () => {
         const legId = `leg-${legIndex}`;
         const entityKey = `${point.id}-${legId}-${isStartPoint ? 'start' : 'end'}`;
 
+        const pointId = isNavlogReady ? `navlog-leg${legIndex} + ${point.id}` : point.id;
+
         return (
           <PointEntity
             key={entityKey}
             pixelSize={15}
             position={position}
             color={Color.fromCssColorString(endPointColor)}
-            id={point.id}
+            id={pointId}
             onRightClick={handleWaypointRightClick}
             draggable={true}
             onDrag={handleWaypointDrag}
