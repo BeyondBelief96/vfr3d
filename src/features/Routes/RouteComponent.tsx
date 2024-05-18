@@ -59,6 +59,7 @@ const RouteComponent: React.FC = () => {
       {renderPoints?.map((point: Waypoint, index: number) => {
         const position = mapWaypointToPosition(point);
         if (!position) return null;
+        if (index === 0 || index === renderPoints.length - 1) return;
 
         const isStartPoint = index % 2 === 0;
         const legIndex = isStartPoint ? index / 2 : (index - 1) / 2;

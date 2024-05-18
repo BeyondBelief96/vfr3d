@@ -22,6 +22,12 @@ export const weatherApi = baseApi.injectEndpoints({
     getMetarsByState: builder.query<MetarDTO[], string>({
       query: (stateCode) => `${API_BASE_URL}/metar/state/${stateCode}`,
     }),
+    getMetarsByStates: builder.query<MetarDTO[], string[]>({
+      query: (states) => {
+        const stateCodesParam = states.join(',');
+        return `${API_BASE_URL}/metar/states/${stateCodesParam}`;
+      },
+    }),
     getAllPireps: builder.query<PirepDTO[], void>({
       query: () => `${API_BASE_URL}/pirep`,
     }),
@@ -41,6 +47,7 @@ export const {
   useGetAllAirsigmetsQuery,
   useGetMetarForAirportQuery,
   useGetMetarsByStateQuery,
+  useGetMetarsByStatesQuery,
   useGetAllPirepsQuery,
   useGetTafForAirportQuery,
 } = weatherApi;
