@@ -15,7 +15,7 @@ interface PolylineEntityProps {
   color?: Color;
   width?: number;
   id: string;
-  onRightClick: (position: ScreenSpaceEventHandler.PositionedEvent) => void;
+  onLeftClick: (position: ScreenSpaceEventHandler.PositionedEvent) => void;
 }
 
 export const PolylineEntity: React.FC<PolylineEntityProps> = ({
@@ -23,7 +23,7 @@ export const PolylineEntity: React.FC<PolylineEntityProps> = ({
   color = Color.BLUE,
   width = 3,
   id,
-  onRightClick,
+  onLeftClick: onLeftClick,
 }) => {
   const { viewer } = useCesium();
   const entityRef = useRef<Entity | null>(null);
@@ -48,7 +48,7 @@ export const PolylineEntity: React.FC<PolylineEntityProps> = ({
     handler.setInputAction((movement: ScreenSpaceEventHandler.PositionedEvent) => {
       const pickedObject = viewer.scene.pick(movement.position);
       if (pickedObject && pickedObject.id === entity) {
-        onRightClick(movement);
+        onLeftClick(movement);
       }
     }, ScreenSpaceEventType.LEFT_CLICK);
 
@@ -58,7 +58,7 @@ export const PolylineEntity: React.FC<PolylineEntityProps> = ({
         handler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
       }
     };
-  }, [viewer, positions, color, width, id, onRightClick]);
+  }, [viewer, positions, color, width, id, onLeftClick]);
 
   return null;
 };

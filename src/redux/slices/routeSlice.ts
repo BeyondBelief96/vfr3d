@@ -22,6 +22,14 @@ const initialState: RouteState = {
   },
 };
 
+interface UpdateWaypointPositionPayload {
+  waypointId: string;
+  position: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
 export const fetchAirportByCode = createAsyncThunk(
   'route/fetchAirportByCode',
   async (code: string, { dispatch }) => {
@@ -44,21 +52,9 @@ const routeSlice = createSlice({
     clearRouteString: (state) => {
       state.routeString = '';
     },
-    setRoute: (state, action: PayloadAction<Route>) => {
-      state.route = action.payload;
-    },
     setRoutePoints: (state, action: PayloadAction<Waypoint[]>) => {
       if (state.route) {
         state.route.routePoints = action.payload;
-      }
-    },
-    insertRoutePointAtIndex: (
-      state,
-      action: PayloadAction<{ waypoint: Waypoint; index: number }>
-    ) => {
-      if (state.route) {
-        const { waypoint, index } = action.payload;
-        state.route.routePoints.splice(index, 0, waypoint);
       }
     },
     removeRoutePointByName: (state, action: PayloadAction<string>) => {
@@ -104,14 +100,12 @@ const routeSlice = createSlice({
         routePoints.splice(insertIndex, 0, newWaypoint);
       }
     },
-    removeCustomWaypoint: (state, action: PayloadAction<string>) => {
+    removeCustomWaypointById: (state, action: PayloadAction<string>) => {
       if (state.route) {
         const { routePoints } = state.route;
         const waypointId = action.payload;
-
         // Find the index of the waypoint to remove
         const removeIndex = routePoints.findIndex((point) => point.id === waypointId);
-
         if (removeIndex !== -1) {
           // Remove the waypoint at the found index
           routePoints.splice(removeIndex, 1);
@@ -128,9 +122,12 @@ const routeSlice = createSlice({
         }
       }
     },
-    removeRoutePointAtIndex: (state, action: PayloadAction<number>) => {
-      if (state.route) {
-        state.route.routePoints.splice(action.payload, 1);
+    updateWaypointPositionFlat: (state, action: PayloadAction<UpdateWaypointPositionPayload>) => {
+      const { waypointId, position } = action.payload;
+      const waypoint = state.route.routePoints.find((point) => point.id === waypointId);
+      if (waypoint) {
+        waypoint.latitude = position.latitude;
+        waypoint.longitude = position.longitude;
       }
     },
     clearRoutePoints: (state) => {
@@ -161,19 +158,17 @@ const routeSlice = createSlice({
 });
 
 export const {
-  setRoute,
   setRouteString,
   clearRouteString,
   setLineColor,
   setEndPointColor,
   setRoutePoints,
   clearRoutePoints,
-  insertRoutePointAtIndex,
-  removeRoutePointAtIndex,
   removeRoutePointByName,
   addCustomWaypoint,
-  removeCustomWaypoint,
+  removeCustomWaypointById,
   updateCustomWaypointName,
+  updateWaypointPositionFlat,
 } = routeSlice.actions;
 
 export default routeSlice.reducer;
