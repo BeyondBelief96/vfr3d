@@ -50,8 +50,11 @@ export const NavLogTable: React.FC = () => {
                   <p>MC: {leg.magneticCourse.toFixed(0)}</p>
                   <p>MH: {leg.magneticHeading.toFixed(0)}</p>
                   <p>GS: {leg.groundSpeed.toFixed(0)} knots</p>
+                  <p>Wind Dir: {formatData(leg.windDir)}</p>
+                  <p>Wind Speed: {formatData(leg.windSpeed)} kts</p>
                 </div>
                 <div>
+                  <p>Temp (C): {formatData(leg.tempC)}</p>
                   <p>Start: {formatDate(leg.startLegTime.toString())}</p>
                   <p>End: {formatDate(leg.endLegTime.toString())}</p>
                   <p>Burn: {leg.legFuelBurnGals.toFixed(1)} gals</p>
@@ -63,6 +66,8 @@ export const NavLogTable: React.FC = () => {
           <div className="mt-4">
             <p>Total Route Time: {formatTotalRouteTime(navlog.totalRouteTimeHours)}</p>
             <p>Total Distance: {navlog.totalRouteDistance.toFixed(1)} nm</p>
+            <p>Total Fuel Used: {navlog.totalFuelUsed.toFixed(1)} gals</p>
+            <p>{formatWind()}</p>
           </div>
         </div>
       ) : (

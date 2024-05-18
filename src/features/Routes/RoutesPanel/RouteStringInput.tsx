@@ -144,7 +144,7 @@ export const RouteStringInput: React.FC = () => {
   return (
     <form ref={formRef}>
       <RouteStringBubbles />
-      <div className="flex mt-2 mb-4 w-96 min-w-80">
+      <div className="flex mt-2 mb-4 w-95 sm:w-96 min-w-80">
         <textarea
           ref={textareaRef}
           placeholder="Enter route string (e.g. KJWN KBWG KCLT)"
