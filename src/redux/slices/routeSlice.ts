@@ -44,21 +44,9 @@ const routeSlice = createSlice({
     clearRouteString: (state) => {
       state.routeString = '';
     },
-    setRoute: (state, action: PayloadAction<Route>) => {
-      state.route = action.payload;
-    },
     setRoutePoints: (state, action: PayloadAction<Waypoint[]>) => {
       if (state.route) {
         state.route.routePoints = action.payload;
-      }
-    },
-    insertRoutePointAtIndex: (
-      state,
-      action: PayloadAction<{ waypoint: Waypoint; index: number }>
-    ) => {
-      if (state.route) {
-        const { waypoint, index } = action.payload;
-        state.route.routePoints.splice(index, 0, waypoint);
       }
     },
     removeRoutePointByName: (state, action: PayloadAction<string>) => {
@@ -104,7 +92,7 @@ const routeSlice = createSlice({
         routePoints.splice(insertIndex, 0, newWaypoint);
       }
     },
-    removeCustomWaypoint: (state, action: PayloadAction<string>) => {
+    removeCustomWaypointById: (state, action: PayloadAction<string>) => {
       if (state.route) {
         const { routePoints } = state.route;
         const waypointId = action.payload;
@@ -124,11 +112,6 @@ const routeSlice = createSlice({
         if (waypointIndex !== -1) {
           state.route.routePoints[waypointIndex].name = name;
         }
-      }
-    },
-    removeRoutePointAtIndex: (state, action: PayloadAction<number>) => {
-      if (state.route) {
-        state.route.routePoints.splice(action.payload, 1);
       }
     },
     clearRoutePoints: (state) => {
@@ -159,18 +142,15 @@ const routeSlice = createSlice({
 });
 
 export const {
-  setRoute,
   setRouteString,
   clearRouteString,
   setLineColor,
   setEndPointColor,
   setRoutePoints,
   clearRoutePoints,
-  insertRoutePointAtIndex,
-  removeRoutePointAtIndex,
   removeRoutePointByName,
   addCustomWaypoint,
-  removeCustomWaypoint,
+  removeCustomWaypointById,
   updateCustomWaypointName,
 } = routeSlice.actions;
 

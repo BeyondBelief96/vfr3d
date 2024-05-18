@@ -2,7 +2,7 @@ import { Cartesian2 } from 'cesium';
 import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useCesium } from 'resium';
-import { removeCustomWaypoint } from '../../../redux/slices/routeSlice';
+import { removeCustomWaypointById } from '../../../redux/slices/routeSlice';
 
 interface DeleteWaypointContextMenuProps {
   screenPosition: Cartesian2;
@@ -21,7 +21,7 @@ export const DeleteWaypointContextMenu: React.FC<DeleteWaypointContextMenuProps>
 
   const handleDelete = () => {
     console.log(waypointId);
-    dispatch(removeCustomWaypoint(waypointId));
+    dispatch(removeCustomWaypointById(waypointId));
     onClose();
   };
 
