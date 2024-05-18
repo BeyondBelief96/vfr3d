@@ -159,7 +159,8 @@ export const PointEntity: React.FC<PointEntityProps> = ({
 
     handler.setInputAction((movement: ScreenSpaceEventHandler.MotionEvent) => {
       if (isDragging) {
-        const cartesian = viewer.scene.pickPosition(movement.endPosition);
+        const ellipsoid = viewer.scene.globe.ellipsoid;
+        const cartesian = viewer.camera.pickEllipsoid(movement.endPosition, ellipsoid);
         if (cartesian && onDrag) {
           onDrag(id, cartesian);
         }

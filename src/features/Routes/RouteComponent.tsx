@@ -80,6 +80,22 @@ const RouteComponent: React.FC = () => {
     setDeleteWaypointMenuPosition(null);
   };
 
+  const handleWaypointDrag = (waypointId: string, position: Cartesian3) => {
+    const cartographic = Cartographic.fromCartesian(position);
+    const latitude = CesiumMath.toDegrees(cartographic.latitude);
+    const longitude = CesiumMath.toDegrees(cartographic.longitude);
+
+    dispatch(
+      updateWaypointPositionFlat({
+        waypointId,
+        position: {
+          latitude,
+          longitude,
+        },
+      })
+    );
+  };
+
   const handleWaypointDragEnd = (waypointId: string, position: Cartesian3) => {
     const cartographic = Cartographic.fromCartesian(position);
     const latitude = CesiumMath.toDegrees(cartographic.latitude);
@@ -121,6 +137,7 @@ const RouteComponent: React.FC = () => {
             id={point.id}
             onRightClick={handleWaypointRightClick}
             draggable={true}
+            onDrag={handleWaypointDrag}
             onDragEnd={handleWaypointDragEnd}
           />
         );
