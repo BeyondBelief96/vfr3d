@@ -9,6 +9,8 @@ import {
   DistanceDisplayCondition,
   Cartesian3,
   Property,
+  ScreenSpaceEventHandler,
+  ScreenSpaceEventType,
 } from 'cesium';
 import React, { useEffect, useRef } from 'react';
 import { useCesium } from 'resium';
@@ -26,6 +28,7 @@ interface PointEntityProps {
   distanceDisplayCondition?: DistanceDisplayCondition | Property;
   disableDepthTestDistance?: number | Property;
   id: string;
+  onRightClick?: (positionEvent: ScreenSpaceEventHandler.PositionedEvent, pointId: string) => void;
 }
 
 export const PointEntity: React.FC<PointEntityProps> = ({
@@ -41,9 +44,11 @@ export const PointEntity: React.FC<PointEntityProps> = ({
   distanceDisplayCondition,
   disableDepthTestDistance,
   id,
+  onRightClick,
 }) => {
   const { viewer } = useCesium();
   const entityRef = useRef<Entity | null>(null);
+  const handlerRef = useRef<ScreenSpaceEventHandler | null>(null);
 
   useEffect(() => {
     if (!viewer) return;
@@ -78,9 +83,29 @@ export const PointEntity: React.FC<PointEntityProps> = ({
 
     entityRef.current = entity;
 
+    if (onRightClick) {
+      const handler = new ScreenSpaceEventHandler(viewer.scene.canvas);
+      handlerRef.current = handler;
+
+      handler.setInputAction((movement: ScreenSpaceEventHandler.PositionedEvent) => {
+        console.log('RIGHT_CLICK event triggered');
+        const pickedObject = viewer.scene.pick(movement.position);
+
+        if (pickedObject && pickedObject.id === entity) {
+          onRightClick(movement, id);
+        }
+      }, ScreenSpaceEventType.RIGHT_CLICK);
+    }
+
     return () => {
       if (viewer && entity) {
         viewer.entities.remove(entity);
+
+        if (onRightClick && handlerRef.current) {
+          handlerRef.current.removeInputAction(ScreenSpaceEventType.RIGHT_CLICK);
+          handlerRef.current.destroy();
+          handlerRef.current = null;
+        }
       }
     };
   }, [
@@ -97,6 +122,7 @@ export const PointEntity: React.FC<PointEntityProps> = ({
     distanceDisplayCondition,
     disableDepthTestDistance,
     id,
+    onRightClick,
   ]);
 
   return null;

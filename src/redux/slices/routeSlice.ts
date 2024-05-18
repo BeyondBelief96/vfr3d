@@ -108,10 +108,8 @@ const routeSlice = createSlice({
       if (state.route) {
         const { routePoints } = state.route;
         const waypointId = action.payload;
-
         // Find the index of the waypoint to remove
         const removeIndex = routePoints.findIndex((point) => point.id === waypointId);
-
         if (removeIndex !== -1) {
           // Remove the waypoint at the found index
           routePoints.splice(removeIndex, 1);

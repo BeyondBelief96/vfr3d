@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Cartesian3, Color, ScreenSpaceEventHandler } from 'cesium';
+import { Cartesian2, Cartesian3, Color, ScreenSpaceEventHandler } from 'cesium';
 import { AppState } from '../../redux/store';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
@@ -8,6 +8,7 @@ import { mapWaypointToCartesian3, mapWaypointToCartesian3Flat } from '../../util
 import { Waypoint } from 'vfr3d-shared';
 import AddWaypointContextMenu from './AddWaypointContextMenu';
 import { useCesium } from 'resium';
+import { DeleteWaypointContextMenu } from './RoutesPanel/DeleteWaypointContextMenu';
 
 const RouteComponent: React.FC = () => {
   const { viewer, camera, scene } = useCesium();
@@ -22,6 +23,11 @@ const RouteComponent: React.FC = () => {
 
   const [showAddWaypointMenu, setShowAddWaypointMenu] = useState(false);
   const [addWaypointMenuPosition, setAddWaypointMenuPosition] = useState<Cartesian3 | null>(null);
+  const [showDeleteWaypointMenu, setShowDeleteWaypointMenu] = useState(false);
+  const [deleteWaypointMenuPosition, setDeleteWaypointMenuPosition] = useState<Cartesian2 | null>(
+    null
+  );
+  const [deleteWaypointId, setDeleteWaypointId] = useState<string>('');
 
   const handleRouteLeftClick = (event: ScreenSpaceEventHandler.PositionedEvent) => {
     if (!viewer || !scene || !camera) return;
@@ -45,9 +51,24 @@ const RouteComponent: React.FC = () => {
     }
   };
 
+  const handleWaypointRightClick = (
+    event: ScreenSpaceEventHandler.PositionedEvent,
+    pointId: string
+  ) => {
+    if (!viewer || !scene || !camera) return;
+    setShowDeleteWaypointMenu(true);
+    setDeleteWaypointId(pointId);
+    setDeleteWaypointMenuPosition(event.position);
+  };
+
   const closeAddWaypointMenu = () => {
     setShowAddWaypointMenu(false);
     setAddWaypointMenuPosition(null);
+  };
+
+  const closeDeleteWaypointMenu = () => {
+    setShowDeleteWaypointMenu(false);
+    setDeleteWaypointMenuPosition(null);
   };
 
   const mapWaypointToPosition = isNavlogReady
@@ -72,7 +93,8 @@ const RouteComponent: React.FC = () => {
             pixelSize={15}
             position={position}
             color={Color.fromCssColorString(endPointColor)}
-            id={`route-point-${entityKey}`}
+            id={point.id}
+            onRightClick={handleWaypointRightClick}
           />
         );
       })}
@@ -94,13 +116,21 @@ const RouteComponent: React.FC = () => {
             color={Color.fromCssColorString(lineColor)}
             id={polylineId}
             width={6}
-            onRightClick={handleRouteLeftClick}
+            onLeftClick={handleRouteLeftClick}
           />
         );
       })}
 
       {showAddWaypointMenu && addWaypointMenuPosition && (
         <AddWaypointContextMenu position={addWaypointMenuPosition} onClose={closeAddWaypointMenu} />
+      )}
+
+      {showDeleteWaypointMenu && deleteWaypointMenuPosition && (
+        <DeleteWaypointContextMenu
+          waypointId={deleteWaypointId}
+          screenPosition={deleteWaypointMenuPosition}
+          onClose={closeDeleteWaypointMenu}
+        />
       )}
     </>
   );

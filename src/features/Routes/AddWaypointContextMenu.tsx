@@ -26,7 +26,7 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({ position, onC
   const temporaryPointIdRef = useRef<string | null>(null);
 
   const createTemporaryPoint = () => {
-    const tempPointId = `custom-point-${Date.now()}`;
+    const tempPointId = `route-point-${Date.now()}`;
     dispatch(
       addCustomWaypoint({
         id: tempPointId,
@@ -105,7 +105,7 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({ position, onC
         }}
         onKeyDown={handleKeyDown}
         placeholder="Waypoint Name"
-        className="px-2 py-1 mb-2 border rounded-md border-base-content focus:outline-none focus:ring-2"
+        className="px-2 py-1 mb-2 border border-base-content focus:outline-none focus:ring-primary focus:ring-2"
       />
       {nameError && <p className="mb-2 text-sm text-error">{nameError}</p>}
       <div className="flex justify-between space-x-2">
