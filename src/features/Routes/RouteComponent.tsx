@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Cartesian2, Cartesian3, Color, ScreenSpaceEventHandler } from 'cesium';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Cartesian2,
+  Cartesian3,
+  Cartographic,
+  Color,
+  Math as CesiumMath,
+  ScreenSpaceEventHandler,
+} from 'cesium';
 import { AppState } from '../../redux/store';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
@@ -9,8 +16,10 @@ import { Waypoint } from 'vfr3d-shared';
 import AddWaypointContextMenu from './AddWaypointContextMenu';
 import { useCesium } from 'resium';
 import { DeleteWaypointContextMenu } from './RoutesPanel/DeleteWaypointContextMenu';
+import { updateWaypointPositionFlat } from '../../redux/slices/routeSlice';
 
 const RouteComponent: React.FC = () => {
+  const dispatch = useDispatch();
   const { viewer, camera, scene } = useCesium();
   const routePoints = useSelector((state: AppState) => state.route.route?.routePoints);
   const { lineColor, pointColor: endPointColor } = useSelector((state: AppState) => state.route);
@@ -71,6 +80,22 @@ const RouteComponent: React.FC = () => {
     setDeleteWaypointMenuPosition(null);
   };
 
+  const handleWaypointDragEnd = (waypointId: string, position: Cartesian3) => {
+    const cartographic = Cartographic.fromCartesian(position);
+    const latitude = CesiumMath.toDegrees(cartographic.latitude);
+    const longitude = CesiumMath.toDegrees(cartographic.longitude);
+
+    dispatch(
+      updateWaypointPositionFlat({
+        waypointId,
+        position: {
+          latitude,
+          longitude,
+        },
+      })
+    );
+  };
+
   const mapWaypointToPosition = isNavlogReady
     ? mapWaypointToCartesian3
     : mapWaypointToCartesian3Flat;
@@ -95,6 +120,8 @@ const RouteComponent: React.FC = () => {
             color={Color.fromCssColorString(endPointColor)}
             id={point.id}
             onRightClick={handleWaypointRightClick}
+            draggable={true}
+            onDragEnd={handleWaypointDragEnd}
           />
         );
       })}

@@ -3,6 +3,7 @@ import { faaApi } from '../api/faa/faaApi';
 import { mapAirportToWaypoint } from '../../utility/utils';
 import { Route, Waypoint } from 'vfr3d-shared';
 import { calculateDistance } from '../../utility/routeUtils';
+import { Cartesian3, Cartographic, Math } from 'cesium';
 
 interface RouteState {
   lineColor: string;
@@ -21,6 +22,14 @@ const initialState: RouteState = {
     routePoints: [],
   },
 };
+
+interface UpdateWaypointPositionPayload {
+  waypointId: string;
+  position: {
+    latitude: number;
+    longitude: number;
+  };
+}
 
 export const fetchAirportByCode = createAsyncThunk(
   'route/fetchAirportByCode',
@@ -114,6 +123,14 @@ const routeSlice = createSlice({
         }
       }
     },
+    updateWaypointPositionFlat: (state, action: PayloadAction<UpdateWaypointPositionPayload>) => {
+      const { waypointId, position } = action.payload;
+      const waypoint = state.route.routePoints.find((point) => point.id === waypointId);
+      if (waypoint) {
+        waypoint.latitude = position.latitude;
+        waypoint.longitude = position.longitude;
+      }
+    },
     clearRoutePoints: (state) => {
       if (state.route) {
         state.route.routePoints = [];
@@ -152,6 +169,7 @@ export const {
   addCustomWaypoint,
   removeCustomWaypointById,
   updateCustomWaypointName,
+  updateWaypointPositionFlat,
 } = routeSlice.actions;
 
 export default routeSlice.reducer;
