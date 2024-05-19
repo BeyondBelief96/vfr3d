@@ -14,6 +14,7 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
   const dispatch = useDispatch<AppDispatch>();
   const { airspace3dEnabled } = useSelector((state: AppState) => state.airspace);
   const entityRefs = useRef<Record<string, Entity>>({});
+  const kmlDataSourceRef = useRef<KmlDataSource>(new KmlDataSource());
 
   useEffect(() => {
     if (!viewer) {
@@ -21,18 +22,16 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
       return;
     }
 
-    const kmlDataSource = new KmlDataSource();
-
     const loadKML = async () => {
       try {
         setIsLoading(true);
         const ionKmlResource = await IonResource.fromAssetId(2537586, {
           accessToken: import.meta.env.VITE_CESIUM_API_KEY,
         });
-        await kmlDataSource.load(ionKmlResource);
-        viewer?.dataSources?.add(kmlDataSource);
+        await kmlDataSourceRef.current.load(ionKmlResource);
+        viewer?.dataSources?.add(kmlDataSourceRef.current);
         const newEntityIds: string[] = [];
-        const entities = kmlDataSource.entities.values;
+        const entities = kmlDataSourceRef.current.entities.values;
 
         entities.forEach((entity) => {
           const entityId = entity.id;
@@ -54,9 +53,11 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
     }
 
     return () => {
-      viewer?.dataSources?.remove(kmlDataSource);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      viewer?.dataSources?.remove(kmlDataSourceRef.current);
     };
   }, [viewer, dispatch, airspace3dEnabled, setIsLoading]);
+
   useEffect(() => {
     // Toggle visibility of airspace entities based on the showAirspaceEntities state
     Object.values(entityRefs.current).forEach((entity) => {

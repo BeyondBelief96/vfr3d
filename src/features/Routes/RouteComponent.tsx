@@ -62,8 +62,6 @@ const RouteComponent: React.FC = () => {
 
         if (!position) return;
 
-        console.log(renderPoints[0]);
-        console.log(polylinePoints[0]);
         // Find the index of the first point of the clicked polyline segment
         const startPointIndex = renderPoints.findIndex((point) =>
           isSameLocationWaypointCartesian(polylinePoints[0], point)

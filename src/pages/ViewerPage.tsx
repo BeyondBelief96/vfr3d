@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Globe, Viewer as ResiumViewer } from 'resium';
 import FlyTo from '../features/Airports/FlyTo';
 import VisibleAirports from '../features/Airports/VisibleAirports';
-import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import ImageryLayers from '../features/Imagery/ImageryLayers';
 import LoadingSpinner from '../ui/ReusableComponents/LoadingSpinner';
 import Sidebar from '../ui/Sidebar/Sidebar';
@@ -14,7 +13,7 @@ import RouteComponent from '../features/Routes/RouteComponent';
 
 const ViewerPage = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [airspace3dloading, setAirspace3dloading] = useState(false);
+  // const [airspace3dloading, setAirspace3dloading] = useState(false);
   const imageryViewModels: ProviderViewModel[] = [];
 
   const loadBaseImageryViewModels = () => {
@@ -71,7 +70,7 @@ const ViewerPage = () => {
     <div className="flex h-screen">
       <Sidebar imageryLayerOptions={IMAGERY_LAYER_OPTIONS} />
       <div className="flex-1">
-        {airspace3dloading && <LoadingSpinner />}
+        {/* {airspace3dloading && <LoadingSpinner />} */}
         <ResiumViewer
           useBrowserRecommendedResolution={false}
           imageryProviderViewModels={imageryViewModels}
@@ -83,7 +82,7 @@ const ViewerPage = () => {
         >
           <Globe maximumScreenSpaceError={1.1} />
           <ImageryLayers />
-          <AirspaceComponent setIsLoading={setAirspace3dloading} />
+          {/* <AirspaceComponent setIsLoading={setAirspace3dloading} /> */}
           <VisibleAirports />
           <RouteComponent />
           <FlyTo />

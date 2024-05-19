@@ -90,7 +90,6 @@ const routeSlice = createSlice({
       if (state.route) {
         const { id, name } = action.payload;
         const waypointIndex = state.route.routePoints.findIndex((point) => point.id === id);
-
         if (waypointIndex !== -1) {
           state.route.routePoints[waypointIndex].name = name;
         }

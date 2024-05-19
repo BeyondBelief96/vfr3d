@@ -31,7 +31,6 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
   const temporaryPointIdRef = useRef<string | null>(null);
 
   const createTemporaryPoint = () => {
-    console.log(waypointIndex);
     const tempPointId = `route-point-${Date.now()}`;
     dispatch(
       addCustomWaypointAtIndex({
@@ -68,7 +67,7 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
     if (temporaryPointIdRef.current) {
       dispatch(
         updateCustomWaypointName({
-          id: `${temporaryPointIdRef.current}-${name}`,
+          id: `${temporaryPointIdRef.current}`,
           name,
         })
       );
