@@ -11,6 +11,8 @@ import {
   Property,
   ScreenSpaceEventHandler,
   ScreenSpaceEventType,
+  LabelGraphics,
+  Cartesian2,
 } from 'cesium';
 import React, { useEffect, useRef } from 'react';
 import { useCesium } from 'resium';
@@ -33,6 +35,11 @@ interface PointEntityProps {
   onDragStart?: (pointId: string) => void;
   onDrag?: (pointId: string, dragPosition: Cartesian3) => void;
   onDragEnd?: (pointId: string, draggedPosition: Cartesian3) => void;
+  labelText?: string;
+  labelColor?: Color | Property;
+  labelBackgroundColor?: Color | Property;
+  labelPixelOffset?: Cartesian2 | Property;
+  labelScaleByDistance?: NearFarScalar | Property;
 }
 
 export const PointEntity: React.FC<PointEntityProps> = ({
@@ -49,6 +56,11 @@ export const PointEntity: React.FC<PointEntityProps> = ({
   disableDepthTestDistance,
   id,
   draggable,
+  labelText,
+  labelColor = Color.WHITE,
+  labelBackgroundColor,
+  labelPixelOffset = new Cartesian2(0, -20),
+  labelScaleByDistance = new NearFarScalar(1000000, 0.5, 5000000, 0.3),
   onRightClick,
   onDragStart,
   onDrag,
@@ -84,10 +96,22 @@ export const PointEntity: React.FC<PointEntityProps> = ({
       disableDepthTestDistance: new ConstantProperty(disableDepthTestDistance),
     });
 
+    const labelGraphics = labelText
+      ? new LabelGraphics({
+          text: labelText,
+          scaleByDistance: labelScaleByDistance,
+          fillColor: labelColor,
+          pixelOffset: labelPixelOffset,
+          backgroundColor: labelBackgroundColor || color,
+          showBackground: !!labelBackgroundColor,
+        })
+      : undefined;
+
     const entity = viewer.entities.add({
       position,
       point: pointGraphics,
       id,
+      label: labelGraphics,
     });
 
     entityRef.current = entity;
@@ -133,6 +157,11 @@ export const PointEntity: React.FC<PointEntityProps> = ({
     onDragStart,
     onDrag,
     onDragEnd,
+    labelText,
+    labelColor,
+    labelBackgroundColor,
+    labelPixelOffset,
+    labelScaleByDistance,
   ]);
 
   useEffect(() => {
