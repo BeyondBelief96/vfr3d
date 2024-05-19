@@ -15,7 +15,10 @@ interface PolylineEntityProps {
   color?: Color;
   width?: number;
   id: string;
-  onLeftClick: (position: ScreenSpaceEventHandler.PositionedEvent) => void;
+  onLeftClick: (
+    position: ScreenSpaceEventHandler.PositionedEvent,
+    polylinePoints: Cartesian3[]
+  ) => void;
 }
 
 export const PolylineEntity: React.FC<PolylineEntityProps> = ({
@@ -48,7 +51,7 @@ export const PolylineEntity: React.FC<PolylineEntityProps> = ({
     handler.setInputAction((movement: ScreenSpaceEventHandler.PositionedEvent) => {
       const pickedObject = viewer.scene.pick(movement.position);
       if (pickedObject && pickedObject.id === entity) {
-        onLeftClick(movement);
+        onLeftClick(movement, positions);
       }
     }, ScreenSpaceEventType.LEFT_CLICK);
 

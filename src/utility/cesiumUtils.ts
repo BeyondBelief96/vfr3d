@@ -1,4 +1,4 @@
-import { Cartesian3, Math, Viewer } from 'cesium';
+import { Cartesian3, Cartographic, Math as CesiumMath, Viewer } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
 import { convertDMSToDD } from './utils';
 import { Waypoint } from 'vfr3d-shared';
@@ -8,8 +8,8 @@ export const flyToPoint = (viewer: Viewer | undefined, point: Cartesian3) => {
     viewer.camera.setView({
       destination: point,
       orientation: {
-        heading: Math.toRadians(0),
-        pitch: Math.toRadians(-90),
+        heading: CesiumMath.toRadians(0),
+        pitch: CesiumMath.toRadians(-90),
         roll: 0,
       },
     });
@@ -42,4 +42,25 @@ export const mapWaypointToCartesian3 = (waypoint: Waypoint): Cartesian3 | null =
 
 export const mapWaypointToCartesian3Flat = (waypoint: Waypoint): Cartesian3 | null => {
   return Cartesian3.fromDegrees(waypoint.longitude, waypoint.latitude);
+};
+
+export const isSameLocationWaypointCartesian = (
+  cartesian: Cartesian3,
+  waypoint: Waypoint
+): boolean => {
+  if (!cartesian || !waypoint) {
+    return false;
+  }
+
+  const cartographic = Cartographic.fromCartesian(cartesian);
+
+  const cartesianLatitude = CesiumMath.toDegrees(cartographic.latitude);
+  const cartesianLongitude = CesiumMath.toDegrees(cartographic.longitude);
+
+  const epsilon = 0.0000001; // Adjust the tolerance as needed
+
+  const latitudeDifference = Math.abs(cartesianLatitude - waypoint.latitude);
+  const longitudeDifference = Math.abs(cartesianLongitude - waypoint.longitude);
+
+  return latitudeDifference < epsilon && longitudeDifference < epsilon;
 };

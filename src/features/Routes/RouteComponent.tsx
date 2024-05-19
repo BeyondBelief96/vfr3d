@@ -11,7 +11,11 @@ import {
 import { AppState } from '../../redux/store';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
-import { mapWaypointToCartesian3, mapWaypointToCartesian3Flat } from '../../utility/cesiumUtils';
+import {
+  isSameLocationWaypointCartesian,
+  mapWaypointToCartesian3,
+  mapWaypointToCartesian3Flat,
+} from '../../utility/cesiumUtils';
 import { Waypoint } from 'vfr3d-shared';
 import AddWaypointContextMenu from './AddWaypointContextMenu';
 import { useCesium } from 'resium';
@@ -32,13 +36,17 @@ const RouteComponent: React.FC = () => {
 
   const [showAddWaypointMenu, setShowAddWaypointMenu] = useState(false);
   const [addWaypointMenuPosition, setAddWaypointMenuPosition] = useState<Cartesian3 | null>(null);
+  const [addWaypointIndex, setAddWaypointIndex] = useState<number>(0);
   const [showDeleteWaypointMenu, setShowDeleteWaypointMenu] = useState(false);
   const [deleteWaypointMenuPosition, setDeleteWaypointMenuPosition] = useState<Cartesian2 | null>(
     null
   );
   const [deleteWaypointId, setDeleteWaypointId] = useState<string>('');
 
-  const handleRouteLeftClick = (event: ScreenSpaceEventHandler.PositionedEvent) => {
+  const handleRouteLeftClick = (
+    event: ScreenSpaceEventHandler.PositionedEvent,
+    polylinePoints: Cartesian3[]
+  ) => {
     if (!viewer || !scene || !camera) return;
 
     // Check if the camera is directly top-down
@@ -54,8 +62,16 @@ const RouteComponent: React.FC = () => {
 
         if (!position) return;
 
+        console.log(renderPoints[0]);
+        console.log(polylinePoints[0]);
+        // Find the index of the first point of the clicked polyline segment
+        const startPointIndex = renderPoints.findIndex((point) =>
+          isSameLocationWaypointCartesian(polylinePoints[0], point)
+        );
+
         setAddWaypointMenuPosition(position);
         setShowAddWaypointMenu(true);
+        setAddWaypointIndex(startPointIndex + 1); // Set the index to add the new waypoint
       }
     }
   };
@@ -168,7 +184,11 @@ const RouteComponent: React.FC = () => {
       })}
 
       {showAddWaypointMenu && addWaypointMenuPosition && (
-        <AddWaypointContextMenu position={addWaypointMenuPosition} onClose={closeAddWaypointMenu} />
+        <AddWaypointContextMenu
+          position={addWaypointMenuPosition}
+          onClose={closeAddWaypointMenu}
+          waypointIndex={addWaypointIndex}
+        />
       )}
 
       {showDeleteWaypointMenu && deleteWaypointMenuPosition && (

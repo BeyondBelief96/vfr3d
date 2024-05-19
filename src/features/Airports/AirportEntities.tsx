@@ -7,6 +7,7 @@ import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { Airport } from '../../redux/api/faa/faa.interface';
 import AirportEntity from './AirportEntity';
 import { MetarDTO } from 'vfr3d-shared';
+import { getAirportEntityIdFromAirport } from '../../utility/entityIdUtils';
 
 interface AirportEntitiesProps {
   airports: Airport[];
@@ -28,9 +29,10 @@ const AirportEntities: React.FC<AirportEntitiesProps> = ({ airports, metarMap })
       if (!viewer) return;
 
       const pickedObject = viewer.scene.pick(movement.position);
-
       if (pickedObject && pickedObject.id) {
-        const airport = airports.find((a) => a.GLOBAL_ID === pickedObject.id.id);
+        const airport = airports.find(
+          (a) => getAirportEntityIdFromAirport(a) === pickedObject.id.id
+        );
         if (airport) {
           dispatch(setSelectedAirport(airport));
         }

@@ -6,6 +6,7 @@ import { FlightCategories } from '../../utility/constants';
 import { Airport } from '../../redux/api/faa/faa.interface';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
 import { mapAirportDataToCartesian3 } from '../../utility/cesiumUtils';
+import { getAirportEntityIdFromAirport } from '../../utility/entityIdUtils';
 
 interface AirportEntityProps {
   airport: Airport;
@@ -36,7 +37,7 @@ const AirportEntity: React.FC<AirportEntityProps> = ({ airport, metar }) => {
     <PointEntity
       position={position}
       color={color}
-      id={`airport-entity-${airport.GLOBAL_ID}`}
+      id={getAirportEntityIdFromAirport(airport)}
       scaleByDistance={new NearFarScalar(1000000, 2, 5000000, 1)}
     />
   ) : null;

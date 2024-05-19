@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../redux/store';
 import {
-  addCustomWaypoint,
+  addCustomWaypointAtIndex,
   removeCustomWaypointById,
   updateCustomWaypointName,
 } from '../../redux/slices/routeSlice';
@@ -12,9 +12,14 @@ import { useCesium } from 'resium';
 interface RouteContextMenuProps {
   position: Cartesian3;
   onClose: () => void;
+  waypointIndex: number;
 }
 
-const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({ position, onClose }) => {
+const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
+  position,
+  onClose,
+  waypointIndex,
+}) => {
   const dispatch = useDispatch();
   const { viewer } = useCesium();
   const plannedCruisingAltitude = useSelector(
@@ -26,14 +31,18 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({ position, onC
   const temporaryPointIdRef = useRef<string | null>(null);
 
   const createTemporaryPoint = () => {
+    console.log(waypointIndex);
     const tempPointId = `route-point-${Date.now()}`;
     dispatch(
-      addCustomWaypoint({
-        id: tempPointId,
-        name: '',
-        latitude: Math.toDegrees(Cartographic.fromCartesian(position).latitude),
-        longitude: Math.toDegrees(Cartographic.fromCartesian(position).longitude),
-        altitude: plannedCruisingAltitude,
+      addCustomWaypointAtIndex({
+        waypoint: {
+          id: tempPointId,
+          name: '',
+          latitude: Math.toDegrees(Cartographic.fromCartesian(position).latitude),
+          longitude: Math.toDegrees(Cartographic.fromCartesian(position).longitude),
+          altitude: plannedCruisingAltitude,
+        },
+        index: waypointIndex,
       })
     );
     temporaryPointIdRef.current = tempPointId;
@@ -59,7 +68,7 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({ position, onC
     if (temporaryPointIdRef.current) {
       dispatch(
         updateCustomWaypointName({
-          id: temporaryPointIdRef.current,
+          id: `${temporaryPointIdRef.current}-${name}`,
           name,
         })
       );
