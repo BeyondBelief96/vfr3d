@@ -36,7 +36,7 @@ const AirportEntity: React.FC<AirportEntityProps> = ({ airport, metar }) => {
     <PointEntity
       position={position}
       color={color}
-      id={airport.GLOBAL_ID}
+      id={`airport-entity-${airport.GLOBAL_ID}`}
       scaleByDistance={new NearFarScalar(1000000, 2, 5000000, 1)}
     />
   ) : null;

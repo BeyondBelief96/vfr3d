@@ -97,7 +97,6 @@ export const PointEntity: React.FC<PointEntityProps> = ({
       rightClickHandler.current = handler;
 
       handler.setInputAction((movement: ScreenSpaceEventHandler.PositionedEvent) => {
-        console.log('RIGHT_CLICK event triggered');
         const pickedObject = viewer.scene.pick(movement.position);
 
         if (pickedObject && pickedObject.id === entity) {

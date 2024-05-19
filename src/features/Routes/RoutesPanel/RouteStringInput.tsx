@@ -29,22 +29,6 @@ export const RouteStringInput: React.FC = () => {
 
     if (lastCode.length < 3 || isValidCode(lastCode)) {
       dispatch(setRouteString(newRouteString));
-
-      const waypoints: Waypoint[] = [];
-      const seenCodes = new Set<string>();
-
-      for (const code of codes) {
-        if (isValidCode(code)) {
-          if (!seenCodes.has(code)) {
-            seenCodes.add(code);
-            const airport = await fetchAirportByCode(code);
-            if (airport) {
-              waypoints.push(mapAirportToWaypoint(airport));
-            }
-          }
-        }
-      }
-      dispatch(setRoutePoints(waypoints));
     }
   };
 
