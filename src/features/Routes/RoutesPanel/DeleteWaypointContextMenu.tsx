@@ -20,7 +20,6 @@ export const DeleteWaypointContextMenu: React.FC<DeleteWaypointContextMenuProps>
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleDelete = () => {
-    console.log(waypointId);
     dispatch(removeCustomWaypointById(waypointId));
     onClose();
   };
