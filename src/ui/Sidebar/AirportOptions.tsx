@@ -1,15 +1,21 @@
 // AirportOptions.tsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedState, setShowAirports } from '../../redux/slices/airportsSlice';
+import {
+  setSelectedState,
+  setShowAirports,
+  setShowCloudBases,
+} from '../../redux/slices/airportsSlice';
 import { AppState } from '../../redux/store';
 import { states } from '../../utility/states';
 
 const AirportOptions: React.FC = () => {
   const dispatch = useDispatch();
-  const { showAirports, selectedState: selectedStateAirports } = useSelector(
-    (state: AppState) => state.airport
-  );
+  const {
+    showAirports,
+    showCloudBases,
+    selectedState: selectedStateAirports,
+  } = useSelector((state: AppState) => state.airport);
 
   const handleSelectedStateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.preventDefault();
@@ -40,7 +46,7 @@ const AirportOptions: React.FC = () => {
         </div>
       </div>
       <div className="mb-6">
-        <div className="flex items-center mt-4">
+        <div className="flex items-center gap-4 mt-4">
           <label htmlFor="airport-toggle" className="mr-2">
             Show Airports
           </label>
@@ -49,6 +55,16 @@ const AirportOptions: React.FC = () => {
             type="checkbox"
             checked={showAirports}
             onChange={() => dispatch(setShowAirports(!showAirports))}
+            className="toggle toggle-primary"
+          />
+          <label htmlFor="airport-toggle" className="mr-2">
+            Show Cloud Bases
+          </label>
+          <input
+            id="cloudbases-toggle"
+            type="checkbox"
+            checked={showCloudBases}
+            onChange={() => dispatch(setShowCloudBases(!showCloudBases))}
             className="toggle toggle-primary"
           />
         </div>

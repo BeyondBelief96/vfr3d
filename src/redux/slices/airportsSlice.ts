@@ -7,12 +7,14 @@ interface AirportState {
   showAirports: boolean;
   selectedState: string;
   selectedAirport: Airport | null;
+  showCloudBases: boolean;
 }
 
 const initialState: AirportState = {
   showAirports: false,
   selectedState: states[0],
   selectedAirport: null,
+  showCloudBases: true,
 };
 
 const airportSlice = createSlice({
@@ -31,10 +33,18 @@ const airportSlice = createSlice({
     setSelectedAirport: (state, action: PayloadAction<Airport | null>) => {
       state.selectedAirport = action.payload;
     },
+    setShowCloudBases: (state, action: PayloadAction<boolean>) => {
+      state.showCloudBases = action.payload;
+    },
   },
 });
 
-export const { setShowAirports, toggleShowAirports, setSelectedState, setSelectedAirport } =
-  airportSlice.actions;
+export const {
+  setShowAirports,
+  setShowCloudBases,
+  toggleShowAirports,
+  setSelectedState,
+  setSelectedAirport,
+} = airportSlice.actions;
 
 export default airportSlice.reducer;
