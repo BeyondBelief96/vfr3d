@@ -27,7 +27,7 @@ export const RouteStringInput: React.FC = () => {
     const codes = trimmedNewRouteString.split(' ');
     const lastCode = codes[codes.length - 1];
 
-    if (lastCode.length < 3 || isValidCode(lastCode)) {
+    if (lastCode.length < 3 || isValidLength(lastCode)) {
       dispatch(setRouteString(newRouteString));
     }
   };
@@ -89,7 +89,7 @@ export const RouteStringInput: React.FC = () => {
       const updatedRoutePoints: Waypoint[] = [];
       let isValid = true;
       for (const code of uniqueCodes) {
-        if (isValidCode(code)) {
+        if (isValidLength(code)) {
           const airport = await fetchAirportByCode(code);
           if (airport) {
             updatedRoutePoints.push(mapAirportToWaypoint(airport));
@@ -124,7 +124,7 @@ export const RouteStringInput: React.FC = () => {
     dispatch(clearRoutePoints());
   };
 
-  const isValidCode = (code: string) => {
+  const isValidLength = (code: string) => {
     return code.length >= 3 && code.length <= 4;
   };
 

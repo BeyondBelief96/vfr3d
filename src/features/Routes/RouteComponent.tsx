@@ -7,6 +7,7 @@ import {
   Color,
   Math as CesiumMath,
   ScreenSpaceEventHandler,
+  NearFarScalar,
 } from 'cesium';
 import { AppState } from '../../redux/store';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
@@ -48,29 +49,20 @@ const RouteComponent: React.FC = () => {
     polylinePoints: Cartesian3[]
   ) => {
     if (!viewer || !scene || !camera) return;
+    const pickRay = scene.camera.getPickRay(event.position);
+    if (pickRay) {
+      const position = scene.globe.pick(pickRay, scene);
 
-    // Check if the camera is directly top-down
-    const cameraPosition = camera.position;
-    const cameraDirection = camera.direction;
-    const up = scene.globe.ellipsoid.geodeticSurfaceNormal(cameraPosition);
-    const dot = Cartesian3.dot(cameraDirection, up);
+      if (!position) return;
 
-    if (Math.abs(dot) > 0.99) {
-      const pickRay = scene.camera.getPickRay(event.position);
-      if (pickRay) {
-        const position = scene.globe.pick(pickRay, scene);
+      // Find the index of the first point of the clicked polyline segment
+      const startPointIndex = renderPoints.findIndex((point) =>
+        isSameLocationWaypointCartesian(polylinePoints[0], point)
+      );
 
-        if (!position) return;
-
-        // Find the index of the first point of the clicked polyline segment
-        const startPointIndex = renderPoints.findIndex((point) =>
-          isSameLocationWaypointCartesian(polylinePoints[0], point)
-        );
-
-        setAddWaypointMenuPosition(position);
-        setShowAddWaypointMenu(true);
-        setAddWaypointIndex(startPointIndex + 1); // Set the index to add the new waypoint
-      }
+      setAddWaypointMenuPosition(position);
+      setShowAddWaypointMenu(true);
+      setAddWaypointIndex(startPointIndex + 1); // Set the index to add the new waypoint
     }
   };
 
@@ -155,6 +147,10 @@ const RouteComponent: React.FC = () => {
             draggable={true}
             onDrag={handleWaypointDrag}
             onDragEnd={handleWaypointDragEnd}
+            labelText={point.name}
+            labelBackgroundColor={Color.fromCssColorString(endPointColor)}
+            labelScaleByDistance={new NearFarScalar(100000, 0.5, 500000, 0.3)}
+            labelPixelOffset={new Cartesian2(0, -20)}
           />
         );
       })}

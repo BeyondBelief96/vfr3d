@@ -33,13 +33,13 @@ const AirportEntity: React.FC<AirportEntityProps> = ({ airport, metar }) => {
     }
   }
 
-  return position && metar?.skyConditions ? (
+  return position ? (
     <PointEntity
       position={position}
       color={color}
       id={getAirportEntityIdFromAirport(airport)}
       scaleByDistance={new NearFarScalar(1000000, 1.5, 5000000, 1)}
-      labelText={metar?.skyConditions[0].cloudBaseFtAgl?.toString()}
+      labelText={metar?.skyConditions?.[0]?.cloudBaseFtAgl?.toString()}
       labelBackgroundColor={color}
       labelPixelOffset={new Cartesian2(0, -20)}
       labelScaleByDistance={new NearFarScalar(100000, 0.5, 500000, 0.3)}
