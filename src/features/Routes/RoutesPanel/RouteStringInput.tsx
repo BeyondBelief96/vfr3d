@@ -19,7 +19,7 @@ export const RouteStringInput: React.FC = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const [fetchAirport] = useLazyGetAirportByIcaoCodeOrIdentLazyQuery();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [isLastCodeValid, setIsLastCodeValid] = useState<boolean | null>(null);
+  const [isLastCodeValid, setIsLastCodeValid] = useState(true);
 
   const handleRouteStringChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newRouteString = e.target.value.toUpperCase();
@@ -87,28 +87,41 @@ export const RouteStringInput: React.FC = () => {
       }
 
       const updatedRoutePoints: Waypoint[] = [];
+      let isValid = true;
       for (const code of uniqueCodes) {
         if (isValidCode(code)) {
           const airport = await fetchAirportByCode(code);
           if (airport) {
             updatedRoutePoints.push(mapAirportToWaypoint(airport));
+          } else {
+            isValid = false;
+            break;
           }
         }
       }
 
+      setIsLastCodeValid(isValid);
+      if (!isValid) {
+        e.preventDefault();
+        return;
+      }
+
       dispatch(setRoutePoints(updatedRoutePoints));
     }
-    // Prevent typing if the last code is invalid, except for backspace and delete
-    if (!isLastCodeValid && e.key !== 'Backspace' && e.key !== 'Delete') {
-      e.preventDefault();
-      setIsLastCodeValid(true);
+
+    // Allow typing if the textarea is empty or if the user is deleting or correcting an invalid code
+    if (routeString.trim() === '' || !isLastCodeValid) {
+      if (!isLastCodeValid && e.key !== 'Backspace' && e.key !== 'Delete') {
+        e.preventDefault();
+      } else {
+        setIsLastCodeValid(true);
+      }
     }
   };
 
   const handleRouteStringClear = () => {
     dispatch(clearRouteString());
     dispatch(clearRoutePoints());
-    setIsLastCodeValid(null);
   };
 
   const isValidCode = (code: string) => {
