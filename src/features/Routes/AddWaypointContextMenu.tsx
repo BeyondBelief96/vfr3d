@@ -107,6 +107,7 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
       <input
         type="text"
         value={name}
+        autoFocus={true}
         onChange={(e) => {
           setName(e.target.value);
           setNameError('');

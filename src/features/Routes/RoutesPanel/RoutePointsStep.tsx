@@ -11,10 +11,6 @@ export const RoutePointsStep: React.FC = () => {
       <div className="md:w-1/2 md:pr-8">
         <h4 className="mb-2 text-lg font-bold">How to Add Custom Waypoints:</h4>
         <ol className="list-decimal list-inside">
-          <li className="text-lg font-bold">
-            NOTE: Your camera must be oriented completely vertical (looking straight down at the
-            map.)
-          </li>
           <li>
             Click on the route line between two existing waypoints where you want to add a custom
             waypoint.
