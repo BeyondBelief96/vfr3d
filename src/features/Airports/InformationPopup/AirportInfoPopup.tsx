@@ -57,7 +57,13 @@ const AirportInfoPopup: React.FC = () => {
   return (
     <div className="fixed top-0 bottom-0 sm:bottom-10 sm:right-4 sm:top-auto sm:transform-none w-full sm:w-96 h-screen sm:h-[calc(80vh)] bg-base-100 rounded-lg overflow-hidden shadow-lg">
       <div className="flex flex-col h-full">
-        <AirportHeader airport={selectedAirport} metar={metar} handleClose={handleClose} />
+        <AirportHeader
+          airport={selectedAirport}
+          metar={metar}
+          metarError={metarError}
+          handleClose={handleClose}
+          key={selectedAirport.GLOBAL_ID}
+        />
         <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
         <div className="flex-1 p-4 overflow-y-auto">
           {activeTab === 'info' && <AirportInfo airport={selectedAirport} />}

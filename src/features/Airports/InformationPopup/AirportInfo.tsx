@@ -8,12 +8,11 @@ interface AirportInfoProps {
 
 const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
   const { data: runwayInformation } = useGetRunwayInformationByAirportIdQuery(airport.GLOBAL_ID);
-  const { data: chartSupplementUrl } = useGetChartSupplementUrlByAirportCodeQuery(
-    airport.ICAO_ID || airport.IDENT
-  );
+  const { data: chartSupplementUrl, error: chartSupplementError } =
+    useGetChartSupplementUrlByAirportCodeQuery(airport.ICAO_ID || airport.IDENT);
   return (
     <div className="space-y-4">
-      {chartSupplementUrl && chartSupplementUrl.pdfUrl && (
+      {chartSupplementUrl && chartSupplementUrl.pdfUrl && !chartSupplementError && (
         <>
           <a
             href={chartSupplementUrl.pdfUrl}

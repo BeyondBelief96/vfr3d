@@ -1,14 +1,24 @@
 // MetarFlightCategoryBadge.tsx
 import React from 'react';
-import { MetarDTO } from 'vfr3d-shared';
-import { ApiError } from '../../redux/api/types';
+import { useGetMetarForAirportQuery } from '../../redux/api/vfr3d/weatherApi';
+import { Airport } from '../../redux/api/faa/faa.interface';
 
 interface MetarFlightCategoryBadgeProps {
-  metar?: MetarDTO | { error: ApiError };
+  airport: Airport;
 }
 
-const MetarFlightCategoryBadge: React.FC<MetarFlightCategoryBadgeProps> = ({ metar }) => {
-  if (!metar || 'error' in metar) {
+const MetarFlightCategoryBadge: React.FC<MetarFlightCategoryBadgeProps> = ({ airport }) => {
+  const icaoCodeOrIdent = airport?.ICAO_ID || airport?.IDENT;
+
+  const {
+    data: metar,
+    isLoading: isLoadingMetar,
+    error: metarError,
+  } = useGetMetarForAirportQuery(icaoCodeOrIdent || '', {
+    skip: !icaoCodeOrIdent,
+  });
+
+  if (isLoadingMetar || metarError || !metar) {
     return null;
   }
 

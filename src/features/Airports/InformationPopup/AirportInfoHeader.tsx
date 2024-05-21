@@ -3,14 +3,25 @@ import MetarFlightCategoryBadge from '../../../ui/ReusableComponents/FlightCateg
 import { CloseButton } from '../../../ui/ReusableComponents/CloseButton';
 import { MetarDTO } from 'vfr3d-shared';
 import { Airport } from '../../../redux/api/faa/faa.interface';
+import { ApiError } from '../../../redux/api/types';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
 
 interface AirportHeaderProps {
   airport: Airport;
-  metar?: MetarDTO;
+  metar?: MetarDTO | { error: ApiError };
+  metarError: FetchBaseQueryError | SerializedError | undefined;
   handleClose: () => void;
 }
 
-const AirportHeader: React.FC<AirportHeaderProps> = ({ airport, metar, handleClose }) => {
+const AirportHeader: React.FC<AirportHeaderProps> = ({
+  airport,
+  metar,
+  metarError,
+  handleClose,
+}) => {
+  const hasValidMetar = metar && !metarError;
+
   return (
     <div className="px-4 py-2 bg-primary text-primary-content">
       <div className="flex items-center justify-between">
@@ -18,9 +29,8 @@ const AirportHeader: React.FC<AirportHeaderProps> = ({ airport, metar, handleClo
           <h1 className="text-xl">{airport.ICAO_ID || airport.IDENT}</h1>
           <h2 className="text-xl font-bold">{airport.NAME}</h2>
         </div>
-
         <div className="flex flex-col items-end">
-          {metar && <MetarFlightCategoryBadge metar={metar} />}
+          {hasValidMetar && <MetarFlightCategoryBadge airport={airport} />}
           <CloseButton handleClose={handleClose} />
         </div>
       </div>
