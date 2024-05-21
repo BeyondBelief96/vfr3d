@@ -1,5 +1,6 @@
 import { Airport } from '../../../redux/api/faa/faa.interface';
 import { useGetRunwayInformationByAirportIdQuery } from '../../../redux/api/faa/faaApi';
+import { useGetChartSupplementUrlByAirportCodeQuery } from '../../../redux/api/vfr3d/chartsupplements.api';
 
 interface AirportInfoProps {
   airport: Airport;
@@ -7,11 +8,24 @@ interface AirportInfoProps {
 
 const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
   const { data: runwayInformation } = useGetRunwayInformationByAirportIdQuery(airport.GLOBAL_ID);
-
+  const { data: chartSupplementUrl } = useGetChartSupplementUrlByAirportCodeQuery(
+    airport.ICAO_ID || airport.IDENT
+  );
   return (
     <div className="space-y-4">
+      {chartSupplementUrl && chartSupplementUrl.pdfUrl && (
+        <>
+          <a
+            href={chartSupplementUrl.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-36 btn btn-primary text-wrap"
+          >
+            Open Chart Supplement
+          </a>
+        </>
+      )}
       <div className="p-4 rounded-md shadow-md bg-base-200">
-        <h3 className="mb-2 text-lg font-semibold">{airport.NAME}</h3>
         <div className="grid grid-cols-2 gap-2">
           {airport.IDENT && (
             <div>
@@ -28,6 +42,7 @@ const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
               <span className="font-semibold">Type:</span> {airport.TYPE_CODE}
             </div>
           )}
+
           {airport.IAPEXISTS !== undefined && (
             <div>
               <span className="font-semibold">Instrument Approach:</span>{' '}
