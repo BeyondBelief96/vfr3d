@@ -44,7 +44,7 @@ const SearchBar = () => {
             value={searchQuery}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            className={`w-full pr-10 input input-bordered ${isError ? 'input-error' : ''}`}
+            className={`w-44 sm:w-full pr-10 input input-bordered ${isError ? 'input-error' : ''}`}
             ref={searchInputRef}
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">

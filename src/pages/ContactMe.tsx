@@ -71,98 +71,83 @@ export const ContactMePage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-base-300">
       <main className="flex items-center justify-center flex-grow">
         <div className="container py-12">
-          <h1 className="mb-6 text-3xl font-bold text-center">Contact Me</h1>
-          {isSubmitted ? (
-            <div className="alert alert-success">
-              <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="flex-shrink-0 w-6 h-6 stroke-current"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>Your message has been sent successfully!</span>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <div className="flex items-center justify-center bg-base-100">
+              <div className="px-8 py-12 text-center text-primary-content">
+                <h2 className="mb-4 text-3xl font-bold">Get in Touch</h2>
+                <p className="text-lg">
+                  Encountering issues, bugs, or just need to contact me? Fill out the form and I'll
+                  get back to you as soon as I can!
+                </p>
               </div>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
-              <div className="w-full form-control">
-                <label className="label">
-                  <span className="label-text">Name</span>
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter your name"
-                  className={`input input-bordered w-full ${formErrors.name ? 'input-error' : ''}`}
-                />
-                {formErrors.name && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">{formErrors.name}</span>
-                  </label>
+            <div className="flex items-center justify-center">
+              <div className="w-full max-w-md p-8 mx-auto rounded-lg shadow-xl bg-base-100">
+                {isSubmitted ? (
+                  <div className="text-center alert alert-success">
+                    Email Sent! I'll be in touch soon.
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit}>
+                    <div className="space-y-4">
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text">First Name*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="Enter your name"
+                          className={`input input-bordered w-full ${formErrors.name ? 'input-error' : ''}`}
+                        />
+                      </div>
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text">Email*</span>
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="Enter your email address"
+                          className={`input input-bordered w-full ${formErrors.email ? 'input-error' : ''}`}
+                        />
+                      </div>
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text">Message*</span>
+                        </label>
+                        <textarea
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          placeholder="Enter your message"
+                          className={`textarea textarea-bordered h-32 w-full ${formErrors.message ? 'textarea-error' : ''}`}
+                        ></textarea>
+                      </div>
+                      <div className="form-control">
+                        <button
+                          type="submit"
+                          className={`btn btn-primary w-full ${isSubmitting ? 'loading' : ''}`}
+                          disabled={isSubmitting}
+                        >
+                          Lets Chat!
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 )}
               </div>
-              <div className="w-full form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email address"
-                  className={`input input-bordered w-full ${formErrors.email ? 'input-error' : ''}`}
-                />
-                {formErrors.email && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">{formErrors.email}</span>
-                  </label>
-                )}
-              </div>
-              <div className="w-full form-control">
-                <label className="label">
-                  <span className="label-text">Message</span>
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Enter your message"
-                  className={`textarea textarea-bordered h-48 w-full ${formErrors.message ? 'input-error' : ''}`}
-                ></textarea>
-                {formErrors.message && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">{formErrors.message}</span>
-                  </label>
-                )}
-              </div>
-              <div className="w-full form-control">
-                <button
-                  type="submit"
-                  className={`btn btn-primary mt-4 w-full ${isSubmitting ? 'loading' : ''}`}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Sending...' : 'Submit'}
-                </button>
-              </div>
-            </form>
-          )}
+            </div>
+          </div>
         </div>
       </main>
-      {/* Footer component goes here */}
     </div>
   );
 };
