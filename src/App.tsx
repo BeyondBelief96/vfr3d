@@ -10,19 +10,13 @@ import AuthenticatedViewerPage from './pages/ViewerPage';
 import ErrorBoundary from './ui/ErrorBoundary';
 import PrivateRoute from './ui/ReusableComponents/PrivateRoute';
 import LoginPage from './pages/LoginPage';
-import LoadingSpinner from './ui/ReusableComponents/LoadingSpinner';
 
 const App: React.FC = () => {
-  const { isLoading } = useAuth0();
   const arcGisApiKey = import.meta.env.VITE_ARCGIS_API_KEY;
   const cesiumAccessToken = import.meta.env.VITE_CESIUM_API_KEY;
 
   Ion.defaultAccessToken = cesiumAccessToken;
   ArcGisMapService.defaultAccessToken = arcGisApiKey;
-
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
 
   const router = createBrowserRouter([
     {
