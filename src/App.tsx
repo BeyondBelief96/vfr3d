@@ -1,14 +1,29 @@
 import React from 'react';
 import { Ion, ArcGisMapService } from 'cesium';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import AppLayout from './AppLayout';
 import { ContactMePage } from './pages/ContactMe';
 import DocumentationPage from './pages/DocumentationPage';
 import HomePage from './pages/Home';
 import AuthenticatedViewerPage from './pages/ViewerPage';
 import ErrorBoundary from './ui/ErrorBoundary';
-import PrivateRoute from './ui/ReusableComponents/PrivateRoute';
 import LoginPage from './pages/LoginPage';
+import LoadingSpinner from './ui/ReusableComponents/LoadingSpinner';
+
+const AuthenticatedRoute = withAuthenticationRequired(AuthenticatedViewerPage, {
+  onRedirecting: () => <LoadingSpinner />,
+});
+
+const ProtectedRoute = () => {
+  const { isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  return isAuthenticated ? <AuthenticatedRoute /> : <Navigate to="/login" />;
+};
 
 const App: React.FC = () => {
   const arcGisApiKey = import.meta.env.VITE_ARCGIS_API_KEY;
@@ -27,11 +42,7 @@ const App: React.FC = () => {
         },
         {
           path: '/Viewer',
-          element: (
-            <PrivateRoute>
-              <AuthenticatedViewerPage />
-            </PrivateRoute>
-          ),
+          element: <ProtectedRoute />,
         },
         {
           path: '/contact',
