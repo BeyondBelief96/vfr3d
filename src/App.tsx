@@ -1,28 +1,21 @@
 import React from 'react';
 import { Ion, ArcGisMapService } from 'cesium';
 import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
-import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import AppLayout from './AppLayout';
 import { ContactMePage } from './pages/ContactMe';
 import DocumentationPage from './pages/DocumentationPage';
 import HomePage from './pages/Home';
-import AuthenticatedViewerPage from './pages/ViewerPage';
 import ErrorBoundary from './ui/ErrorBoundary';
 import LoginPage from './pages/LoginPage';
+import AuthenticatedViewerPage from './pages/ViewerPage';
+import { useAuth0 } from '@auth0/auth0-react';
 import LoadingSpinner from './ui/ReusableComponents/LoadingSpinner';
-
-const AuthenticatedRoute = withAuthenticationRequired(AuthenticatedViewerPage, {
-  onRedirecting: () => <LoadingSpinner />,
-});
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth0();
 
-  if (isLoading && !isAuthenticated) {
-    return <LoadingSpinner />;
-  }
-
-  return isAuthenticated ? <AuthenticatedRoute /> : <Navigate to="/login" />;
+  if (isLoading) return <LoadingSpinner />;
+  return isAuthenticated ? <AuthenticatedViewerPage /> : <Navigate to="/login" />;
 };
 
 const App: React.FC = () => {
