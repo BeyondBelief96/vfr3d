@@ -12,8 +12,8 @@ const FeaturesSection: React.FC = () => {
           <div className="flex flex-col items-center justify-center gap-10 md:flex-row">
             <Fade direction="left">
               <div className="mockup-window bg-base-300">
-                <div className="flex justify-center px-4 py-16 bg-base-200">
-                  <img src="feat1.png" alt="3D Visualization" className="max-3w-xl" />
+                <div className="flex justify-center bg-base-200">
+                  <img src="feat1.png" alt="3D Visualization" className="w-full h-full" />
                 </div>
               </div>
             </Fade>
@@ -32,8 +32,8 @@ const FeaturesSection: React.FC = () => {
           <div className="flex flex-col items-center justify-center gap-10 md:flex-row-reverse">
             <Fade direction="right">
               <div className="mockup-window bg-base-300">
-                <div className="flex justify-center px-4 py-16 bg-base-200">
-                  <img src="feat2.png" alt="Seamless Map Integration" className="max-w-3xl" />
+                <div className="flex justify-center bg-base-200">
+                  <img src="feat2.png" alt="Seamless Map Integration" />
                 </div>
               </div>
             </Fade>
@@ -52,8 +52,8 @@ const FeaturesSection: React.FC = () => {
           <div className="flex flex-col items-center justify-center gap-10 md:flex-row">
             <Fade direction="left">
               <div className="mockup-window bg-base-300">
-                <div className="flex justify-center px-4 py-16 bg-base-200">
-                  <img src="feat3.png" alt="VFR Navigation Log Generation" className="max-3w-xl" />
+                <div className="flex justify-center bg-base-200">
+                  <img src="feat3.png" alt="VFR Navigation Log Generation" />
                 </div>
               </div>
             </Fade>
