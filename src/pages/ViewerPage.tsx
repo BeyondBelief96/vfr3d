@@ -17,7 +17,6 @@ import { setAccessToken } from '../redux/slices/authSlice';
 const ViewerPage = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const [isLoading, setIsLoading] = useState(true);
   const imageryViewModels: ProviderViewModel[] = [];
 
   const loadBaseImageryViewModels = () => {
@@ -70,22 +69,9 @@ const ViewerPage = () => {
     }
   }, [getAccessTokenSilently, isAuthenticated, dispatch]);
 
-  // Used to give cesium some time to load so the viewer is ready to render.
-  // If this is not here, the cesium viewer will not load. maybe there's something else
-  // I need to figure out but this will do for now.
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   loadBaseImageryViewModels();
 
-  return isLoading ? (
-    <LoadingSpinner fullScreen={true} />
-  ) : (
+  return (
     <div className="flex h-screen">
       <Sidebar imageryLayerOptions={IMAGERY_LAYER_OPTIONS} />
       <div className="flex-1">

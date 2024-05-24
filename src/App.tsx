@@ -18,7 +18,7 @@ const AuthenticatedRoute = withAuthenticationRequired(AuthenticatedViewerPage, {
 const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth0();
 
-  if (isLoading) {
+  if (isLoading && !isAuthenticated) {
     return <LoadingSpinner />;
   }
 
