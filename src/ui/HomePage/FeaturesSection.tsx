@@ -1,101 +1,75 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Fade } from 'react-awesome-reveal';
-import 'swiper/css';
-import { Swiper, SwiperSlide } from 'swiper/react';
 
 const FeaturesSection: React.FC = () => {
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('left');
-
-  const handleSlideNextTransitionStart = () => {
-    setSlideDirection('right');
-  };
-
-  const handleSlidePrevTransitionStart = () => {
-    setSlideDirection('left');
-  };
   return (
     <section className="py-20 bg-base-100">
       <div className="container mx-auto">
         <Fade triggerOnce direction="up">
           <h2 className="mb-10 text-4xl font-bold text-center">Key Features</h2>
         </Fade>
-        <Swiper
-          spaceBetween={20}
-          slidesPerView={1}
-          breakpoints={{
-            480: {
-              slidesPerView: 1,
-              spaceBetween: 10,
-            },
-            768: {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 30,
-            },
-          }}
-          className="mySwiper"
-          onSlideNextTransitionStart={handleSlideNextTransitionStart}
-          onSlidePrevTransitionStart={handleSlidePrevTransitionStart}
-        >
-          <SwiperSlide>
-            <Fade direction={slideDirection}>
-              <div className="h-full p-4 shadow-xl card bg-base-200 sm:h-96 sm:p-6">
-                <div className="card-body">
-                  <h3 className="text-2xl font-semibold card-title">3D Visualization</h3>
-                  <p>
-                    Experience a truly immersive and interactive way of visualizing VFR Sectionals,
-                    TAC Charts, and IFR charts in stunning 3D. Using cutting-edge technology powered
-                    by Cesium, we allow you to explore these charts from every angle, providing a
-                    new level of depth and clarity.
-                  </p>
+        <div className="space-y-20">
+          <div className="flex flex-col items-center justify-center gap-10 md:flex-row">
+            <Fade direction="left">
+              <div className="mockup-window bg-base-300">
+                <div className="flex justify-center px-4 py-16 bg-base-200">
+                  <img src="feat1.png" alt="3D Visualization" className="max-3w-xl" />
                 </div>
               </div>
             </Fade>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Fade direction={slideDirection}>
-              <div className="h-full p-4 shadow-xl card bg-base-200 sm:h-96 sm:p-6">
-                <div className="card-body">
-                  <h3 className="text-2xl font-semibold card-title">Seamless Map Integration</h3>
-                  <p>
-                    Seamlessly blend your sectional charts with various map options, including
-                    OpenStreetMaps and Bing Maps. This comprehensive integration provides a holistic
-                    view, combining the detailed chart information with the latest map data for
-                    enhanced planning ability!
-                  </p>
+            <Fade direction="right">
+              <div className="prose">
+                <h3 className="text-2xl font-semibold">3D Visualization</h3>
+                <p>
+                  Experience a truly immersive and interactive way of visualizing VFR Sectionals,
+                  TAC Charts, and IFR charts in stunning 3D. Using cutting-edge technology powered
+                  by Cesium, we allow you to explore these charts from every angle, providing a new
+                  level of depth and clarity.
+                </p>
+              </div>
+            </Fade>
+          </div>
+          <div className="flex flex-col items-center justify-center gap-10 md:flex-row-reverse">
+            <Fade direction="right">
+              <div className="mockup-window bg-base-300">
+                <div className="flex justify-center px-4 py-16 bg-base-200">
+                  <img src="feat2.png" alt="Seamless Map Integration" className="max-w-3xl" />
                 </div>
               </div>
             </Fade>
-          </SwiperSlide>
-          <SwiperSlide>
-            <Fade direction={slideDirection}>
-              <div className="h-full p-2 shadow-xl card bg-base-200 sm:h-96">
-                <div className="card-body">
-                  <h3 className="text-2xl font-semibold card-title">
-                    Realistic Airspace Visualization
-                  </h3>
-                  <p>
-                    Witness airspace like never before with our experimental 3D airspace
-                    visualization feature. Powered by data from{' '}
-                    <a
-                      href="https://3dairspace.org.uk/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline"
-                    >
-                      3dairspace.org.uk
-                    </a>
-                    , you can now visualize airspace in its true three-dimensional form, enhancing
-                    your understanding of complex airspace structures.
-                  </p>
+            <Fade direction="left">
+              <div className="prose">
+                <h3 className="text-2xl font-semibold">Seamless Map Integration</h3>
+                <p>
+                  Seamlessly blend your sectional charts with various map options, including
+                  OpenStreetMaps and Bing Maps. This comprehensive integration provides a holistic
+                  view, combining the detailed chart information with the latest map data for
+                  enhanced planning ability!
+                </p>
+              </div>
+            </Fade>
+          </div>
+          <div className="flex flex-col items-center justify-center gap-10 md:flex-row">
+            <Fade direction="left">
+              <div className="mockup-window bg-base-300">
+                <div className="flex justify-center px-4 py-16 bg-base-200">
+                  <img src="feat3.png" alt="VFR Navigation Log Generation" className="max-3w-xl" />
                 </div>
               </div>
             </Fade>
-          </SwiperSlide>
-        </Swiper>
+            <Fade direction="right">
+              <div className="prose">
+                <h3 className="text-2xl font-semibold">VFR Navigation Log Generation</h3>
+                <p>
+                  Simplify your flight planning with our powerful VFR navigation log generator. By
+                  leveraging advanced algorithms and comprehensive aviation weather data, our
+                  feature automatically calculates crucial flight information for each leg of your
+                  journey.
+                </p>
+              </div>
+            </Fade>
+          </div>
+        </div>
       </div>
     </section>
   );

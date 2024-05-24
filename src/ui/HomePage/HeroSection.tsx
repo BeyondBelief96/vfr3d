@@ -6,7 +6,7 @@ const HeroSection: React.FC = () => {
     <section
       className="min-h-screen py-8 hero sm:py-16"
       style={{
-        backgroundImage: 'url("/heroimage_2.png")',
+        backgroundImage: 'url("/hero_image.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -15,13 +15,14 @@ const HeroSection: React.FC = () => {
         <div className="max-w-md shadow-xl card bg-base-100">
           <div className="items-center p-6 card-body sm:p-8">
             <h1 className="text-3xl font-bold sm:text-5xl card-title text-neutral-content">
-              Visualize, Plan, Fly!
+              Plan, Fly, Repeat with VFR3D
             </h1>
             <p className="mb-5 text-base font-semibold sm:text-lg text-neutral-content">
-              Discover the power of VFR3D - your ultimate solution for flight data visualization.
+              Fly smarter with VFR3D, the intuitive flight planning tool designed for the weekend
+              pilots.
             </p>
             <div className="justify-center mt-auto card-actions">
-              <Link to="/viewer" className="btn btn-primary">
+              <Link to="/login" className="btn btn-primary">
                 Get Started
               </Link>
               <Link to="/documentation" className="btn btn-primary">

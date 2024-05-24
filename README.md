@@ -1,6 +1,6 @@
 # VFR3D - 3D Geospatial Mapping Application for General Aviation Flight Planning
 
-![VFR3D Logo](public/heroimage_2.png)
+![VFR3D Logo](public/hero_image.png)
 
 Welcome to the VFR3D GitHub repository! VFR3D is a cutting-edge 3D geospatial mapping application designed specifically for general aviation flight planning. With VFR3D, pilots can easily visualize and plan their flights in a intuitive and interactive 3D environment.
 

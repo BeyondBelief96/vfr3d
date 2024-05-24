@@ -6,11 +6,12 @@ import { toggleSidebar } from '../redux/slices/sidebarSlice';
 import { AppState } from '../redux/store';
 import DonationButton from './ReusableComponents/DonationButton';
 import SearchBar from './ReusableComponents/SearchBar';
-import ThemeController from './ReusableComponents/ThemeController';
 import HamburgerToggle from './ReusableComponents/HamburgerToggle';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();
+  const { isAuthenticated, logout } = useAuth0();
   const location = useLocation();
   const isOpen = useSelector((state: AppState) => state.sidebar.isOpen);
   const isViewerPage = location.pathname === '/viewer';
@@ -20,24 +21,18 @@ const Header: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleLogout = () => {
+    logout({ logoutParams: { returnTo: import.meta.env.VITE_AUTH0_LOGOUT_URI } });
+  };
+
   return (
     <header className="flex items-center justify-between px-4 py-2 bg-neutral text-neutral-content">
       <div className="flex items-center">
         {isViewerPage && (
           <HamburgerToggle isOpen={isOpen} onClick={() => dispatch(toggleSidebar())} />
         )}
-
         {isViewerPage && <SearchBar />}
-
         {!isViewerPage && (
-          <div>
-            <Link to="/">VFR3D</Link>
-          </div>
-        )}
-      </div>
-
-      <div className="flex justify-center">
-        {isViewerPage && (
           <div>
             <Link to="/">VFR3D</Link>
           </div>
@@ -63,7 +58,7 @@ const Header: React.FC = () => {
                 />
               </svg>
             </button>
-            {isMenuOpen && !isViewerPage && (
+            {isMenuOpen && (
               <ul
                 tabIndex={0}
                 className="p-2 mt-3 shadow menu dropdown-content bg-neutral rounded-box w-52"
@@ -72,7 +67,7 @@ const Header: React.FC = () => {
                   <Link to="/contact">Report an Issue</Link>
                 </li>
                 <li>
-                  <DonationButton />
+                  <Link to="https://www.buymeacoffee.com/bberisford">Buy me a coffee!</Link>
                 </li>
               </ul>
             )}
@@ -80,13 +75,25 @@ const Header: React.FC = () => {
         </div>
       )}
 
-      <div className="items-center hidden lg:flex">
+      <div className="items-center hidden gap-2 lg:flex">
         <Link to="/contact" className="mr-4 btn btn-ghost btn-sm">
           Report an Issue
         </Link>
         <DonationButton />
-        <ThemeController />
+        {isAuthenticated && isViewerPage && (
+          <button className="btn btn-primary" onClick={handleLogout}>
+            Logout
+          </button>
+        )}
       </div>
+
+      {isAuthenticated && isViewerPage && (
+        <div className="lg:hidden">
+          <button className="btn btn-primary" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      )}
     </header>
   );
 };

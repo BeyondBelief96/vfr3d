@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
 import { AppState } from '../../redux/store';
 import { setSelectedAirport } from '../../redux/slices/airportsSlice';
-import { useGetAirportByIcaoCodeOrIdentQuery } from '../../redux/api/faa/faaApi';
+import { useGetAirportByIcaoCodeOrIdentQuery } from '../../redux/api/faa/faaSlice';
 import {
   flyToPoint,
   mapAirportDataToCartesian3,

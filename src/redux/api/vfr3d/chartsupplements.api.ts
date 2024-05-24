@@ -1,8 +1,8 @@
-import { baseApi } from '../apiSlice';
+import { vfr3dApi } from './vfr3dSlice';
 
 const API_BASE_URL = import.meta.env.VITE_VFR3D_BASE_URL;
 
-export const chartSupplementApi = baseApi.injectEndpoints({
+export const chartSupplementApi = vfr3dApi.injectEndpoints({
   endpoints: (builder) => ({
     getChartSupplementUrlByAirportCode: builder.query<{ pdfUrl: string }, string>({
       query: (airportCode) => ({

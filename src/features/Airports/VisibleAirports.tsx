@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   useGetAirportsByIcaoCodesOrIdentsQuery,
   useGetAirportsByStatesQuery,
-} from '../../redux/api/faa/faaApi';
+} from '../../redux/api/faa/faaSlice';
 import { useGetMetarsByStatesQuery } from '../../redux/api/vfr3d/weatherApi';
 import { AppState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';

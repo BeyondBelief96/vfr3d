@@ -1,9 +1,9 @@
 import { NavLogRequestDTO, NavLogResponseDTO } from 'vfr3d-shared';
-import { baseApi } from '../apiSlice';
+import { vfr3dApi } from './vfr3dSlice';
 
 const API_BASE_URL = import.meta.env.VITE_VFR3D_BASE_URL;
 
-export const navlogApi = baseApi.injectEndpoints({
+export const navlogApi = vfr3dApi.injectEndpoints({
   endpoints: (builder) => ({
     calculateNavLog: builder.mutation<NavLogResponseDTO, NavLogRequestDTO>({
       query: (navLogRequest) => ({

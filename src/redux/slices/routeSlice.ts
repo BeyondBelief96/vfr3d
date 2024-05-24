@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { faaApi } from '../api/faa/faaApi';
+import { faaApi } from '../api/faa/faaSlice';
 import { mapAirportToWaypoint } from '../../utility/utils';
 import { Route, Waypoint } from 'vfr3d-shared';
 

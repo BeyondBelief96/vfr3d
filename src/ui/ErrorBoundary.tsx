@@ -32,13 +32,13 @@ function ErrorPage() {
         </p>
         <div className="flex justify-center gap-4">
           <button
-            className="px-6 py-3 font-semibold rounded-lg text-primary-content btn btn-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-6 py-3 font-semibold text-primary-content btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500"
             onClick={() => navigate('/', { replace: true })}
           >
             Go back to the home page
           </button>
           <button
-            className="px-6 py-3 font-semibold rounded-lg text-primary-content btn btn-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-6 py-3 font-semibold text-primary-content btn btn-primary focus:outline-none focus:ring-2 focus:ring-blue-500"
             onClick={() => window.location.reload()}
           >
             Refresh Page

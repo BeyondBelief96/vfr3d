@@ -7,7 +7,9 @@ import routeReducer from './slices/routeSlice';
 import searchReducer from './slices/searchSlice';
 import sidebarReducer from './slices/sidebarSlice';
 import navlogReducer from './slices/navlogSlice';
-import { baseApi } from './api/apiSlice';
+import authReducer from './slices/authSlice';
+import { vfr3dApi } from './api/vfr3d/vfr3dSlice';
+import { faaApi } from './api/faa/faaSlice';
 
 const store = configureStore({
   reducer: {
@@ -19,9 +21,12 @@ const store = configureStore({
     search: searchReducer,
     sidebar: sidebarReducer,
     navlog: navlogReducer,
-    [baseApi.reducerPath]: baseApi.reducer,
+    auth: authReducer,
+    [vfr3dApi.reducerPath]: vfr3dApi.reducer,
+    [faaApi.reducerPath]: faaApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(vfr3dApi.middleware, faaApi.middleware),
 });
 
 export type AppState = ReturnType<typeof store.getState>;

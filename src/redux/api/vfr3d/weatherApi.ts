@@ -1,11 +1,11 @@
 // src/redux/api/weatherApi.ts
 import { AirsigmetDTO, MetarDTO, PirepDTO, TafDTO } from 'vfr3d-shared';
 import { ApiError } from '../types';
-import { baseApi } from '../apiSlice';
+import { vfr3dApi } from './vfr3dSlice';
 
 const API_BASE_URL = import.meta.env.VITE_VFR3D_BASE_URL;
 
-export const weatherApi = baseApi.injectEndpoints({
+export const weatherApi = vfr3dApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllAirsigmets: builder.query<AirsigmetDTO[], void>({
       query: () => `${API_BASE_URL}/airsigmet`,
