@@ -1,5 +1,5 @@
 import { IonImageryProvider, ProviderViewModel, buildModuleUrl } from 'cesium';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Globe, Viewer as ResiumViewer } from 'resium';
 import FlyTo from '../features/Airports/FlyTo';
 import VisibleAirports from '../features/Airports/VisibleAirports';
