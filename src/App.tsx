@@ -1,7 +1,6 @@
 import React from 'react';
 import { Ion, ArcGisMapService } from 'cesium';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
 import AppLayout from './AppLayout';
 import { ContactMePage } from './pages/ContactMe';
 import DocumentationPage from './pages/DocumentationPage';
