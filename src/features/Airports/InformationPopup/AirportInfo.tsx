@@ -1,5 +1,5 @@
 import { Airport } from '../../../redux/api/faa/faa.interface';
-import { useGetRunwayInformationByAirportIdQuery } from '../../../redux/api/faa/faaApi';
+import { useGetRunwayInformationByAirportIdQuery } from '../../../redux/api/faa/faaSlice';
 import { useGetChartSupplementUrlByAirportCodeQuery } from '../../../redux/api/vfr3d/chartsupplements.api';
 
 interface AirportInfoProps {

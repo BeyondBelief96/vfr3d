@@ -1,41 +1,86 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
-import { useGetAirportByIcaoCodeOrIdentQuery } from '../../redux/api/faa/faaApi';
+import { useGetAllAirportsQuery } from '../../redux/api/faa/faaSlice';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const { isLoading, isError } = useGetAirportByIcaoCodeOrIdentQuery(searchQuery, {
-    skip: !searchQuery,
-  });
+  const { data: allAirports, isLoading, isError } = useGetAllAirportsQuery();
+
+  const filteredAirports = useMemo(() => {
+    if (!searchQuery || !allAirports) {
+      return [];
+    }
+
+    const lowercaseQuery = searchQuery.toLowerCase();
+    return allAirports
+      .filter(
+        (airport) =>
+          airport.ICAO_ID?.toLowerCase().startsWith(lowercaseQuery) ||
+          airport.IDENT?.toLowerCase().startsWith(lowercaseQuery)
+      )
+      .slice(0, 10);
+  }, [searchQuery, allAirports]);
 
   const handleSearch = useCallback(() => {
     dispatch(setSearchAirportQuery(searchQuery));
     dispatch(triggerSearch());
     setSearchQuery('');
+    setShowAutocomplete(false);
   }, [dispatch, searchQuery]);
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchQuery(event.target.value);
+      const query = event.target.value;
+      setSearchQuery(query);
+      setShowAutocomplete(query.length > 0);
     },
     [setSearchQuery]
+  );
+
+  const handleAutocompleteSelect = useCallback(
+    (airportCode: string) => {
+      setSearchQuery(airportCode);
+      setShowAutocomplete(false);
+      setSelectedOptionIndex(-1);
+      dispatch(setSearchAirportQuery(airportCode));
+      dispatch(triggerSearch());
+    },
+    [dispatch]
   );
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter' && searchInputRef.current === event.target) {
-        handleSearch();
+        if (selectedOptionIndex !== -1) {
+          const selectedAirport = filteredAirports[selectedOptionIndex];
+          handleAutocompleteSelect(selectedAirport.ICAO_ID || selectedAirport.IDENT);
+        } else {
+          handleSearch();
+        }
+        setShowAutocomplete(false);
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        setSelectedOptionIndex((prevIndex) =>
+          prevIndex <= 0 ? filteredAirports.length - 1 : prevIndex - 1
+        );
+      } else if (event.key === 'ArrowDown' || event.key === 'Tab') {
+        event.preventDefault();
+        setSelectedOptionIndex((prevIndex) =>
+          prevIndex === filteredAirports.length - 1 ? 0 : prevIndex + 1
+        );
       }
     },
-    [handleSearch]
+    [filteredAirports, handleAutocompleteSelect, handleSearch, selectedOptionIndex]
   );
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center ">
       <div className="relative rounded-lg form-control">
         <div className="input-group">
           <input
@@ -87,6 +132,24 @@ const SearchBar = () => {
             )}
           </div>
         </div>
+
+        {showAutocomplete && filteredAirports.length > 0 && (
+          <ul className="absolute z-50 w-full mt-10 overflow-y-auto rounded-md shadow-lg border-base-content bg-base-100 max-h-60">
+            {filteredAirports.map((airport, index) => (
+              <li
+                key={airport.GLOBAL_ID}
+                className={`px-4 py-2 cursor-pointer ${
+                  index === selectedOptionIndex
+                    ? 'bg-primary text-primary-content'
+                    : 'hover:bg-primary'
+                }`}
+                onClick={() => handleAutocompleteSelect(airport.ICAO_ID || airport.IDENT)}
+              >
+                {airport.ICAO_ID || airport.IDENT} - {airport.NAME}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

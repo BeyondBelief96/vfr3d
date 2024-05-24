@@ -57,14 +57,6 @@ const Navigation: React.FC = () => {
                 VFR Navigation Log
               </a>
             </li>
-            <li>
-              <a
-                href="#airspace-visualization"
-                onClick={(event) => handleClick(event, '#airspace-visualization')}
-              >
-                3D Airspace Visualization
-              </a>
-            </li>
           </ul>
         </li>
       </ul>

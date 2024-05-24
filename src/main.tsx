@@ -11,6 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
       authorizationParams={{
         redirect_uri: import.meta.env.VITE_AUTH0_REDIRECT_URI,
+        audience: import.meta.env.VITE_AUTH0_VFR3D_API_AUDIENCE,
       }}
     >
       <Provider store={store}>

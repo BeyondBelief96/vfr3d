@@ -3,7 +3,7 @@ import { Airport } from '../../../redux/api/faa/faa.interface';
 import RouteStringBubbles from './RouteStringBubbles';
 import { AppState } from '../../../redux/store';
 import { useRef, useState } from 'react';
-import { useLazyGetAirportByIcaoCodeOrIdentLazyQuery } from '../../../redux/api/faa/faaApi';
+import { useLazyGetAirportByIcaoCodeOrIdentLazyQuery } from '../../../redux/api/faa/faaSlice';
 import {
   clearRoutePoints,
   clearRouteString,

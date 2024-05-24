@@ -10,10 +10,14 @@ import { IMAGERY_LAYER_OPTIONS } from '../utility/constants';
 import AirportInfoPopup from '../features/Airports/InformationPopup/AirportInfoPopup';
 import { RoutesPanel } from '../features/Routes/RoutesPanel/RoutesPanel';
 import RouteComponent from '../features/Routes/RouteComponent';
+import { useDispatch } from 'react-redux';
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import { setAccessToken } from '../redux/slices/authSlice';
 
 const ViewerPage = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [isLoading, setIsLoading] = useState(true);
-  // const [airspace3dloading, setAirspace3dloading] = useState(false);
   const imageryViewModels: ProviderViewModel[] = [];
 
   const loadBaseImageryViewModels = () => {
@@ -51,6 +55,21 @@ const ViewerPage = () => {
     );
   };
 
+  useEffect(() => {
+    const getAccessToken = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        dispatch(setAccessToken(token));
+      } catch (error) {
+        console.error('Error getting access token:', error);
+      }
+    };
+
+    if (isAuthenticated) {
+      getAccessToken();
+    }
+  }, [getAccessTokenSilently, isAuthenticated, dispatch]);
+
   // Used to give cesium some time to load so the viewer is ready to render.
   // If this is not here, the cesium viewer will not load. maybe there's something else
   // I need to figure out but this will do for now.
@@ -70,7 +89,6 @@ const ViewerPage = () => {
     <div className="flex h-screen">
       <Sidebar imageryLayerOptions={IMAGERY_LAYER_OPTIONS} />
       <div className="flex-1">
-        {/* {airspace3dloading && <LoadingSpinner />} */}
         <ResiumViewer
           useBrowserRecommendedResolution={false}
           imageryProviderViewModels={imageryViewModels}
@@ -82,7 +100,6 @@ const ViewerPage = () => {
         >
           <Globe maximumScreenSpaceError={1.3} />
           <ImageryLayers />
-          {/* <AirspaceComponent setIsLoading={setAirspace3dloading} /> */}
           <VisibleAirports />
           <RouteComponent />
           <FlyTo />
@@ -94,4 +111,8 @@ const ViewerPage = () => {
   );
 };
 
-export default ViewerPage;
+const AuthenticatedViewerPage = withAuthenticationRequired(ViewerPage, {
+  onRedirecting: () => <LoadingSpinner fullScreen={true} />,
+});
+
+export default AuthenticatedViewerPage;

@@ -6,7 +6,7 @@ import AppLayout from './AppLayout';
 import { ContactMePage } from './pages/ContactMe';
 import DocumentationPage from './pages/DocumentationPage';
 import HomePage from './pages/Home';
-import ViewerPage from './pages/ViewerPage';
+import AuthenticatedViewerPage from './pages/ViewerPage';
 import ErrorBoundary from './ui/ErrorBoundary';
 import PrivateRoute from './ui/ReusableComponents/PrivateRoute';
 import LoginPage from './pages/LoginPage';
@@ -36,7 +36,7 @@ const App: React.FC = () => {
           path: '/Viewer',
           element: (
             <PrivateRoute>
-              <ViewerPage />
+              <AuthenticatedViewerPage />
             </PrivateRoute>
           ),
         },
