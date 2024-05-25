@@ -11,7 +11,6 @@ import {
 } from 'cesium';
 import { AppState } from '../../redux/store';
 import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
-import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
 import {
   isSameLocationWaypointCartesian,
   mapWaypointToCartesian3,
@@ -22,6 +21,7 @@ import AddWaypointContextMenu from './AddWaypointContextMenu';
 import { useCesium } from 'resium';
 import { DeleteWaypointContextMenu } from './RoutesPanel/DeleteWaypointContextMenu';
 import { updateWaypointPositionFlat } from '../../redux/slices/routeSlice';
+import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
 
 const RouteComponent: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,7 +32,9 @@ const RouteComponent: React.FC = () => {
   const isNavlogReady = useSelector((state: AppState) => state.navlog.isNavlogReady);
 
   const renderPoints = isNavlogReady
-    ? navlog.legs.flatMap((leg) => [leg.legStartPoint, leg.legEndPoint])
+    ? navlog.legs
+        .flatMap((leg) => [leg.legStartPoint, leg.legEndPoint])
+        .filter((point, index, self) => self.findIndex((p) => p.id === point.id) === index)
     : routePoints;
 
   const [showAddWaypointMenu, setShowAddWaypointMenu] = useState(false);
@@ -48,7 +50,7 @@ const RouteComponent: React.FC = () => {
     event: ScreenSpaceEventHandler.PositionedEvent,
     polylinePoints: Cartesian3[]
   ) => {
-    if (!viewer || !scene || !camera) return;
+    if (!viewer || !scene || !camera || isNavlogReady) return;
     const pickRay = scene.camera.getPickRay(event.position);
     if (pickRay) {
       const position = scene.globe.pick(pickRay, scene);

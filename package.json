@@ -34,7 +34,7 @@
     "swiper": "^11.1.1",
     "tailwindcss": "^3.4.3",
     "uuid": "^9.0.1",
-    "vfr3d-shared": "^1.7.2"
+    "vfr3d-shared": "^1.7.6"
   },
   "devDependencies": {
     "@types/cesium": "^1.70.0",
