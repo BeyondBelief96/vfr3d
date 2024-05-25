@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { RouteStringInput } from './RouteStringInput';
-import Drawer from '../../../ui/ReusableComponents/BottomDrawer';
+import Drawer from '../../../components/ReusableComponents/BottomDrawer';
 import { NavLogTable } from './NavLogTable';
 import { AircraftPerformanceConfigurationComponent } from './AircraftPerformanceConfigurationComponent';
 import { NavlogControls } from './AltitudeAndDepartureControls';
-import LoadingSpinner from '../../../ui/ReusableComponents/LoadingSpinner';
+import LoadingSpinner from '../../../components/ReusableComponents/LoadingSpinner';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setNavlogCalculationEnabled,

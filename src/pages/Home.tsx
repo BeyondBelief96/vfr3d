@@ -1,7 +1,7 @@
-import DisclaimerSection from '../ui/HomePage/Disclaimer';
-import DonationSection from '../ui/HomePage/DonationSection';
-import FeaturesSection from '../ui/HomePage/FeaturesSection';
-import HeroSection from '../ui/HomePage/HeroSection';
+import DisclaimerSection from '../components/HomePage/Disclaimer';
+import DonationSection from '../components/HomePage/DonationSection';
+import FeaturesSection from '../components/HomePage/FeaturesSection';
+import HeroSection from '../components/HomePage/HeroSection';
 
 const HomePage: React.FC = () => {
   return (
