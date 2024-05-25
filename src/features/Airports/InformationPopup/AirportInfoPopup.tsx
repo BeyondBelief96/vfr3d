@@ -10,7 +10,7 @@ import {
 } from '../../../redux/api/vfr3d/weatherApi';
 import { ApiError } from '../../../redux/api/types';
 import AirportHeader from './AirportInfoHeader';
-import Tabs from '../../../ui/ReusableComponents/Tabs';
+import Tabs from '../../../components/ReusableComponents/Tabs';
 
 const AirportInfoPopup: React.FC = () => {
   const dispatch = useDispatch();

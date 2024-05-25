@@ -5,11 +5,11 @@ import AppLayout from './AppLayout';
 import { ContactMePage } from './pages/ContactMe';
 import DocumentationPage from './pages/DocumentationPage';
 import HomePage from './pages/Home';
-import ErrorBoundary from './ui/ErrorBoundary';
+import ErrorBoundary from './components/ErrorBoundary';
 import LoginPage from './pages/LoginPage';
 import AuthenticatedViewerPage from './pages/ViewerPage';
 import { useAuth0 } from '@auth0/auth0-react';
-import LoadingSpinner from './ui/ReusableComponents/LoadingSpinner';
+import LoadingSpinner from './components/ReusableComponents/LoadingSpinner';
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth0();

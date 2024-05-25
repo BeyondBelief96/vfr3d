@@ -10,7 +10,7 @@ import {
   NearFarScalar,
 } from 'cesium';
 import { AppState } from '../../redux/store';
-import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
+import { PointEntity } from '../../components/ReusableComponents/cesium/PointEntity';
 import {
   isSameLocationWaypointCartesian,
   mapWaypointToCartesian3,
@@ -21,7 +21,7 @@ import AddWaypointContextMenu from './AddWaypointContextMenu';
 import { useCesium } from 'resium';
 import { DeleteWaypointContextMenu } from './RoutesPanel/DeleteWaypointContextMenu';
 import { updateWaypointPositionFlat } from '../../redux/slices/routeSlice';
-import { PolylineEntity } from '../../ui/ReusableComponents/cesium/PolylineEntity';
+import { PolylineEntity } from '../../components/ReusableComponents/cesium/PolylineEntity';
 
 const RouteComponent: React.FC = () => {
   const dispatch = useDispatch();

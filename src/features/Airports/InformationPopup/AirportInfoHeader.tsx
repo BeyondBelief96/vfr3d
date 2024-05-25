@@ -1,6 +1,6 @@
 // AirportHeader.tsx
-import MetarFlightCategoryBadge from '../../../ui/ReusableComponents/FlightCategoryBadge';
-import { CloseButton } from '../../../ui/ReusableComponents/CloseButton';
+import MetarFlightCategoryBadge from '../../../components/ReusableComponents/FlightCategoryBadge';
+import { CloseButton } from '../../../components/ReusableComponents/CloseButton';
 import { MetarDTO } from 'vfr3d-shared';
 import { Airport } from '../../../redux/api/faa/faa.interface';
 import { ApiError } from '../../../redux/api/types';

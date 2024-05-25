@@ -4,7 +4,7 @@ import React from 'react';
 import { MetarDTO } from 'vfr3d-shared';
 import { FlightCategories } from '../../utility/constants';
 import { Airport } from '../../redux/api/faa/faa.interface';
-import { PointEntity } from '../../ui/ReusableComponents/cesium/PointEntity';
+import { PointEntity } from '../../components/ReusableComponents/cesium/PointEntity';
 import { mapAirportDataToCartesian3 } from '../../utility/cesiumUtils';
 import { getAirportEntityIdFromAirport } from '../../utility/entityIdUtils';
 import { useSelector } from 'react-redux';
