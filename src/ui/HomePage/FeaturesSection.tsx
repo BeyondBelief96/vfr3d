@@ -8,10 +8,10 @@ const FeaturesSection: React.FC = () => {
         <Fade triggerOnce direction="up">
           <h2 className="mb-10 text-4xl font-bold text-center">Key Features</h2>
         </Fade>
-        <div className="space-y-20">
+        <div className="ml-5 mr-5 space-y-20">
           <div className="flex flex-col items-center justify-center gap-10 md:flex-row">
             <Fade direction="left">
-              <div className="mockup-window bg-base-300">
+              <div className="mockup-window sm:w-full bg-base-300">
                 <div className="flex justify-center bg-base-200">
                   <img src="feat1.png" alt="3D Visualization" className="w-full h-full" />
                 </div>

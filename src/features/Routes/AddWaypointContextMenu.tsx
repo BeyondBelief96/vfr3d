@@ -98,8 +98,8 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
 
     if (!screenPosition) return;
 
-    menuRef.current.style.left = `${screenPosition.x + 40}px`;
-    menuRef.current.style.top = `${screenPosition.y}px`;
+    menuRef.current.style.left = `${screenPosition.x - 100}px`;
+    menuRef.current.style.top = `${screenPosition.y + 100}px`;
   }, [viewer, position]);
 
   return (
