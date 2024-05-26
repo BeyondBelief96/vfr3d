@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../redux/store';
+import { useDispatch } from 'react-redux';
 import {
   addCustomWaypointAtIndex,
   removeCustomWaypointById,
@@ -22,9 +21,6 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { viewer } = useCesium();
-  const plannedCruisingAltitude = useSelector(
-    (state: AppState) => state.navlog.plannedCruisingAltitude
-  );
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
   const menuRef = useRef<HTMLDivElement>(null);
@@ -39,7 +35,7 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
           name: '',
           latitude: Math.toDegrees(Cartographic.fromCartesian(position).latitude),
           longitude: Math.toDegrees(Cartographic.fromCartesian(position).longitude),
-          altitude: plannedCruisingAltitude,
+          altitude: 0,
         },
         index: waypointIndex,
       })
