@@ -4,6 +4,7 @@ import { AppState } from '../../redux/store';
 import MapOptions from './MapOptions';
 import AirportOptions from './AirportOptions';
 import RouteOptions from './RouteOptions';
+import { PirepOptions } from './PirepOptions';
 
 interface DesktopSidebarProps {
   imageryLayerOptions: { value: string; label: string }[];
@@ -23,11 +24,11 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ imageryLayerOptions }) 
           isOpen ? 'translate-x-0' : '-translate-x-96'
         }`}
       >
-        <div className="p-4">
+        <div className="flex flex-col gap-3 p-4">
           <MapOptions imageryLayerOptions={imageryLayerOptions} />
           <AirportOptions />
           <RouteOptions />
-          {/* <AirspaceOptions /> */}
+          <PirepOptions />
         </div>
       </div>
     </div>

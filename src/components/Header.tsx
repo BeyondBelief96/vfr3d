@@ -27,9 +27,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`${
-        isViewerPage ? 'fixed top-0 left-0 right-0 z-10' : ''
-      } flex items-center justify-between px-4 py-2 bg-neutral text-neutral-content`}
+      className={`flex items-center justify-between px-4 py-2 bg-neutral text-neutral-content`}
     >
       {isViewerPage ? (
         <div className="flex items-center justify-between w-full">

@@ -111,7 +111,8 @@ const TafForecast: React.FC<TafForecastProps> = ({ forecast }) => {
           <ul className="list-disc list-inside">
             {forecast.skyCondition.map((condition, index) => (
               <li key={index}>
-                {condition.skyCover} - {condition.cloudBaseFtAgl} ft AGL - {condition.cloudType}
+                {condition.skyCover} - {condition.cloudBaseFtAgl} ft AGL{' '}
+                {condition.cloudType ? `- ${condition.cloudType}` : ''}
               </li>
             ))}
           </ul>

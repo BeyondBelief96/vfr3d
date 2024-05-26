@@ -8,6 +8,7 @@ import { Airport } from '../../redux/api/faa/faa.interface';
 import AirportEntity from './AirportEntity';
 import { MetarDTO } from 'vfr3d-shared';
 import { getAirportEntityIdFromAirport } from '../../utility/entityIdUtils';
+import { setSelectedPirep } from '../../redux/slices/pirepsSlice';
 
 interface AirportEntitiesProps {
   airports: Airport[];
@@ -35,6 +36,7 @@ const AirportEntities: React.FC<AirportEntitiesProps> = ({ airports, metarMap })
         );
         if (airport) {
           dispatch(setSelectedAirport(airport));
+          dispatch(setSelectedPirep(null));
         }
       }
     };

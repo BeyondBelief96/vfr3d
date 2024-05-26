@@ -31,15 +31,15 @@ interface PointEntityProps {
   disableDepthTestDistance?: number | Property;
   id: string;
   draggable?: boolean;
-  onRightClick?: (positionEvent: ScreenSpaceEventHandler.PositionedEvent, pointId: string) => void;
-  onDragStart?: (pointId: string) => void;
-  onDrag?: (pointId: string, dragPosition: Cartesian3) => void;
-  onDragEnd?: (pointId: string, draggedPosition: Cartesian3) => void;
   labelText?: string;
   labelColor?: Color | Property;
   labelBackgroundColor?: Color | Property;
   labelPixelOffset?: Cartesian2 | Property;
   labelScaleByDistance?: NearFarScalar | Property;
+  onRightClick?: (positionEvent: ScreenSpaceEventHandler.PositionedEvent, pointId: string) => void;
+  onDragStart?: (pointId: string) => void;
+  onDrag?: (pointId: string, dragPosition: Cartesian3) => void;
+  onDragEnd?: (pointId: string, draggedPosition: Cartesian3) => void;
 }
 
 export const PointEntity: React.FC<PointEntityProps> = ({
