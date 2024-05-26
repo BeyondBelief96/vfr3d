@@ -12,23 +12,29 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-200">
-      <div className="shadow-xl card w-96 bg-base-100">
-        <div className="card-body">
-          <h2 className="justify-center mb-6 text-3xl font-bold card-title">Welcome to VFR3D</h2>
-          <div className="flex flex-col items-center space-y-6">
-            {/* <img src="/path/to/your/logo.png" alt="VFR3D Logo" className="h-24" /> */}
-            <p className="text-center">Login and start planning with VFR3D!</p>
-            <button
-              onClick={handleLogin}
-              className="px-6 py-3 font-bold text-white rounded-full btn btn-primary btn-block"
-            >
-              Log In
-            </button>
+    <section className="min-h-screen bg-base-100">
+      <div className="container px-4 py-16 mx-auto">
+        <div className="max-w-md mx-auto">
+          <div className="mb-8 text-center">
+            <img src="logo_2.png" alt="VFR3D Logo" className="h-24 mx-auto" />
+            <h2 className="mt-4 text-3xl font-bold">Welcome to VFR3D</h2>
+          </div>
+          <div className="shadow-xl card bg-base-200">
+            <div className="card-body">
+              <p className="mb-6 text-lg text-center">Log in to start planning your flights!</p>
+              <div className="flex justify-center">
+                <button
+                  onClick={handleLogin}
+                  className="px-8 py-3 text-lg font-bold text-primary-content btn btn-primary btn-wide"
+                >
+                  Log In
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
