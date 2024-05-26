@@ -43,20 +43,34 @@ function decodePirep(pirepText: string): DecodedPirep | null {
     aircraftType,
   };
 
-  for (let i = 5; i < parts.length; i++) {
+  let i = 5;
+  while (i < parts.length) {
     const part = parts[i];
     if (part.startsWith('SK')) {
       decodedPirep.skyCondition = part.slice(2).trim();
+      i++;
     } else if (part.startsWith('WX')) {
       decodedPirep.weather = part.slice(2).trim();
+      i++;
     } else if (part.startsWith('TA')) {
       decodedPirep.temperature = part.slice(2).trim();
+      i++;
     } else if (part.startsWith('WV')) {
-      decodedPirep.wind = part.slice(2).trim();
+      let wind = part.slice(2).trim();
+      if (i + 1 < parts.length && parts[i + 1] === '+/-') {
+        wind += ' +/-';
+        i++;
+      }
+      decodedPirep.wind = wind;
+      i++;
     } else if (part.startsWith('TB')) {
       decodedPirep.turbulence = part.slice(2).trim();
+      i++;
     } else if (part.startsWith('IC')) {
       decodedPirep.icing = part.slice(2).trim();
+      i++;
+    } else {
+      i++;
     }
   }
 
@@ -128,7 +142,7 @@ const PirepDecodedData: React.FC<PirepDecodedDataProps> = ({ pirep }) => {
         </div>
       )}
 
-      <div className="divider"></div>
+      {pirep.skyCondition || decodedPirep?.skyCondition ? <div className="divider"></div> : null}
 
       {pirep.turbulenceCondition && (
         <div>
@@ -159,7 +173,9 @@ const PirepDecodedData: React.FC<PirepDecodedDataProps> = ({ pirep }) => {
         </div>
       )}
 
-      <div className="divider"></div>
+      {pirep.turbulenceCondition || decodedPirep?.turbulence ? (
+        <div className="divider"></div>
+      ) : null}
 
       {pirep.icingCondition && (
         <div>
@@ -186,13 +202,15 @@ const PirepDecodedData: React.FC<PirepDecodedDataProps> = ({ pirep }) => {
       )}
 
       {decodedPirep?.icing && (
-        <div className="flex items-center space-x-2">
-          <span className="font-semibold">IC:</span>
-          <span>{decodedPirep.icing}</span>
-        </div>
+        <>
+          <div className="flex items-center space-x-2">
+            <span className="font-semibold">IC:</span>
+            <span>{decodedPirep.icing}</span>
+          </div>
+        </>
       )}
 
-      <div className="divider"></div>
+      {pirep.icingCondition || decodedPirep?.icing ? <div className="divider"></div> : null}
 
       {pirep.visibilityStatuteMi !== null && (
         <div className="flex items-center space-x-2">
