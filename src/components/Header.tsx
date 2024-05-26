@@ -26,7 +26,11 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="flex items-center justify-between px-4 py-2 bg-neutral text-neutral-content">
+    <header
+      className={`${
+        isViewerPage ? 'fixed top-0 left-0 right-0 z-50' : ''
+      } flex items-center justify-between px-4 py-2 bg-neutral text-neutral-content`}
+    >
       {isViewerPage ? (
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center">
@@ -88,7 +92,7 @@ const Header: React.FC = () => {
               </div>
             </div>
             <div className="items-center hidden gap-2 lg:flex">
-              <Link to="/contact" className="mr-4 btn btn-ghost btn-sm">
+              <Link to="/contact" className="mr-4 btn btn-ghost btn-sm hover:scale-105">
                 Report an Issue
               </Link>
               <DonationButton />

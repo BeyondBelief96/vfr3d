@@ -71,11 +71,19 @@ export const ContactMePage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-base-200">
+    <div
+      className="flex flex-col min-h-screen"
+      style={{
+        backgroundImage: 'url("/background_image.jpg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       <main className="flex items-center justify-center flex-grow">
         <div className="container py-12">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <div className="flex items-center justify-center bg-neutral">
+            <div className="flex items-center justify-center rounded-lg shadow-xl bg-base-100 bg-opacity-90">
               <div className="px-8 py-12 text-center text-primary-content">
                 <h2 className="mb-4 text-3xl font-bold">Get in Touch</h2>
                 <p className="text-lg">
@@ -84,8 +92,8 @@ export const ContactMePage: React.FC = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-center">
-              <div className="w-full max-w-md p-8 mx-auto rounded-lg shadow-xl bg-neutral">
+            <div className="flex items-center justify-center rounded-lg shadow-xl bg-base-100 bg-opacity-90">
+              <div className="w-full max-w-md p-8 mx-auto">
                 {isSubmitted ? (
                   <div className="text-center alert alert-success">
                     Email Sent! I'll be in touch soon.
