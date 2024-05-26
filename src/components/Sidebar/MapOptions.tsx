@@ -19,7 +19,7 @@ const MapOptions: React.FC<MapOptionsProps> = React.memo(({ imageryLayerOptions 
   }, [imageryLayerOptions]);
 
   return (
-    <div className="mb-6">
+    <div>
       <h2 className="mb-2 text-lg font-semibold">Map Options</h2>
       <div className="mb-4">
         <label htmlFor="layer-select" className="block mb-2">

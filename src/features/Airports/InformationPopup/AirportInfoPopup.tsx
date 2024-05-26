@@ -9,8 +9,9 @@ import {
   useGetTafForAirportQuery,
 } from '../../../redux/api/vfr3d/weatherApi';
 import { ApiError } from '../../../redux/api/types';
+import EntityInfoPopup from '../../../components/ReusableComponents/EntityInfoPopup';
 import AirportHeader from './AirportInfoHeader';
-import Tabs from '../../../components/ReusableComponents/Tabs';
+import { Airport } from '../../../redux/api/faa/faa.interface';
 
 const AirportInfoPopup: React.FC = () => {
   const dispatch = useDispatch();
@@ -54,32 +55,44 @@ const AirportInfoPopup: React.FC = () => {
     { id: 'weather', label: 'Weather' },
   ];
 
+  const renderContent = (airport: Airport) => {
+    switch (activeTab) {
+      case 'info':
+        return <AirportInfo airport={airport} />;
+      case 'weather':
+        return (
+          <AirportWeather
+            metar={metar}
+            taf={taf}
+            isLoadingMetar={isLoadingMetar}
+            isLoadingTaf={isLoadingTaf}
+            metarError={metarError as ApiError}
+            tafError={tafError as ApiError}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderAirportHeader = (airport: Airport) => (
+    <AirportHeader
+      airport={airport}
+      metar={metar}
+      metarError={metarError}
+      handleClose={handleClose}
+    />
+  );
+
   return (
-    <div className="fixed top-0 bottom-0 sm:bottom-10 sm:right-4 sm:top-auto sm:transform-none w-full sm:w-96 h-screen sm:h-[calc(80vh)] bg-base-100 rounded-lg overflow-hidden shadow-lg">
-      <div className="flex flex-col h-full">
-        <AirportHeader
-          airport={selectedAirport}
-          metar={metar}
-          metarError={metarError}
-          handleClose={handleClose}
-          key={selectedAirport.GLOBAL_ID}
-        />
-        <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-        <div className="flex-1 p-4 overflow-y-auto">
-          {activeTab === 'info' && <AirportInfo airport={selectedAirport} />}
-          {activeTab === 'weather' && (
-            <AirportWeather
-              metar={metar}
-              taf={taf}
-              isLoadingMetar={isLoadingMetar}
-              isLoadingTaf={isLoadingTaf}
-              metarError={metarError as ApiError}
-              tafError={tafError as ApiError}
-            />
-          )}
-        </div>
-      </div>
-    </div>
+    <EntityInfoPopup
+      selectedEntity={selectedAirport}
+      tabs={tabs}
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      renderContent={renderContent}
+      renderHeader={renderAirportHeader}
+    />
   );
 };
 

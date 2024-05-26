@@ -25,49 +25,45 @@ const AirportOptions: React.FC = () => {
 
   return (
     <>
-      <div className="mb-6">
-        <h2 className="mb-2 text-lg font-semibold">Airports</h2>
-        <div className="mt-4">
-          <label htmlFor="state-select" className="block mb-2">
-            Select State
-          </label>
-          <select
-            id="state-select"
-            className="w-full select select-bordered"
-            value={selectedStateAirports}
-            onChange={(e) => handleSelectedStateChange(e)}
-          >
-            {states.map((state) => (
-              <option key={state} value={state}>
-                {state}
-              </option>
-            ))}
-          </select>
-        </div>
+      <h2 className="mb-2 text-lg font-semibold">Airports</h2>
+      <div className="mt-4">
+        <label htmlFor="state-select" className="block mb-2">
+          Select State
+        </label>
+        <select
+          id="state-select"
+          className="w-full select select-bordered"
+          value={selectedStateAirports}
+          onChange={(e) => handleSelectedStateChange(e)}
+        >
+          {states.map((state) => (
+            <option key={state} value={state}>
+              {state}
+            </option>
+          ))}
+        </select>
       </div>
-      <div className="mb-6">
-        <div className="flex items-center gap-4 mt-4">
-          <label htmlFor="airport-toggle" className="mr-2">
-            Show Airports
-          </label>
-          <input
-            id="airport-toggle"
-            type="checkbox"
-            checked={showAirports}
-            onChange={() => dispatch(setShowAirports(!showAirports))}
-            className="toggle toggle-primary"
-          />
-          <label htmlFor="airport-toggle" className="mr-2">
-            Show Cloud Bases
-          </label>
-          <input
-            id="cloudbases-toggle"
-            type="checkbox"
-            checked={showCloudBases}
-            onChange={() => dispatch(setShowCloudBases(!showCloudBases))}
-            className="toggle toggle-primary"
-          />
-        </div>
+      <div className="flex items-center gap-4 mt-4">
+        <label htmlFor="airport-toggle" className="mr-2">
+          Show Airports
+        </label>
+        <input
+          id="airport-toggle"
+          type="checkbox"
+          checked={showAirports}
+          onChange={() => dispatch(setShowAirports(!showAirports))}
+          className="toggle toggle-primary"
+        />
+        <label htmlFor="airport-toggle" className="mr-2">
+          Show Cloud Bases
+        </label>
+        <input
+          id="cloudbases-toggle"
+          type="checkbox"
+          checked={showCloudBases}
+          onChange={() => dispatch(setShowCloudBases(!showCloudBases))}
+          className="toggle toggle-primary"
+        />
       </div>
     </>
   );

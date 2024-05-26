@@ -19,8 +19,9 @@ const RouteOptions: React.FC = () => {
   };
 
   return (
-    <form className="mt-6">
+    <form>
       <div className="mt-4 mr-4">
+        <h2 className="mb-2 text-lg font-semibold">Route Options</h2>
         <label htmlFor="line-color" className="block mb-2">
           Line Color
         </label>

@@ -13,6 +13,8 @@ import RouteComponent from '../features/Routes/RouteComponent';
 import { useDispatch } from 'react-redux';
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { setAccessToken } from '../redux/slices/authSlice';
+import { Pireps } from '../features/Pireps/Pireps';
+import PirepInfoPopup from '../features/Pireps/PirepInformationPopup';
 
 const ViewerPage = () => {
   const dispatch = useDispatch();
@@ -72,14 +74,14 @@ const ViewerPage = () => {
   loadBaseImageryViewModels();
 
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       <Sidebar imageryLayerOptions={IMAGERY_LAYER_OPTIONS} />
       <div className="flex-1">
         <ResiumViewer
           useBrowserRecommendedResolution={false}
           imageryProviderViewModels={imageryViewModels}
-          className="h-full"
           geocoder={false}
+          className="h-screen"
           timeline={false}
           infoBox={false}
           animation={false}
@@ -87,11 +89,13 @@ const ViewerPage = () => {
           <Globe maximumScreenSpaceError={1.3} />
           <ImageryLayers />
           <VisibleAirports />
+          <Pireps />
           <RouteComponent />
           <FlyTo />
         </ResiumViewer>
         <RoutesPanel />
         <AirportInfoPopup />
+        <PirepInfoPopup />
       </div>
     </div>
   );

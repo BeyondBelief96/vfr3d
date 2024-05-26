@@ -1,14 +1,19 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 
 const AppLayout: React.FC = () => {
+  const location = useLocation();
+  const isViewerPage = location.pathname === '/viewer';
+
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <nav>
         <Header />
       </nav>
-      <Outlet />
+      <div className={`flex-1 ${isViewerPage ? 'overflow-hidden' : ''}`}>
+        <Outlet />
+      </div>
     </div>
   );
 };

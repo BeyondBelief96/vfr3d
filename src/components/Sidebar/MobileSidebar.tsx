@@ -6,6 +6,7 @@ import AirportOptions from './AirportOptions';
 import HamburgerToggle from '../ReusableComponents/HamburgerToggle';
 import { AppState } from '../../redux/store';
 import RouteOptions from './RouteOptions';
+import { PirepOptions } from './PirepOptions';
 
 interface MobileSidebarProps {
   imageryLayerOptions: { value: string; label: string }[];
@@ -32,7 +33,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ imageryLayerOptions }) =>
         <MapOptions imageryLayerOptions={imageryLayerOptions} />
         <AirportOptions />
         <RouteOptions />
-        {/* <AirspaceOptions /> */}
+        <PirepOptions />
       </div>
     </div>
   );
