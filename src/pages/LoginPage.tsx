@@ -18,11 +18,7 @@ const LoginPage: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-base-200">
       <div className="max-w-md mx-auto">
         <div className="mb-8 text-center">
-          <img
-            src="logo_2.png"
-            alt="VFR3D Logo"
-            className="h-24 mx-auto transition-all duration-1000 animate-bounce"
-          />
+          <img src="logo_2.png" alt="VFR3D Logo" className="h-24 mx-auto" />
           <h2 className="mt-4 text-3xl font-bold">Welcome to VFR3D</h2>
         </div>
 
