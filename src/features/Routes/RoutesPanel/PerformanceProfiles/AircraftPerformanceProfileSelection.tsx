@@ -52,7 +52,7 @@ const AircraftPerformanceProfileSelection: React.FC<AircraftPerformanceProfileSe
         {selectedProfileId && (
           <>
             <button
-              className="btn btn-secondary"
+              className="btn btn-primary"
               onClick={() => {
                 const selectedProfile = profiles.find(
                   (profile) => profile.id === selectedProfileId

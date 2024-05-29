@@ -203,7 +203,7 @@ const AircraftPerformanceProfilesForm: React.FC<AircraftPerformanceProfilesFormP
             </div>
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn btn-primary text-primary-content"
               onClick={() => {
                 setIsCreating(false);
                 setIsEditing(false);
