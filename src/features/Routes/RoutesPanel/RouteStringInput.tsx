@@ -148,7 +148,7 @@ export const RouteStringInput: React.FC = () => {
           value={routeString}
           onChange={handleRouteStringChange}
           onKeyDown={handleKeyDown}
-          className="w-full border-4 rounded-lg h-28 textarea textarea-primary input input-bordered max-h-40"
+          className="w-full border-4 rounded-lg h-28 textarea textarea-primary text-primary-content input input-bordered max-h-40"
         />
       </div>
       <div className="flex justify-start gap-2 mb-4 sm:mb-0">

@@ -175,7 +175,7 @@ export const RoutesPanel: React.FC = () => {
             {currentStep === 4 && (
               <div className="flex flex-col items-center">
                 <h3 className="mb-2 text-lg font-bold">Nav Log</h3>
-                {navlogLoading ? <LoadingSpinner /> : <NavLogTable />}
+                {navlogLoading ? <LoadingSpinner fullScreen={false} /> : <NavLogTable />}
               </div>
             )}
           </div>

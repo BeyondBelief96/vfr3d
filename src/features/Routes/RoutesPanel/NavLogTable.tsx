@@ -38,7 +38,7 @@ export const NavLogTable: React.FC = () => {
       {isMobile ? (
         <div className="rounded-lg shadow-md">
           {navlog.legs.map((leg, index) => (
-            <div key={index} className="p-4 border-b border-gray-200 last:border-none">
+            <div key={index} className="p-4 border-b border-primary-content last:border-none">
               <h3 className="text-lg font-semibold">
                 {leg.legStartPoint?.name} ➨ {leg.legEndPoint?.name}
               </h3>
@@ -86,7 +86,7 @@ export const NavLogTable: React.FC = () => {
                   <th className="px-2 py-1 ">WD</th>
                   <th className="px-2 py-1 ">WS</th>
                   <th className="px-2 py-1 ">Temp</th>
-                  <th className="py-1 border-l border-base-content ">
+                  <th className="py-1 border-l border-primary-content ">
                     <div className="flex justify-around">
                       <span>Start</span>
                       <span>End</span>
@@ -135,13 +135,13 @@ export const NavLogTable: React.FC = () => {
                     <td className="px-2 py-1 border-b border-l border-r">
                       {formatData(leg.tempC)}
                     </td>
-                    <td className="px-2 py-1 border-b border-l min-w-52 border-base-content">
+                    <td className="px-2 py-1 border-b border-l min-w-52">
                       <div className="flex justify-around">
                         <span>{formatDate(leg.startLegTime.toString())}</span>
                         <span>{formatDate(leg.endLegTime.toString())}</span>
                       </div>
                     </td>
-                    <td className="py-1 border-b border-l min-w-[100px] border-base-content">
+                    <td className="py-1 border-b border-l min-w-[100px]">
                       <div className="flex justify-around">
                         <span>{leg.legFuelBurnGals.toFixed(1)}</span>
                         <span>{leg.remainingFuelGals.toFixed(1)}</span>
