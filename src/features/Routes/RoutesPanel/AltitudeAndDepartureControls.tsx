@@ -4,27 +4,24 @@ import { AppState } from '../../../redux/store';
 import {
   setPlannedCruisingAltitude,
   setTimeOfDepartureUtc,
-  validateNavlogFields,
 } from '../../../redux/slices/navlogSlice';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 
 export const NavlogControls: React.FC = () => {
   const dispatch = useDispatch();
-  const { plannedCruisingAltitude, timeOfDepartureUtc, errors } = useSelector(
+  const { plannedCruisingAltitude, timeOfDepartureUtc } = useSelector(
     (state: AppState) => state.navlog
   );
 
   const handlePlannedCruisingAltitudeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const altitude = Number(e.target.value);
     dispatch(setPlannedCruisingAltitude(altitude));
-    dispatch(validateNavlogFields());
   };
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
       dispatch(setTimeOfDepartureUtc(date));
-      dispatch(validateNavlogFields());
     }
   };
   return (
@@ -36,12 +33,9 @@ export const NavlogControls: React.FC = () => {
         <input
           type="text"
           id="plannedCruisingAltitude"
-          defaultValue={3500}
           value={plannedCruisingAltitude}
           onChange={handlePlannedCruisingAltitudeChange}
-          className={`p-2 mb-2 border rounded w-28 border-base-content ${
-            errors.plannedCruisingAltitude ? 'border-error' : ''
-          }`}
+          className={`p-2 mb-2 border rounded w-28 border-base-content`}
         />
       </div>
 
@@ -57,13 +51,8 @@ export const NavlogControls: React.FC = () => {
           timeFormat="HH:mm"
           timeIntervals={15}
           dateFormat="MMMM d, h:mm aa"
-          className={`w-40 p-2 mb-2 border rounded border-base-content ${
-            errors.timeOfDepartureUtc ? 'border-error' : ''
-          }`}
+          className={`w-40 p-2 mb-2 border rounded border-base-content`}
         />
-        {errors.timeOfDepartureUtc && (
-          <p className="text-error">Please select a time of departure.</p>
-        )}
       </div>
     </div>
   );

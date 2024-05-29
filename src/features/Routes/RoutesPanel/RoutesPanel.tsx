@@ -2,20 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { RouteStringInput } from './RouteStringInput';
 import Drawer from '../../../components/ReusableComponents/BottomDrawer';
 import { NavLogTable } from './NavLogTable';
-import { AircraftPerformanceConfigurationComponent } from './AircraftPerformanceConfigurationComponent';
+import AircraftPerformanceProfiles from './PerformanceProfiles/AircraftPerformanceProfiles';
 import { NavlogControls } from './AltitudeAndDepartureControls';
 import LoadingSpinner from '../../../components/ReusableComponents/LoadingSpinner';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  setNavlogCalculationEnabled,
-  setNavlogReady,
-  validateNavlogFields,
-} from '../../../redux/slices/navlogSlice';
-import { AppState } from '../../../redux/store';
+import { setNavlogCalculationEnabled, setNavlogReady } from '../../../redux/slices/navlogSlice';
 import { useCalculateNavLogMutation } from '../../../redux/api/vfr3d/navlog.api';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { NavLogPDF } from './NavLogPdf';
 import { RoutePointsStep } from './RoutePointsStep';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 
 const ROUTE_PLANNER_TEXT = {
   open: 'Open Route Planner',
@@ -23,17 +18,15 @@ const ROUTE_PLANNER_TEXT = {
 };
 
 export const RoutesPanel: React.FC = () => {
-  const dispatch = useDispatch();
-  const {
-    errors,
-    isNavlogCalculationEnabled,
-    aircraftPerformanceProfile,
-    plannedCruisingAltitude,
-    timeOfDepartureUtc,
-  } = useSelector((state: AppState) => state.navlog);
-  const { route } = useSelector((state: AppState) => state.route);
-  const { navlog } = useSelector((state: AppState) => state.navlog);
+  const dispatch = useAppDispatch();
+  const { isNavlogCalculationEnabled, plannedCruisingAltitude, timeOfDepartureUtc } =
+    useAppSelector((state) => state.navlog);
+  const { route } = useAppSelector((state) => state.route);
+  const { navlog } = useAppSelector((state) => state.navlog);
+  const { profiles, selectedProfileId } = useAppSelector((state) => state.aircraftPerformance);
   const [calculateNavLog, { isLoading: navlogLoading }] = useCalculateNavLogMutation();
+
+  const selectedProfile = profiles?.find((profile) => profile.id === selectedProfileId);
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -42,10 +35,9 @@ export const RoutesPanel: React.FC = () => {
   }, [dispatch, currentStep]);
 
   useEffect(() => {
-    const hasErrors = Object.values(errors).some((error) => error);
     const hasEnoughRoutePoints = route.routePoints.length >= 2;
-    dispatch(setNavlogCalculationEnabled(!hasErrors && hasEnoughRoutePoints));
-  }, [dispatch, errors, route.routePoints]);
+    dispatch(setNavlogCalculationEnabled(hasEnoughRoutePoints));
+  }, [dispatch, route.routePoints]);
 
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
@@ -60,19 +52,21 @@ export const RoutesPanel: React.FC = () => {
   };
 
   const handleCalculateNavLog = async () => {
-    dispatch(validateNavlogFields());
-    if (!Object.values(errors).some((error) => error)) {
-      try {
-        handleNextStep();
-        await calculateNavLog({
-          waypoints: route?.routePoints || [],
-          aircraftPerformanceConfiguration: aircraftPerformanceProfile,
-          plannedCruisingAltitude,
-          timeOfDeparture: new Date(timeOfDepartureUtc),
-        });
-      } catch (error) {
-        console.error('Error calculating nav log:', error);
-      }
+    if (!selectedProfile) {
+      console.error('Please select a valid aircraft performance profile.');
+      return;
+    }
+
+    try {
+      handleNextStep();
+      await calculateNavLog({
+        waypoints: route?.routePoints || [],
+        aircraftPerformanceConfiguration: selectedProfile,
+        plannedCruisingAltitude,
+        timeOfDeparture: new Date(timeOfDepartureUtc),
+      });
+    } catch (error) {
+      console.error('Error calculating nav log:', error);
     }
   };
 
@@ -96,6 +90,7 @@ export const RoutesPanel: React.FC = () => {
             <button
               className={`btn btn-primary w-32 ${isNavlogCalculationEnabled ? '' : 'btn-disabled'}`}
               onClick={handleCalculateNavLog}
+              disabled={!selectedProfile}
             >
               Calculate Nav Log
             </button>
@@ -164,8 +159,7 @@ export const RoutesPanel: React.FC = () => {
 
             {currentStep === 2 && (
               <div className="flex flex-col items-center">
-                <h3 className="mb-2 text-lg font-bold">Fill Out Aircraft Performance Info</h3>
-                <AircraftPerformanceConfigurationComponent />
+                <AircraftPerformanceProfiles />
               </div>
             )}
 
