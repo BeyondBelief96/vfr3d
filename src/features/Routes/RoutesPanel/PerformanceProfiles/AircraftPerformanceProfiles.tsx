@@ -147,7 +147,6 @@ const AircraftPerformanceProfiles: React.FC = () => {
             <AircraftPerformanceProfileSelection
               selectedProfileId={selectedProfileId}
               profiles={profiles}
-              setSelectedProfileId={setSelectedProfileId}
               setIsCreating={setIsCreating}
               setFormData={setFormData}
               setIsEditing={setIsEditing}

@@ -1,11 +1,12 @@
 // src/components/ProfileSelection.tsx
 import React from 'react';
 import { AircraftPerformanceResponseDTO } from 'vfr3d-shared';
+import { useAppDispatch } from '../../../../hooks/reduxHooks';
+import { setSelectedProfileId } from '../../../../redux/slices/aircraftPerformanceSlice';
 
 interface AircraftPerformanceProfileSelectionProps {
   selectedProfileId: number | null;
   profiles: AircraftPerformanceResponseDTO[];
-  setSelectedProfileId: (profileId: number | null) => void;
   setIsCreating: (isCreating: boolean) => void;
   setFormData: (formData: Partial<AircraftPerformanceResponseDTO>) => void;
   setIsEditing: (isEditing: boolean) => void;
@@ -15,12 +16,18 @@ interface AircraftPerformanceProfileSelectionProps {
 const AircraftPerformanceProfileSelection: React.FC<AircraftPerformanceProfileSelectionProps> = ({
   selectedProfileId,
   profiles,
-  setSelectedProfileId,
   setIsCreating,
   setFormData,
   setIsEditing,
   handleDeleteProfile,
 }) => {
+  const dispatch = useAppDispatch();
+
+  const handleProfileChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const profileId = e.target.value ? Number(e.target.value) : null;
+    dispatch(setSelectedProfileId(profileId));
+  };
+
   return (
     <div>
       <h2 className="mb-4 text-xl font-bold sm:text-2xl">Select Aircraft Performance Profile</h2>
@@ -28,7 +35,7 @@ const AircraftPerformanceProfileSelection: React.FC<AircraftPerformanceProfileSe
         <select
           className="w-full select select-bordered"
           value={selectedProfileId || ''}
-          onChange={(e) => setSelectedProfileId(e.target.value ? Number(e.target.value) : null)}
+          onChange={handleProfileChange}
         >
           <option value="">Select a profile</option>
           {profiles.map((profile) => (

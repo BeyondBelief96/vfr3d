@@ -33,7 +33,6 @@ export const NavlogControls: React.FC = () => {
         <input
           type="text"
           id="plannedCruisingAltitude"
-          defaultValue={3500}
           value={plannedCruisingAltitude}
           onChange={handlePlannedCruisingAltitudeChange}
           className={`p-2 mb-2 border rounded w-28 border-base-content`}
