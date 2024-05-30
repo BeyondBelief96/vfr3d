@@ -2,21 +2,18 @@
 import React, { useMemo } from 'react';
 import ImageryControls from '../../features/Imagery/ImageryControls';
 import useMapOptions from '../../hooks/useMapOptions';
+import { IMAGERY_LAYER_OPTIONS as imagerylayerOptions } from '../../utility/constants';
 
-interface MapOptionsProps {
-  imageryLayerOptions: { value: string; label: string }[];
-}
-
-const MapOptions: React.FC<MapOptionsProps> = React.memo(({ imageryLayerOptions }) => {
+const MapOptions: React.FC = React.memo(() => {
   const { selectedImageryLayer, handleLayerChange, handleAlphaChange, handleBrightnessChange } =
     useMapOptions();
   const renderImageryLayerOptions = useMemo(() => {
-    return imageryLayerOptions.map((option) => (
-      <option key={option.value} value={option.value}>
-        {option.label}
+    return imagerylayerOptions.map((option) => (
+      <option key={option.layerName} value={option.layerName}>
+        {option.displayLabel}
       </option>
     ));
-  }, [imageryLayerOptions]);
+  }, []);
 
   return (
     <div>

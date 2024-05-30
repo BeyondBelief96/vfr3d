@@ -28,15 +28,16 @@ export const ARCGIS_FAA_IFR_HIGH_URL =
 export const ARCGIS_FAA_FEATURESERVICE_BASE_URL =
   'https://services6.arcgis.com/ssFJjBXIUyZDrSYZ/arcgis/rest/services/US_Airport/FeatureServer/0';
 
+export type ImageryLayerOption = { layerName: string; displayLabel: string };
 /**
  * Set of imagery layer options as determined by charts available above.
  */
-export const IMAGERY_LAYER_OPTIONS = [
-  { value: 'None', label: 'None' },
-  { value: 'vfrImagery', label: 'VFR' },
-  { value: 'vfrTerminal', label: 'VFR TAC' },
-  { value: 'ifrLowImagery', label: 'IFR Low' },
-  { value: 'ifrHighImagery', label: 'IFR High' },
+export const IMAGERY_LAYER_OPTIONS: ImageryLayerOption[] = [
+  { layerName: 'None', displayLabel: 'None' },
+  { layerName: 'vfrImagery', displayLabel: 'VFR' },
+  { layerName: 'vfrTerminal', displayLabel: 'VFR TAC' },
+  { layerName: 'ifrLowImagery', displayLabel: 'IFR Low' },
+  { layerName: 'ifrHighImagery', displayLabel: 'IFR High' },
 ];
 
 export enum FlightCategories {

@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { toggleSidebar } from '../redux/slices/sidebarSlice';
-import { AppState } from '../redux/store';
-import DonationButton from './ReusableComponents/DonationButton';
-import SearchBar from './ReusableComponents/SearchBar';
-import HamburgerToggle from './ReusableComponents/HamburgerToggle';
+import { toggleSidebar } from '../../redux/slices/sidebarSlice';
+import { AppState } from '../../redux/store';
+import DonationButton from '../ReusableComponents/DonationButton';
+import SearchBar from '../ReusableComponents/SearchBar';
+import HamburgerToggle from '../ReusableComponents/HamburgerToggle';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const Header: React.FC = () => {

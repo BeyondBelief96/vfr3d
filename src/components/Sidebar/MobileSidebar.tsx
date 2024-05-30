@@ -8,11 +8,7 @@ import { AppState } from '../../redux/store';
 import RouteOptions from './RouteOptions';
 import { PirepOptions } from './PirepOptions';
 
-interface MobileSidebarProps {
-  imageryLayerOptions: { value: string; label: string }[];
-}
-
-const MobileSidebar: React.FC<MobileSidebarProps> = ({ imageryLayerOptions }) => {
+const MobileSidebar: React.FC = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector((state: AppState) => state.sidebar.isOpen);
 
@@ -30,7 +26,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ imageryLayerOptions }) =>
         <HamburgerToggle isOpen={isOpen} onClick={toggleSidebarHandler} />
       </div>
       <div className="p-4">
-        <MapOptions imageryLayerOptions={imageryLayerOptions} />
+        <MapOptions />
         <AirportOptions />
         <RouteOptions />
         <PirepOptions />

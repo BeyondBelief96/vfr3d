@@ -2,7 +2,7 @@ import { Color } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
 import { Waypoint } from 'vfr3d-shared';
 
-export const convertDMSToDD = (dms: string): number => {
+export const convertAirportDMSToDD = (dms: string): number => {
   const hemisphere = dms.slice(-1);
   const [degrees, minutes, seconds] = dms.slice(0, -1).split('-').map(parseFloat);
 
@@ -61,8 +61,8 @@ export const mapAirportToWaypoint = (airport: Airport): Waypoint => {
   const waypoint: Waypoint = {
     id: airport.GLOBAL_ID,
     name: airport.ICAO_ID || airport.IDENT,
-    latitude: convertDMSToDD(airport.LATITUDE),
-    longitude: convertDMSToDD(airport.LONGITUDE),
+    latitude: convertAirportDMSToDD(airport.LATITUDE),
+    longitude: convertAirportDMSToDD(airport.LONGITUDE),
     altitude: airport.ELEVATION,
   };
 

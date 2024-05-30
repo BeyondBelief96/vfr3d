@@ -6,7 +6,6 @@ import VisibleAirports from '../features/Airports/VisibleAirports';
 import ImageryLayers from '../features/Imagery/ImageryLayers';
 import LoadingSpinner from '../components/ReusableComponents/LoadingSpinner';
 import Sidebar from '../components/Sidebar/Sidebar';
-import { IMAGERY_LAYER_OPTIONS } from '../utility/constants';
 import AirportInfoPopup from '../features/Airports/InformationPopup/AirportInfoPopup';
 import { RoutesPanel } from '../features/Routes/RoutesPanel/RoutesPanel';
 import RouteComponent from '../features/Routes/RouteComponent';
@@ -75,7 +74,7 @@ const ViewerPage = () => {
 
   return (
     <div className="flex">
-      <Sidebar imageryLayerOptions={IMAGERY_LAYER_OPTIONS} />
+      <Sidebar />
       <div className="flex-1">
         <ResiumViewer
           useBrowserRecommendedResolution={false}

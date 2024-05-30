@@ -6,11 +6,7 @@ import AirportOptions from './AirportOptions';
 import RouteOptions from './RouteOptions';
 import { PirepOptions } from './PirepOptions';
 
-interface DesktopSidebarProps {
-  imageryLayerOptions: { value: string; label: string }[];
-}
-
-const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ imageryLayerOptions }) => {
+const DesktopSidebar: React.FC = () => {
   const isOpen = useSelector((state: AppState) => state.sidebar.isOpen);
 
   return (
@@ -25,7 +21,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ imageryLayerOptions }) 
         }`}
       >
         <div className="flex flex-col gap-3 p-4">
-          <MapOptions imageryLayerOptions={imageryLayerOptions} />
+          <MapOptions />
           <AirportOptions />
           <RouteOptions />
           <PirepOptions />
