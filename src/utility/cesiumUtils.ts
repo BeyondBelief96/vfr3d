@@ -17,43 +17,32 @@ export const flyToPoint = (viewer: Viewer | undefined, point: Cartesian3) => {
   }
 };
 
-export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null => {
-  const longitude = convertAirportDMSToDD(airport.LONGITUDE);
-  const latitude = convertAirportDMSToDD(airport.LATITUDE);
-  const elevation = 0;
-
+export const convertToCartesian3 = (
+  longitude: number | null,
+  latitude: number | null,
+  elevation: number = 0
+): Cartesian3 | null => {
   if (
     longitude === null ||
     latitude === null ||
-    elevation === null ||
     isNaN(latitude) ||
     isNaN(longitude) ||
     isNaN(elevation)
   ) {
     return null;
   }
-
   return Cartesian3.fromDegrees(longitude, latitude, elevation);
+};
+
+export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null => {
+  const longitude = convertAirportDMSToDD(airport.LONGITUDE);
+  const latitude = convertAirportDMSToDD(airport.LATITUDE);
+  return convertToCartesian3(longitude, latitude);
 };
 
 export const mapPirepToCartesian3 = (pirep: Pirep): Cartesian3 | null => {
   if (!pirep.latitude || !pirep.longitude) return null;
-  const longitude = pirep.longitude;
-  const latitude = pirep.latitude;
-  const elevation = 0;
-
-  if (
-    longitude === null ||
-    latitude === null ||
-    elevation === null ||
-    isNaN(latitude) ||
-    isNaN(longitude) ||
-    isNaN(elevation)
-  ) {
-    return null;
-  }
-
-  return Cartesian3.fromDegrees(longitude, latitude, elevation);
+  return convertToCartesian3(pirep.longitude, pirep.latitude);
 };
 
 export const mapWaypointToCartesian3 = (waypoint: Waypoint): Cartesian3 | null => {
