@@ -1,20 +1,18 @@
 import { Entity, IonResource, KmlDataSource } from 'cesium';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
 import { updateCurrentAirspaceEntityIds } from '../../redux/slices/entitiesSlice';
 import { AppDispatch, AppState } from '../../redux/store';
+import LoadingSpinner from '../../components/ReusableComponents/LoadingSpinner';
 
-interface AirspaceComponentProps {
-  setIsLoading: (isLoading: boolean) => void;
-}
-
-const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) => {
+const AirspaceComponent: React.FC = () => {
   const { viewer } = useCesium();
   const dispatch = useDispatch<AppDispatch>();
   const { airspace3dEnabled } = useSelector((state: AppState) => state.airspace);
   const entityRefs = useRef<Record<string, Entity>>({});
   const kmlDataSourceRef = useRef<KmlDataSource>(new KmlDataSource());
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!viewer) {
@@ -44,7 +42,7 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
       } catch (error) {
         console.error('Error loading KML file:', error);
       } finally {
-        setIsLoading(false); // Set loading state to false after loading is complete
+        setIsLoading(false);
       }
     };
 
@@ -56,7 +54,7 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
       // eslint-disable-next-line react-hooks/exhaustive-deps
       viewer?.dataSources?.remove(kmlDataSourceRef.current);
     };
-  }, [viewer, dispatch, airspace3dEnabled, setIsLoading]);
+  }, [viewer, dispatch, airspace3dEnabled]);
 
   useEffect(() => {
     // Toggle visibility of airspace entities based on the showAirspaceEntities state
@@ -67,7 +65,7 @@ const AirspaceComponent: React.FC<AirspaceComponentProps> = ({ setIsLoading }) =
     });
   }, [airspace3dEnabled]);
 
-  return null;
+  return isLoading ? <LoadingSpinner fullScreen={true} /> : null;
 };
 
 export default AirspaceComponent;

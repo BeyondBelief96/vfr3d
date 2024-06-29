@@ -14,6 +14,7 @@ import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { setAccessToken } from '../redux/slices/authSlice';
 import { Pireps } from '../features/Pireps/Pireps';
 import PirepInfoPopup from '../features/Pireps/PirepInformationPopup';
+import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 
 const ViewerPage = () => {
   const dispatch = useDispatch();
@@ -73,7 +74,7 @@ const ViewerPage = () => {
   loadBaseImageryViewModels();
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <Sidebar />
       <div className="flex-1">
         <ResiumViewer
@@ -90,6 +91,7 @@ const ViewerPage = () => {
           <VisibleAirports />
           <Pireps />
           <RouteComponent />
+          <AirspaceComponent />
           <FlyTo />
         </ResiumViewer>
         <RoutesPanel />
