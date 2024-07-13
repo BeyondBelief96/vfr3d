@@ -24,20 +24,13 @@ const AirspaceOptions: React.FC = () => {
         />
       </div>
       <div className="p-4 mt-4 rounded-md shadow-md bg-base-300">
-        <h3 className="mb-2 text-lg font-semibold text-neutral-content">
-          3D Airspace Visualization (Experimental Feature)
-        </h3>
-        <p className="mb-2 text-info">
+        <p className="mb-2 text-primary-content">
           Please note that the 3D airspace visualization is an experimental feature in its early
           stages of development. When enabled, a loading screen will appear initially, and it may
-          take up to 2 minutes for the airspace polygons to load fully. Subsequent enabling or
-          disabling of this feature should be faster.
+          take some time for the airspace polygons to load fully. We are researching ways to provide
+          this sort of data more optimally.
         </p>
-        <p className="mb-2 text-info">
-          We are actively working on optimizing the data loading process to reduce loading times,
-          including exploring the possibility of loading data by state or region.
-        </p>
-        <p className="text-info">
+        <p className="text-primary-content">
           Please note that the 3D airspace data currently displayed may not be up-to-date. The data
           is provided by{' '}
           <a
