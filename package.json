@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
+    "@aws-sdk/client-ses": "^3.614.0",
     "@emailjs/browser": "^4.3.3",
     "@esri/arcgis-rest-feature-service": "^4.0.5",
     "@esri/arcgis-rest-request": "^4.2.1",
