@@ -1,5 +1,7 @@
+import UrlButton from '../../../components/ReusableComponents/UrlButton';
 import { Airport } from '../../../redux/api/faa/faa.interface';
 import { useGetRunwayInformationByAirportIdQuery } from '../../../redux/api/faa/faaSlice';
+import { useGetAirportDiagramUrlByAirportCodeQuery } from '../../../redux/api/vfr3d/airportDiagram.api';
 import { useGetChartSupplementUrlByAirportCodeQuery } from '../../../redux/api/vfr3d/chartsupplements.api';
 
 interface AirportInfoProps {
@@ -10,20 +12,19 @@ const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
   const { data: runwayInformation } = useGetRunwayInformationByAirportIdQuery(airport.GLOBAL_ID);
   const { data: chartSupplementUrl, error: chartSupplementError } =
     useGetChartSupplementUrlByAirportCodeQuery(airport.ICAO_ID || airport.IDENT);
+  const { data: airportDiagramUrl, error: airportDiagramError } =
+    useGetAirportDiagramUrlByAirportCodeQuery(airport.ICAO_ID || airport.IDENT);
   return (
     <div className="space-y-4">
-      {chartSupplementUrl && chartSupplementUrl.pdfUrl && !chartSupplementError && (
-        <>
-          <a
-            href={chartSupplementUrl.pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-36 btn btn-primary text-wrap"
-          >
-            Open Chart Supplement
-          </a>
-        </>
-      )}
+      <div className="flex justify-center space-x-4">
+        {chartSupplementUrl && chartSupplementUrl.pdfUrl && !chartSupplementError && (
+          <UrlButton url={chartSupplementUrl.pdfUrl} label="Open Chart Supplement" />
+        )}
+        {airportDiagramUrl && airportDiagramUrl.pdfUrl && !airportDiagramError && (
+          <UrlButton url={airportDiagramUrl.pdfUrl} label="Open Airport Diagram" />
+        )}
+      </div>
+
       <div className="p-4 rounded-md shadow-md bg-base-200">
         <div className="grid grid-cols-2 gap-2">
           {airport.IDENT && (
