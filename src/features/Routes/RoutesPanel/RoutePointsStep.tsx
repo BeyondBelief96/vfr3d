@@ -45,7 +45,7 @@ export const RoutePointsStep: React.FC = () => {
               <tr>
                 <th>Leg</th>
                 <th>Bearing</th>
-                <th>Range</th>
+                <th>Range (nm)</th>
               </tr>
             </thead>
             <tbody>
@@ -56,8 +56,8 @@ export const RoutePointsStep: React.FC = () => {
                 return (
                   <tr key={index}>
                     <td>{`${startPoint?.name} ➨ ${endPoint?.name}`}</td>
-                    <td>{legResult?.trueCourse.toFixed(2)}</td>
-                    <td>{legResult?.distance.toFixed(2)}</td>
+                    <td className="text-center">{legResult?.trueCourse.toFixed(0)}°</td>
+                    <td className="text-center">{legResult?.distance.toFixed(1)}</td>
                   </tr>
                 );
               })}
