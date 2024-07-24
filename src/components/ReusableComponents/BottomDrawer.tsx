@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import ExpandableArrow from './ExpandableArrow';
+import { useSwipeable } from 'react-swipeable';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -18,11 +19,21 @@ const Drawer: React.FC<DrawerProps> = ({
   initialArrowDirection = 'down',
   children,
 }) => {
+  const handlers = useSwipeable({
+    onSwipedDown: () => {
+      if (isOpen) toggleOpen();
+    },
+    onSwipedUp: () => {
+      if (!isOpen) toggleOpen();
+    },
+    trackMouse: true,
+  });
   return (
     <div className="fixed bottom-0 left-0 right-0 z-20 flex justify-center rounded-lg">
       <div
+        {...handlers}
         className={`overflow-y-auto bg-base-100 bg-opacity-95 rounded-t-lg cursor-pointer transition-all duration-300 ${
-          isOpen ? 'h-screen md:h-[500px] w-full' : 'h-8 w-full sm:w-8/12'
+          isOpen ? 'h-[100dvh] md:h-[500px] w-full' : 'h-8 w-full sm:w-8/12'
         }`}
         onClick={toggleOpen}
       >

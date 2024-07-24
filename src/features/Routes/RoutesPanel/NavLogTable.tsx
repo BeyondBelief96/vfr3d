@@ -46,19 +46,19 @@ export const NavLogTable: React.FC = () => {
                 <div>
                   <p>Distance: {leg.legDistance.toFixed(1)} nm</p>
                   <p>Remaining: {leg.distanceRemaining.toFixed(1)} nm</p>
-                  <p>TC: {leg.trueCourse.toFixed(0)}</p>
-                  <p>MC: {leg.magneticCourse.toFixed(0)}</p>
-                  <p>MH: {leg.magneticHeading.toFixed(0)}</p>
-                  <p>GS: {leg.groundSpeed.toFixed(0)} knots</p>
+                  <p>TC: {leg?.trueCourse.toFixed(0)}</p>
+                  <p>MC: {leg?.magneticCourse.toFixed(0)}</p>
+                  <p>MH: {leg?.magneticHeading.toFixed(0)}</p>
+                  <p>GS: {leg?.groundSpeed.toFixed(0)} knots</p>
                   <p>Wind Dir: {formatData(leg.windDir)}</p>
                   <p>Wind Speed: {formatData(leg.windSpeed)} kts</p>
                 </div>
                 <div>
-                  <p>Temp (C): {formatData(leg.tempC)}</p>
-                  <p>Start: {formatDate(leg.startLegTime.toString())}</p>
-                  <p>End: {formatDate(leg.endLegTime.toString())}</p>
-                  <p>Burn: {leg.legFuelBurnGals.toFixed(1)} gals</p>
-                  <p>Remaining: {leg.remainingFuelGals.toFixed(1)} gals</p>
+                  <p>Temp (C): {formatData(leg?.tempC)}</p>
+                  <p>Start: {formatDate(leg?.startLegTime.toString())}</p>
+                  <p>End: {formatDate(leg?.endLegTime.toString())}</p>
+                  <p>Burn: {leg?.legFuelBurnGals.toFixed(1)} gals</p>
+                  <p>Remaining: {leg?.remainingFuelGals.toFixed(1)} gals</p>
                 </div>
               </div>
             </div>
@@ -106,34 +106,34 @@ export const NavLogTable: React.FC = () => {
                 {navlog.legs.map((leg, index) => (
                   <tr key={index}>
                     <td className="px-2 py-1 border-b min-w-40">
-                      {leg.legStartPoint?.name} ➨ {leg.legEndPoint?.name}
+                      {leg?.legStartPoint?.name} ➨ {leg.legEndPoint?.name}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
-                      {leg.legDistance.toFixed(1)}
+                      {leg?.legDistance?.toFixed(1)}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
-                      {leg.distanceRemaining.toFixed(1)}
+                      {leg?.distanceRemaining?.toFixed(1)}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
-                      {formatData(leg.trueCourse)}
+                      {formatData(leg?.trueCourse)}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
-                      {formatData(leg.magneticCourse)}
+                      {formatData(leg?.magneticCourse)}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
-                      {formatData(leg.magneticHeading)}
+                      {formatData(leg?.magneticHeading)}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
-                      {formatData(leg.groundSpeed)}
+                      {formatData(leg?.groundSpeed)}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
-                      {formatData(leg.windDir)}
+                      {formatData(leg?.windDir)}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
-                      {formatData(leg.windSpeed)}
+                      {formatData(leg?.windSpeed)}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
-                      {formatData(leg.tempC)}
+                      {formatData(leg?.tempC)}
                     </td>
                     <td className="px-2 py-1 border-b border-l min-w-52">
                       <div className="flex justify-around">
@@ -143,8 +143,8 @@ export const NavLogTable: React.FC = () => {
                     </td>
                     <td className="py-1 border-b border-l min-w-[100px]">
                       <div className="flex justify-around">
-                        <span>{leg.legFuelBurnGals.toFixed(1)}</span>
-                        <span>{leg.remainingFuelGals.toFixed(1)}</span>
+                        <span>{leg?.legFuelBurnGals.toFixed(1)}</span>
+                        <span>{leg?.remainingFuelGals.toFixed(1)}</span>
                       </div>
                     </td>
                   </tr>
