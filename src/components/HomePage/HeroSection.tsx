@@ -1,7 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
+  const { loginWithRedirect } = useAuth0();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+    await loginWithRedirect();
+    navigate('/Viewer');
+    setIsLoading(false);
+  };
+
   return (
     <section
       className="min-h-screen py-8 bg-center hero sm:py-16"
@@ -18,10 +30,14 @@ const HeroSection: React.FC = () => {
               Fly smarter with VFR3D, the intuitive flight planning tool designed for the weekend
               pilots.
             </p>
-            <div className="justify-center mt-auto transition-transform duration-300 opacity-100 card-actions">
-              <Link to="/login" className="btn btn-primary hover:scale-105">
-                Get Started
-              </Link>
+            <div className="transition-transform duration-300 opacity-100 card-actions">
+              {isLoading ? (
+                <div className="btn btn-square btn-ghost loading"></div>
+              ) : (
+                <button onClick={handleLogin} className="w-24 btn btn-primary hover:scale-105">
+                  Log In
+                </button>
+              )}
               <Link to="/documentation" className="btn btn-primary hover:scale-105">
                 Documentation
               </Link>

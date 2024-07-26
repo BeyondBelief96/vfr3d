@@ -7,6 +7,7 @@ import { useGetAllPirepsQuery } from '../../redux/api/vfr3d/weatherApi';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import { setSelectedPirep } from '../../redux/slices/pirepsSlice';
 import { setSelectedAirport } from '../../redux/slices/airportsSlice';
+import { setSelectedAirsigmet } from '../../redux/slices/airsigmetsSlice';
 
 export const Pireps: React.FC = () => {
   const showPireps = useAppSelector((state) => state.pireps.showPireps);
@@ -37,6 +38,7 @@ export const Pireps: React.FC = () => {
         if (clickedPirep) {
           dispatch(setSelectedPirep(clickedPirep));
           dispatch(setSelectedAirport(null));
+          dispatch(setSelectedAirsigmet(null));
         }
       }
     };

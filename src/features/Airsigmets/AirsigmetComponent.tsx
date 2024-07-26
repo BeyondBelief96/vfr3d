@@ -1,12 +1,15 @@
 import React from 'react';
 import { Color } from 'cesium';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetAllAirsigmetsQuery } from '../../redux/api/vfr3d/weatherApi';
 import { PolygonEntity } from '../../components/ReusableComponents/cesium/PolygonEntity';
 import { AppState } from '../../redux/store';
-import { HazardType } from '../../redux/slices/airsigmetsSlice';
+import { HazardType, setSelectedAirsigmet } from '../../redux/slices/airsigmetsSlice';
+import { setSelectedPirep } from '../../redux/slices/pirepsSlice';
+import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 
 export const AirsigmetComponent: React.FC = () => {
+  const dispatch = useDispatch();
   const { data: airsigmets } = useGetAllAirsigmetsQuery();
   const visibleHazards = useSelector((state: AppState) => state.airsigmet.visibleHazards);
 
@@ -49,9 +52,10 @@ export const AirsigmetComponent: React.FC = () => {
               airsigmet.hazard.type as HazardType,
               airsigmet.hazard.severity || ''
             )}
-            onLeftClick={(_, polygonId) => {
-              console.log(`Clicked on airsigmet: ${polygonId}`);
-              console.log('Airsigmet details:', airsigmet);
+            onLeftClick={() => {
+              dispatch(setSelectedAirsigmet(airsigmet));
+              dispatch(setSelectedPirep(null));
+              dispatch(setSelectedAirport(null));
             }}
           />
         );

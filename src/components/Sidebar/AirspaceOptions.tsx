@@ -9,8 +9,8 @@ const AirspaceOptions: React.FC = () => {
   const { airspace3dEnabled } = useSelector((state: AppState) => state.airspace);
 
   return (
-    <div className="mt-6 mb-6">
-      <h2 className="mb-2 text-lg font-semibold">Experimental Features</h2>
+    <div>
+      <h2 className="text-lg font-semibold ">Experimental Features</h2>
       <div className="flex items-center mt-4">
         <label htmlFor="airspace-toggle" className="mr-2">
           Show 3D Airspace
@@ -24,7 +24,7 @@ const AirspaceOptions: React.FC = () => {
         />
       </div>
       <div className="p-4 mt-4 rounded-md shadow-md bg-base-300">
-        <p className="mb-2 text-primary-content">
+        <p className="text-primary-content">
           Please note that the 3D airspace visualization is an experimental feature in its early
           stages of development. When enabled, a loading screen will appear initially, and it may
           take some time for the airspace polygons to load fully. We are researching ways to provide

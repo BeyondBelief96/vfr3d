@@ -1,7 +1,7 @@
 import React from 'react';
 import { Airport } from '../../redux/api/faa/faa.interface';
 import Tabs from './Tabs';
-import { Pirep } from 'vfr3d-shared';
+import { AirsigmetDTO, Pirep } from 'vfr3d-shared';
 
 interface EntityInfoPopupProps<T> {
   selectedEntity: T;
@@ -12,7 +12,7 @@ interface EntityInfoPopupProps<T> {
   renderHeader: (entity: T) => React.ReactNode;
 }
 
-const EntityInfoPopup = <T extends Airport | Pirep>({
+const EntityInfoPopup = <T extends Airport | Pirep | AirsigmetDTO>({
   selectedEntity,
   tabs,
   activeTab,

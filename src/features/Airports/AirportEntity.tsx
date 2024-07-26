@@ -1,6 +1,6 @@
 // AirportEntity.tsx
 import { Cartesian2, Color, NearFarScalar } from 'cesium';
-import React from 'react';
+import React, { memo } from 'react';
 import { MetarDTO } from 'vfr3d-shared';
 import { FlightCategories } from '../../utility/constants';
 import { Airport } from '../../redux/api/faa/faa.interface';
@@ -15,7 +15,7 @@ interface AirportEntityProps {
   metar?: MetarDTO;
 }
 
-const AirportEntity: React.FC<AirportEntityProps> = ({ airport, metar }) => {
+const AirportEntity: React.FC<AirportEntityProps> = memo(({ airport, metar }) => {
   const showCloudBases = useSelector((state: AppState) => state.airport.showCloudBases);
   const position = mapAirportDataToCartesian3(airport);
   let color = Color.WHITE;
@@ -52,6 +52,6 @@ const AirportEntity: React.FC<AirportEntityProps> = ({ airport, metar }) => {
         })}
     />
   ) : null;
-};
+});
 
 export default AirportEntity;

@@ -16,6 +16,7 @@ import { Pireps } from '../features/Pireps/Pireps';
 import PirepInfoPopup from '../features/Pireps/PirepInformationPopup';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import AirsigmetComponent from '../features/Airsigmets/AirsigmetComponent';
+import AirsigmetInfoPopup from '../features/Airsigmets/AirsigmetInfoPopup';
 
 const ViewerPage = () => {
   const dispatch = useDispatch();
@@ -99,6 +100,7 @@ const ViewerPage = () => {
         <RoutesPanel />
         <AirportInfoPopup />
         <PirepInfoPopup />
+        <AirsigmetInfoPopup />
       </div>
     </div>
   );

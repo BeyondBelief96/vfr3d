@@ -5,7 +5,6 @@ import MapOptions from './MapOptions';
 import AirportOptions from './AirportOptions';
 import RouteOptions from './RouteOptions';
 import { PirepOptions } from './PirepOptions';
-import AirspaceOptions from './AirspaceOptions';
 import AirsigmetOptions from './AirsigmetOptions';
 
 const DesktopSidebar: React.FC = () => {
@@ -23,7 +22,7 @@ const DesktopSidebar: React.FC = () => {
         <RouteOptions />
         <PirepOptions />
         <AirsigmetOptions />
-        <AirspaceOptions />
+        {/* <AirspaceOptions /> */}
       </div>
     </div>
   );

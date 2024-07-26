@@ -46,3 +46,8 @@ export enum FlightCategories {
   IFR = 'IFR',
   LIFR = 'LIFR',
 }
+
+export enum AIRSIGMET_TYPE {
+  AIRMET = 'AIRMET',
+  SIGMET = 'SIGMET',
+}
