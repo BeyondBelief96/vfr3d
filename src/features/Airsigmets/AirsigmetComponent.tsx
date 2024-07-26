@@ -14,6 +14,7 @@ export const AirsigmetComponent: React.FC = () => {
   const { isAuthenticated } = useAuthenticatedQuery();
   const { data: airsigmets, refetch } = useGetAllAirsigmetsQuery(undefined, {
     skip: !isAuthenticated,
+    pollingInterval: new Date(1810 * 1000).getTime(),
   });
   const visibleHazards = useSelector((state: AppState) => state.airsigmet.visibleHazards);
 

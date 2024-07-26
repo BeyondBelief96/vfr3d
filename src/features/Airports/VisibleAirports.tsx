@@ -42,7 +42,7 @@ const VisibleAirports: React.FC = () => {
     refetch: refetchMetars,
     isFetching: isMetarFetching,
   } = useGetMetarsByStatesQuery(statesToQuery, {
-    skip: !showAirports && !statesToQuery,
+    skip: (!showAirports && !statesToQuery) || !isAuthenticated,
   });
 
   useEffect(() => {
