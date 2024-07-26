@@ -9,11 +9,11 @@ import { AppState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedState, setShowAirports } from '../../redux/slices/airportsSlice';
 import AirportEntities from './AirportEntities';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
 
 const VisibleAirports: React.FC = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuthenticatedQuery();
   const airportQuery = useSelector((state: AppState) => state.search.airportQuery);
   const { route } = useSelector((state: AppState) => state.route);
   const { showAirports, selectedState } = useSelector((state: AppState) => state.airport);

@@ -7,11 +7,11 @@ import { AppState } from '../../redux/store';
 import { HazardType, setSelectedAirsigmet } from '../../redux/slices/airsigmetsSlice';
 import { setSelectedPirep } from '../../redux/slices/pirepsSlice';
 import { setSelectedAirport } from '../../redux/slices/airportsSlice';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
 
 export const AirsigmetComponent: React.FC = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuthenticatedQuery();
   const { data: airsigmets, refetch } = useGetAllAirsigmetsQuery(undefined, {
     skip: !isAuthenticated,
   });
