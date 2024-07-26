@@ -62,14 +62,12 @@ const ViewerPage = () => {
     const getAccessToken = async () => {
       try {
         const token = await getAccessTokenSilently();
-        console.log(token);
         dispatch(setAccessToken(token));
       } catch (error) {
         console.error('Error getting access token:', error);
       }
     };
 
-    console.log(isAuthenticated);
     if (isAuthenticated) {
       getAccessToken();
     }
