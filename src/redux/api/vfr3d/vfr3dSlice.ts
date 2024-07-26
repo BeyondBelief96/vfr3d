@@ -10,6 +10,7 @@ export const vfr3dApi = createApi({
     baseUrl: API_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as AppState).auth.accessToken;
+      console.log(token);
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
