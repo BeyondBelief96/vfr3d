@@ -9,6 +9,7 @@ import sidebarReducer from './slices/sidebarSlice';
 import navlogReducer from './slices/navlogSlice';
 import pirepsReducer from './slices/pirepsSlice';
 import aircraftPerformanceReducer from './slices/aircraftPerformanceSlice';
+import airsigmetReducer from './slices/airsigmetsSlice';
 import authReducer from './slices/authSlice';
 import { vfr3dApi } from './api/vfr3d/vfr3dSlice';
 import { faaApi } from './api/faa/faaSlice';
@@ -26,6 +27,7 @@ const store = configureStore({
     auth: authReducer,
     pireps: pirepsReducer,
     aircraftPerformance: aircraftPerformanceReducer,
+    airsigmet: airsigmetReducer,
     [vfr3dApi.reducerPath]: vfr3dApi.reducer,
     [faaApi.reducerPath]: faaApi.reducer,
   },

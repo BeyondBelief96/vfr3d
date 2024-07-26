@@ -15,6 +15,7 @@ import { setAccessToken } from '../redux/slices/authSlice';
 import { Pireps } from '../features/Pireps/Pireps';
 import PirepInfoPopup from '../features/Pireps/PirepInformationPopup';
 import AirspaceComponent from '../features/Airspace/AirspaceComponent';
+import AirsigmetComponent from '../features/Airsigmets/AirsigmetComponent';
 
 const ViewerPage = () => {
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ const ViewerPage = () => {
           <Pireps />
           <RouteComponent />
           <AirspaceComponent />
+          <AirsigmetComponent />
           <FlyTo />
         </ResiumViewer>
         <RoutesPanel />

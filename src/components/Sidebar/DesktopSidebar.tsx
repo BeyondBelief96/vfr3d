@@ -6,13 +6,14 @@ import AirportOptions from './AirportOptions';
 import RouteOptions from './RouteOptions';
 import { PirepOptions } from './PirepOptions';
 import AirspaceOptions from './AirspaceOptions';
+import AirsigmetOptions from './AirsigmetOptions';
 
 const DesktopSidebar: React.FC = () => {
   const isOpen = useSelector((state: AppState) => state.sidebar.isOpen);
 
   return (
     <div
-      className={`h-full py-8 overflow-y-auto transition-all ease-in-out bg-base-100 ${
+      className={`h-full overflow-y-auto transition-all ease-in-out bg-base-100 ${
         isOpen ? 'w-96' : 'w-0'
       }`}
     >
@@ -21,6 +22,7 @@ const DesktopSidebar: React.FC = () => {
         <AirportOptions />
         <RouteOptions />
         <PirepOptions />
+        <AirsigmetOptions />
         <AirspaceOptions />
       </div>
     </div>
