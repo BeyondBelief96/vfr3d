@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Color } from 'cesium';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useGetAllAirsigmetsQuery } from '../../redux/api/vfr3d/weatherApi';
 import { PolygonEntity } from '../../components/ReusableComponents/cesium/PolygonEntity';
 import { AppState } from '../../redux/store';
@@ -8,15 +8,16 @@ import { HazardType, setSelectedAirsigmet } from '../../redux/slices/airsigmetsS
 import { setSelectedPirep } from '../../redux/slices/pirepsSlice';
 import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
+import { useAppSelector } from '../../hooks/reduxHooks';
 
 export const AirsigmetComponent: React.FC = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useAuthenticatedQuery();
+  const visibleHazards = useAppSelector((state: AppState) => state.airsigmet.visibleHazards);
   const { data: airsigmets, refetch } = useGetAllAirsigmetsQuery(undefined, {
     skip: !isAuthenticated,
-    pollingInterval: new Date(1810 * 1000).getTime(),
+    pollingInterval: 1810 * 1000,
   });
-  const visibleHazards = useSelector((state: AppState) => state.airsigmet.visibleHazards);
 
   const getColorForHazard = (hazardType: HazardType, severity: string): Color => {
     switch (hazardType) {

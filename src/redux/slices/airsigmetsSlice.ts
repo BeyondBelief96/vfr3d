@@ -1,4 +1,3 @@
-// airsigmetSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AirsigmetDTO } from 'vfr3d-shared';
 

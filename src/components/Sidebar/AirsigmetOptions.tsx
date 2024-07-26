@@ -15,13 +15,12 @@ const AirsigmetOptions: React.FC = () => {
       <div className="mt-4 mr-4">
         <h2 className="mb-2 text-lg font-semibold">Airmet/Sigmet Options</h2>
         {hazardTypes.map((hazardType) => (
-          <div key={hazardType} className="flex items-center mb-2">
+          <div key={hazardType} className="flex items-center mb-2 space-x-3">
             <input
               type="checkbox"
-              id={`hazard-${hazardType}`}
+              className="checkbox checkbox-primary"
               checked={visibleHazards[hazardType]}
               onChange={() => dispatch(toggleHazardVisibility(hazardType))}
-              className="mr-2"
             />
             <label htmlFor={`hazard-${hazardType}`}>{hazardType}</label>
           </div>
