@@ -1,7 +1,7 @@
 import { Cartesian3, Cartographic, Math as CesiumMath, Viewer } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
 import { convertAirportDMSToDD } from './utils';
-import { Pirep, PirepDTO, Waypoint } from 'vfr3d-shared';
+import { PirepDTO, Waypoint } from 'vfr3d-shared';
 
 export const flyToPoint = (viewer: Viewer | undefined, point: Cartesian3) => {
   if (point && viewer) {

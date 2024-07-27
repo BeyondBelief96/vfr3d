@@ -26,7 +26,7 @@ export const PolylineEntity: React.FC<PolylineEntityProps> = ({
   color = Color.BLUE,
   width = 3,
   id,
-  onLeftClick: onLeftClick,
+  onLeftClick,
 }) => {
   const { viewer } = useCesium();
   const entityRef = useRef<Entity | null>(null);
