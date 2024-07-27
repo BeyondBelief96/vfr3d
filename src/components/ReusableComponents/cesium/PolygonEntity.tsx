@@ -64,7 +64,6 @@ export const PolygonEntity: React.FC<PolygonEntityProps> = React.memo(
       return () => {
         if (viewer && entityRef.current) {
           viewer.entities.remove(entityRef.current);
-          console.log('REMOVE ENTITY');
         }
       };
     }, [viewer, polygonHierarchy, color, outlineColor, outlineWidth, id, airsigmet.altitude]);
