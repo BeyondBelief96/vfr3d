@@ -1,29 +1,13 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-interface EntitiesState {
-  routeEntityIds: string[];
-  airspaceEntityIds: string[];
-}
+interface EntitiesState {}
 
-const initialState: EntitiesState = {
-  routeEntityIds: [],
-  airspaceEntityIds: [],
-};
+const initialState: EntitiesState = {};
 
 const entitiesSlice = createSlice({
   name: 'entities',
   initialState,
-  reducers: {
-    updateCurrentRouteEntityIds: (state, action: PayloadAction<string[]>) => {
-      state.routeEntityIds = action.payload;
-    },
-    updateCurrentAirspaceEntityIds: (state, action: PayloadAction<string[]>) => {
-      state.airspaceEntityIds = action.payload;
-    },
-  },
+  reducers: {},
 });
-
-export const { updateCurrentRouteEntityIds, updateCurrentAirspaceEntityIds } =
-  entitiesSlice.actions;
 
 export default entitiesSlice.reducer;

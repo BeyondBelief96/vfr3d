@@ -11,7 +11,7 @@ import { setSelectedState, setShowAirports } from '../../redux/slices/airportsSl
 import AirportEntities from './AirportEntities';
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
 
-const VisibleAirports: React.FC = () => {
+const Airports: React.FC = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useAuthenticatedQuery();
   const airportQuery = useSelector((state: AppState) => state.search.airportQuery);
@@ -91,4 +91,4 @@ const VisibleAirports: React.FC = () => {
   return <AirportEntities airports={visibleAirports} metarMap={metarMap} />;
 };
 
-export default VisibleAirports;
+export default Airports;

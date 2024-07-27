@@ -2,7 +2,7 @@ import { IonImageryProvider, ProviderViewModel, buildModuleUrl } from 'cesium';
 import { useEffect } from 'react';
 import { Globe, Viewer as ResiumViewer } from 'resium';
 import FlyTo from '../features/Airports/FlyTo';
-import VisibleAirports from '../features/Airports/VisibleAirports';
+import Airports from '../features/Airports/Airports';
 import ImageryLayers from '../features/Imagery/ImageryLayers';
 import LoadingSpinner from '../components/ReusableComponents/LoadingSpinner';
 import Sidebar from '../components/Sidebar/Sidebar';
@@ -14,7 +14,6 @@ import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { setAccessToken } from '../redux/slices/authSlice';
 import { Pireps } from '../features/Pireps/Pireps';
 import PirepInfoPopup from '../features/Pireps/PirepInformationPopup';
-import AirspaceComponent from '../features/Airspace/AirspaceComponent';
 import AirsigmetComponent from '../features/Airsigmets/AirsigmetComponent';
 import AirsigmetInfoPopup from '../features/Airsigmets/AirsigmetInfoPopup';
 
@@ -90,10 +89,9 @@ const ViewerPage = () => {
         >
           <Globe maximumScreenSpaceError={1.3} />
           <ImageryLayers />
-          <VisibleAirports />
+          <Airports />
           <Pireps />
           <RouteComponent />
-          <AirspaceComponent />
           <AirsigmetComponent />
           <FlyTo />
         </ResiumViewer>
