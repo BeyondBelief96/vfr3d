@@ -1,13 +1,12 @@
-// AirportEntities.tsx
+import React, { useEffect, useCallback } from 'react';
 import { ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium';
-import React, { useEffect, useRef } from 'react';
 import { useCesium } from 'resium';
-import { useDispatch } from 'react-redux';
-import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { Airport } from '../../redux/api/faa/faa.interface';
-import AirportEntity from './AirportEntity';
 import { MetarDTO } from 'vfr3d-shared';
+import AirportEntity from './AirportEntity';
 import { getAirportEntityIdFromAirport } from '../../utility/entityIdUtils';
+import { useAppDispatch } from '../../hooks/reduxHooks';
+import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { setSelectedPirep } from '../../redux/slices/pirepsSlice';
 import { setSelectedAirsigmet } from '../../redux/slices/airsigmetsSlice';
 
@@ -18,22 +17,15 @@ interface AirportEntitiesProps {
 
 const AirportEntities: React.FC<AirportEntitiesProps> = ({ airports, metarMap }) => {
   const { viewer } = useCesium();
-  const dispatch = useDispatch();
-  const handlerRef = useRef<ScreenSpaceEventHandler | null>(null);
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (!viewer) return;
-
-    const handler = new ScreenSpaceEventHandler(viewer.scene.canvas);
-    handlerRef.current = handler;
-
-    const handleClick = (movement: ScreenSpaceEventHandler.PositionedEvent) => {
+  const handleClick = useCallback(
+    (movement: ScreenSpaceEventHandler.PositionedEvent) => {
       if (!viewer) return;
-
       const pickedObject = viewer.scene.pick(movement.position);
-      if (pickedObject && pickedObject.id) {
+      if (pickedObject?.id) {
         const airport = airports.find(
-          (a) => getAirportEntityIdFromAirport(a) === pickedObject.id.id
+          (airport) => getAirportEntityIdFromAirport(airport) === pickedObject.id.id
         );
         if (airport) {
           dispatch(setSelectedAirport(airport));
@@ -41,21 +33,26 @@ const AirportEntities: React.FC<AirportEntitiesProps> = ({ airports, metarMap })
           dispatch(setSelectedAirsigmet(null));
         }
       }
-    };
+    },
+    [viewer, airports, dispatch]
+  );
 
+  useEffect(() => {
+    if (!viewer) return;
+    const handler = new ScreenSpaceEventHandler(viewer.scene.canvas);
     handler.setInputAction(handleClick, ScreenSpaceEventType.LEFT_CLICK);
-
-    return () => {
-      handler.destroy();
-    };
-  }, [viewer, airports, dispatch]);
+    return () => handler.destroy();
+  }, [viewer, handleClick]);
 
   return (
     <>
-      {airports.map((airport) => {
-        const metar = metarMap.get(airport.ICAO_ID || 'K' + airport.IDENT);
-        return <AirportEntity key={airport.GLOBAL_ID} airport={airport} metar={metar} />;
-      })}
+      {airports.map((airport) => (
+        <AirportEntity
+          key={airport.GLOBAL_ID}
+          airport={airport}
+          metar={metarMap.get(airport.ICAO_ID || 'K' + airport.IDENT)}
+        />
+      ))}
     </>
   );
 };

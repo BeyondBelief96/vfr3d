@@ -1,14 +1,12 @@
-// AirportEntity.tsx
-import { Cartesian2, Color, NearFarScalar } from 'cesium';
 import React, { memo } from 'react';
+import { Cartesian2, Color, NearFarScalar } from 'cesium';
 import { MetarDTO } from 'vfr3d-shared';
 import { FlightCategories } from '../../utility/constants';
 import { Airport } from '../../redux/api/faa/faa.interface';
 import { PointEntity } from '../../components/ReusableComponents/cesium/PointEntity';
 import { mapAirportDataToCartesian3 } from '../../utility/cesiumUtils';
 import { getAirportEntityIdFromAirport } from '../../utility/entityIdUtils';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../redux/store';
+import { useAppSelector } from '../../hooks/reduxHooks';
 
 interface AirportEntityProps {
   airport: Airport;
@@ -16,42 +14,51 @@ interface AirportEntityProps {
 }
 
 const AirportEntity: React.FC<AirportEntityProps> = memo(({ airport, metar }) => {
-  const showCloudBases = useSelector((state: AppState) => state.airport.showCloudBases);
+  const showCloudBases = useAppSelector((state) => state.airport.showCloudBases);
   const position = mapAirportDataToCartesian3(airport);
-  let color = Color.WHITE;
 
-  if (metar) {
+  if (!position) return null;
+
+  function getColorForMetar(metar?: MetarDTO): Color {
+    if (!metar) return Color.WHITE;
+
     switch (metar.flightCategory) {
       case FlightCategories.VFR:
-        color = Color.GREEN;
-        break;
+        return Color.GREEN;
       case FlightCategories.MVFR:
-        color = Color.BLUE;
-        break;
+        return Color.BLUE;
       case FlightCategories.IFR:
-        color = Color.RED;
-        break;
+        return Color.RED;
       case FlightCategories.LIFR:
-        color = Color.PURPLE;
-        break;
+        return Color.PURPLE;
+      default:
+        return Color.WHITE;
     }
   }
 
-  return position ? (
+  function getCloudBaseLabel(showCloudBases: boolean, metar?: MetarDTO, color?: Color) {
+    if (!showCloudBases || !metar?.skyConditions?.[0]?.cloudBaseFtAgl) return {};
+
+    return {
+      labelText: metar.skyConditions[0].cloudBaseFtAgl.toString(),
+      labelBackgroundColor: color,
+      labelPixelOffset: new Cartesian2(0, -20),
+      labelScaleByDistance: new NearFarScalar(100000, 0.5, 500000, 0.3),
+    };
+  }
+
+  const color = getColorForMetar(metar);
+  const cloudBaseLabel = getCloudBaseLabel(showCloudBases, metar, color);
+
+  return (
     <PointEntity
       position={position}
       color={color}
       id={getAirportEntityIdFromAirport(airport)}
       scaleByDistance={new NearFarScalar(1000000, 1.5, 5000000, 1)}
-      {...(showCloudBases &&
-        metar?.skyConditions?.[0]?.cloudBaseFtAgl && {
-          labelText: metar.skyConditions[0].cloudBaseFtAgl.toString(),
-          labelBackgroundColor: color,
-          labelPixelOffset: new Cartesian2(0, -20),
-          labelScaleByDistance: new NearFarScalar(100000, 0.5, 500000, 0.3),
-        })}
+      {...cloudBaseLabel}
     />
-  ) : null;
+  );
 });
 
 export default AirportEntity;
