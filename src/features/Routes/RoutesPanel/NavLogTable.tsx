@@ -73,8 +73,8 @@ export const NavLogTable: React.FC = () => {
       ) : (
         <div className="overflow-auto rounded-lg shadow-md">
           <div className="overflow-x-auto">
-            <table className="w-full text-xs text-center">
-              <thead className="sticky top-0 font-semibold text-primary-content bg-primary">
+            <table className="w-full text-xs text-center ">
+              <thead className="sticky font-semibold text-primary-content bg-primary">
                 <tr>
                   <th className="px-2 py-1">Checkpoints</th>
                   <th className="px-2 py-1">Distance (nm)</th>
@@ -105,7 +105,7 @@ export const NavLogTable: React.FC = () => {
               <tbody>
                 {navlog.legs.map((leg, index) => (
                   <tr key={index}>
-                    <td className="px-2 py-1 border-b min-w-40">
+                    <td className="px-2 py-1 border-b min-w-25">
                       {leg?.legStartPoint?.name} ➨ {leg.legEndPoint?.name}
                     </td>
                     <td className="px-2 py-1 border-b border-l border-r">
@@ -135,7 +135,7 @@ export const NavLogTable: React.FC = () => {
                     <td className="px-2 py-1 border-b border-l border-r">
                       {formatData(leg?.tempC)}
                     </td>
-                    <td className="px-2 py-1 border-b border-l min-w-52">
+                    <td className="px-2 py-1 border-b border-l min-w-40">
                       <div className="flex justify-around">
                         <span>{formatDate(leg.startLegTime.toString())}</span>
                         <span>{formatDate(leg.endLegTime.toString())}</span>

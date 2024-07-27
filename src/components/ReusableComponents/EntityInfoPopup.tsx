@@ -25,7 +25,7 @@ const EntityInfoPopup = <T extends Airport | Pirep | AirsigmetDTO>({
   const hasTabs = tabs && tabs.length > 0;
 
   return (
-    <div className="fixed top-0 bottom-0 sm:bottom-10 sm:right-4 sm:top-auto sm:transform-none w-full sm:w-96 h-screen sm:h-[calc(80vh)] bg-base-100 rounded-lg overflow-hidden shadow-lg">
+    <div className="fixed top-0 bottom-0 sm:bottom-10 sm:right-4 h-[calc(100vh)] sm:top-auto sm:transform-none w-full sm:w-96 sm:h-[calc(80vh)] bg-base-100 sm:rounded-lg overflow-hidden shadow-lg">
       <div className="flex flex-col h-full">
         {renderHeader(selectedEntity)}
         {hasTabs && activeTab && setActiveTab ? (

@@ -6,13 +6,13 @@ const DisclaimerSection: React.FC = () => {
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="p-6 rounded-lg shadow-md bg-base-300">
           <h4 className="mb-4 text-xl font-bold">Disclaimer and Conditions of Use</h4>
-          <p className="mb-4 text-info">
+          <p className="mb-4 text-primary-content">
             This website utilizes data and software from various sources, including Cesium, ArcGIS,
             and the Federal Aviation Administration (FAA) Aeronautical Information Services (AIS).
             The use of this data and software is subject to the respective terms, conditions, and
             licenses set forth by each provider.
           </p>
-          <p className="mb-4 text-info">
+          <p className="mb-4 text-primary-content">
             Cesium: This website uses the Cesium library, which is provided under the Apache 2.0
             license. For more information about Cesium's terms of use and licensing, please refer to
             the{' '}
@@ -26,7 +26,7 @@ const DisclaimerSection: React.FC = () => {
             </a>
             .
           </p>
-          <p className="mb-4 text-info">
+          <p className="mb-4 text-primary-content">
             ArcGIS: The ArcGIS data and services used on this website are subject to the terms and
             conditions set forth by Esri. For more information about ArcGIS terms of use and
             licensing, please refer to the{' '}
@@ -40,7 +40,7 @@ const DisclaimerSection: React.FC = () => {
             </a>
             .
           </p>
-          <p className="mb-4 text-info">
+          <p className="mb-4 text-primary-content">
             FAA Data: The FAA data provided on this website is subject to the terms and conditions
             specified by the FAA. For more information about the FAA's data usage policies, please
             refer to the{' '}
@@ -54,14 +54,14 @@ const DisclaimerSection: React.FC = () => {
             </a>
             .
           </p>
-          <p className="mb-4 text-info">
+          <p className="mb-4 text-primary-content">
             Note that the software used to produce the information on this site has not been
             certified for navigational use -- CONSEQUENTLY, THIS INFORMATION SHOULD NOT BE RELIED
             UPON FOR NAVIGATION. Use of this information for any other purpose is solely at the
             user's risk. No warranty, expressed or implied, as to the accuracy or suitability of
             this information for any use is provided.
           </p>
-          <p className="mb-4 text-info">
+          <p className="mb-4 text-primary-content">
             By using this website, you acknowledge and agree to comply with the terms, conditions,
             and licenses set forth by Cesium, ArcGIS, and the FAA, as well as any additional terms
             and conditions specified by this website.
