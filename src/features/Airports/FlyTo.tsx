@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCesium } from 'resium';
 import { AppState } from '../../redux/store';
-import { setSelectedAirport } from '../../redux/slices/airportsSlice';
 import { useGetAirportByIcaoCodeOrIdentQuery } from '../../redux/api/faa/faaSlice';
 import {
   flyToPoint,
   mapAirportDataToCartesian3,
   mapWaypointToCartesian3,
 } from '../../utility/cesiumUtils';
+import { setSelectedEntity } from '../../redux/slices/selectedEntitySlice';
 
 const FlyTo = () => {
   const { viewer } = useCesium();
@@ -44,7 +44,12 @@ const FlyTo = () => {
   // useEffect that handles setting camera to airport location based on search bar query.
   useEffect(() => {
     if (airport) {
-      dispatch(setSelectedAirport(airport));
+      dispatch(
+        setSelectedEntity({
+          entity: airport,
+          type: 'Airport',
+        })
+      );
       const position = mapAirportDataToCartesian3(airport);
       if (position) flyToPoint(viewer, position);
     }

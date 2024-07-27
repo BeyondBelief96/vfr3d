@@ -6,16 +6,14 @@ import Airports from '../features/Airports/Airports';
 import ImageryLayers from '../features/Imagery/ImageryLayers';
 import LoadingSpinner from '../components/ReusableComponents/LoadingSpinner';
 import Sidebar from '../components/Sidebar/Sidebar';
-import AirportInfoPopup from '../features/Airports/InformationPopup/AirportInfoPopup';
 import { RoutesPanel } from '../features/Routes/RoutesPanel/RoutesPanel';
 import RouteComponent from '../features/Routes/RouteComponent';
 import { useDispatch } from 'react-redux';
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { setAccessToken } from '../redux/slices/authSlice';
 import { Pireps } from '../features/Pireps/Pireps';
-import PirepInfoPopup from '../features/Pireps/PirepInformationPopup';
 import AirsigmetComponent from '../features/Airsigmets/AirsigmetComponent';
-import AirsigmetInfoPopup from '../features/Airsigmets/AirsigmetInfoPopup';
+import EntityInfoPopupManager from '../components/ReusableComponents/EntityInfoPopupManager';
 
 const ViewerPage = () => {
   const dispatch = useDispatch();
@@ -96,9 +94,7 @@ const ViewerPage = () => {
           <FlyTo />
         </ResiumViewer>
         <RoutesPanel />
-        <AirportInfoPopup />
-        <PirepInfoPopup />
-        <AirsigmetInfoPopup />
+        <EntityInfoPopupManager />
       </div>
     </div>
   );

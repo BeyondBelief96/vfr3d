@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedAirport } from '../../../redux/slices/airportsSlice';
-import { AppState } from '../../../redux/store';
+import { useDispatch } from 'react-redux';
 import AirportInfo from './AirportInfo';
 import AirportWeather from './Weather/AirportWeather';
 import {
@@ -12,11 +10,16 @@ import { ApiError } from '../../../redux/api/types';
 import EntityInfoPopup from '../../../components/ReusableComponents/EntityInfoPopup';
 import AirportHeader from './AirportInfoHeader';
 import { Airport } from '../../../redux/api/faa/faa.interface';
+import { setSelectedEntity } from '../../../redux/slices/selectedEntitySlice';
 
-const AirportInfoPopup: React.FC = () => {
+interface AirportInfoPopupProps {
+  selectedAirport: Airport;
+}
+
+const AirportInfoPopup: React.FC<AirportInfoPopupProps> = ({ selectedAirport }) => {
   const dispatch = useDispatch();
-  const selectedAirport = useSelector((state: AppState) => state.airport.selectedAirport);
   const [activeTab, setActiveTab] = useState('info');
+
   const icaoCodeOrIdent = selectedAirport?.ICAO_ID || selectedAirport?.IDENT;
 
   const {
@@ -45,7 +48,7 @@ const AirportInfoPopup: React.FC = () => {
   }, [selectedAirport, refetchMetar, refetchTaf]);
 
   const handleClose = () => {
-    dispatch(setSelectedAirport(null));
+    dispatch(setSelectedEntity({ entity: null, type: null }));
   };
 
   if (!selectedAirport) return null;

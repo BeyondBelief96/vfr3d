@@ -6,9 +6,7 @@ import { MetarDTO } from 'vfr3d-shared';
 import AirportEntity from './AirportEntity';
 import { getAirportEntityIdFromAirport } from '../../utility/entityIdUtils';
 import { useAppDispatch } from '../../hooks/reduxHooks';
-import { setSelectedAirport } from '../../redux/slices/airportsSlice';
-import { setSelectedPirep } from '../../redux/slices/pirepsSlice';
-import { setSelectedAirsigmet } from '../../redux/slices/airsigmetsSlice';
+import { setSelectedEntity } from '../../redux/slices/selectedEntitySlice';
 
 interface AirportEntitiesProps {
   airports: Airport[];
@@ -28,9 +26,7 @@ const AirportEntities: React.FC<AirportEntitiesProps> = ({ airports, metarMap })
           (airport) => getAirportEntityIdFromAirport(airport) === pickedObject.id.id
         );
         if (airport) {
-          dispatch(setSelectedAirport(airport));
-          dispatch(setSelectedPirep(null));
-          dispatch(setSelectedAirsigmet(null));
+          dispatch(setSelectedEntity({ entity: airport, type: 'Airport' }));
         }
       }
     },

@@ -1,12 +1,15 @@
 // AirsigmetInfoPopup.tsx
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../../redux/store';
 import { AirsigmetDTO } from 'vfr3d-shared';
 import EntityInfoPopup from '../../components/ReusableComponents/EntityInfoPopup';
-import { setSelectedAirsigmet } from '../../redux/slices/airsigmetsSlice';
 import { CloseButton } from '../../components/ReusableComponents/CloseButton';
-import { AIRSIGMET_TYPE } from '../../utility/constants';
+import { AIRSIGMET_TYPE } from '../../utility/enums';
+import { useDispatch } from 'react-redux';
+import { clearSelectedEntity } from '../../redux/slices/selectedEntitySlice';
+
+interface AirsigmetPopupInfoProps {
+  selectedAirsigmet: AirsigmetDTO;
+}
 
 const AirsigmetInfo: React.FC<{ airsigmet: AirsigmetDTO }> = ({ airsigmet }) => {
   return (
@@ -98,14 +101,13 @@ const AirsigmetInfoHeader: React.FC<{ airsigmet: AirsigmetDTO; handleClose: () =
   );
 };
 
-const AirsigmetInfoPopup: React.FC = () => {
+const AirsigmetInfoPopup: React.FC<AirsigmetPopupInfoProps> = ({ selectedAirsigmet }) => {
   const dispatch = useDispatch();
-  const selectedAirsigmet = useSelector((state: AppState) => state.airsigmet.selectedAirsigmet);
 
   if (!selectedAirsigmet) return null;
 
   const handleClose = () => {
-    dispatch(setSelectedAirsigmet(null));
+    dispatch(clearSelectedEntity());
   };
 
   const renderContent = (airsigmet: AirsigmetDTO) => {

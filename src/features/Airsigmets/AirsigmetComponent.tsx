@@ -4,11 +4,10 @@ import { useDispatch } from 'react-redux';
 import { useGetAllAirsigmetsQuery } from '../../redux/api/vfr3d/weatherApi';
 import { PolygonEntity } from '../../components/ReusableComponents/cesium/PolygonEntity';
 import { AppState } from '../../redux/store';
-import { HazardType, setSelectedAirsigmet } from '../../redux/slices/airsigmetsSlice';
-import { setSelectedPirep } from '../../redux/slices/pirepsSlice';
-import { setSelectedAirport } from '../../redux/slices/airportsSlice';
+import { HazardType } from '../../redux/slices/airsigmetsSlice';
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
 import { useAppSelector } from '../../hooks/reduxHooks';
+import { setSelectedEntity } from '../../redux/slices/selectedEntitySlice';
 
 export const AirsigmetComponent: React.FC = () => {
   const dispatch = useDispatch();
@@ -65,9 +64,7 @@ export const AirsigmetComponent: React.FC = () => {
               airsigmet.hazard.severity || ''
             )}
             onLeftClick={() => {
-              dispatch(setSelectedAirsigmet(airsigmet));
-              dispatch(setSelectedPirep(null));
-              dispatch(setSelectedAirport(null));
+              dispatch(setSelectedEntity({ entity: airsigmet, type: 'Airsigmet' }));
             }}
           />
         );

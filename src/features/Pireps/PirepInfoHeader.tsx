@@ -1,7 +1,7 @@
 import { PirepDTO } from 'vfr3d-shared';
 import { CloseButton } from '../../components/ReusableComponents/CloseButton';
-import { setSelectedPirep } from '../../redux/slices/pirepsSlice';
 import { useAppDispatch } from '../../hooks/reduxHooks';
+import { clearSelectedEntity } from '../../redux/slices/selectedEntitySlice';
 
 interface PirepInfoHeaderProps {
   pirep: PirepDTO;
@@ -11,7 +11,7 @@ export const PirepInfoHeader: React.FC<PirepInfoHeaderProps> = ({ pirep }) => {
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dispatch(setSelectedPirep(null));
+    dispatch(clearSelectedEntity());
   };
   return (
     <div className="px-4 py-2 bg-primary text-primary-content">
