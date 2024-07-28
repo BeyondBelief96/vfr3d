@@ -84,6 +84,7 @@ const ViewerPage = () => {
           timeline={false}
           infoBox={false}
           animation={false}
+          selectionIndicator={false}
         >
           <Globe maximumScreenSpaceError={1.3} />
           <ImageryLayers />
