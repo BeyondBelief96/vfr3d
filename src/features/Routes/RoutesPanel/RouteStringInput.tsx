@@ -10,9 +10,9 @@ import {
   setRoutePoints,
   setRouteString,
 } from '../../../redux/slices/routeSlice';
-import { mapAirportToWaypoint } from '../../../utility/utils';
-import { Waypoint } from 'vfr3d-shared';
+import { mapAirportToRoutePoint } from '../../../utility/utils';
 import { setSelectedState, setShowAirports } from '../../../redux/slices/airportsSlice';
+import { RoutePoint } from '../route.types';
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();
   const { routeString } = useSelector((state: AppState) => state.route);
@@ -86,13 +86,13 @@ export const RouteStringInput: React.FC = () => {
         dispatch(setRouteString(newRouteString));
       }
 
-      const updatedRoutePoints: Waypoint[] = [];
+      const updatedRoutePoints: RoutePoint[] = [];
       let isValid = true;
       for (const code of uniqueCodes) {
         if (isValidLength(code)) {
           const airport = await fetchAirportByCode(code);
           if (airport) {
-            updatedRoutePoints.push(mapAirportToWaypoint(airport));
+            updatedRoutePoints.push(mapAirportToRoutePoint(airport));
           } else {
             isValid = false;
             break;

@@ -22,6 +22,7 @@ import { useCesium } from 'resium';
 import { DeleteWaypointContextMenu } from './RoutesPanel/DeleteWaypointContextMenu';
 import { updateWaypointPositionFlat } from '../../redux/slices/routeSlice';
 import { PolylineEntity } from '../../components/ReusableComponents/cesium/PolylineEntity';
+import { RoutePoint } from './route.types';
 
 const RouteComponent: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,10 +32,12 @@ const RouteComponent: React.FC = () => {
   const navlog = useSelector((state: AppState) => state.navlog.navlog);
   const isNavlogReady = useSelector((state: AppState) => state.navlog.isNavlogReady);
 
-  const renderPoints = isNavlogReady
-    ? navlog.legs
+  const renderPoints: RoutePoint[] = isNavlogReady
+    ? (navlog.legs
         .flatMap((leg) => [leg.legStartPoint, leg.legEndPoint])
-        .filter((point, index, self) => self.findIndex((p) => p.id === point.id) === index)
+        .filter(
+          (point, index, self) => self.findIndex((p) => p.id === point.id) === index
+        ) as RoutePoint[])
     : routePoints;
 
   const [showAddWaypointMenu, setShowAddWaypointMenu] = useState(false);
@@ -126,10 +129,9 @@ const RouteComponent: React.FC = () => {
 
   return (
     <>
-      {renderPoints?.map((point: Waypoint, index: number) => {
+      {renderPoints?.map((point: RoutePoint, index: number) => {
         const position = mapWaypointToPosition(point);
-        if (!position) return null;
-        if (index === 0 || index === renderPoints.length - 1) return;
+        if (!position || !point.shouldDisplay) return;
 
         const isStartPoint = index % 2 === 0;
         const legIndex = isStartPoint ? index / 2 : (index - 1) / 2;

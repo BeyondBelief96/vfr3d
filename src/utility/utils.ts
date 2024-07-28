@@ -1,6 +1,6 @@
 import { Color } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
-import { Waypoint } from 'vfr3d-shared';
+import { RoutePoint } from '../features/Routes/route.types';
 
 export const convertAirportDMSToDD = (dms: string): number => {
   const hemisphere = dms.slice(-1);
@@ -47,24 +47,26 @@ export const colorSerializer = {
   },
 };
 
-export function mapAirportsToWaypoints(airports: Airport[]): Waypoint[] {
-  const waypoints: Waypoint[] = [];
+export function mapAirportsToWaypoints(airports: Airport[]): RoutePoint[] {
+  const waypoints: RoutePoint[] = [];
   for (let i = 0; i < airports.length - 1; i++) {
-    const waypoint = mapAirportToWaypoint(airports[i]);
+    const waypoint = mapAirportToRoutePoint(airports[i]);
     waypoints.push(waypoint);
   }
 
   return waypoints;
 }
 
-export const mapAirportToWaypoint = (airport: Airport): Waypoint => {
-  const waypoint: Waypoint = {
+export const mapAirportToRoutePoint = (airport: Airport): RoutePoint => {
+  const routePoint: RoutePoint = {
     id: airport.GLOBAL_ID,
     name: airport.ICAO_ID || airport.IDENT,
     latitude: convertAirportDMSToDD(airport.LATITUDE),
     longitude: convertAirportDMSToDD(airport.LONGITUDE),
     altitude: airport.ELEVATION,
+    shouldDisplay: false,
+    type: 'AIRPORT',
   };
 
-  return waypoint;
+  return routePoint;
 };

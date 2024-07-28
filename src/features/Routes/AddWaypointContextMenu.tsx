@@ -36,6 +36,8 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
           latitude: Math.toDegrees(Cartographic.fromCartesian(position).latitude),
           longitude: Math.toDegrees(Cartographic.fromCartesian(position).longitude),
           altitude: 0,
+          shouldDisplay: true,
+          type: 'CUSTOM_WAYPOINT',
         },
         index: waypointIndex,
       })
