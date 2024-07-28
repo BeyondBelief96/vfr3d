@@ -1,6 +1,7 @@
 import { Color } from 'cesium';
 import { Airport } from '../redux/api/faa/faa.interface';
-import { RoutePoint } from '../features/Routes/route.types';
+import { RoutePoint, RoutePointType } from '../features/Routes/route.types';
+import { Waypoint } from 'vfr3d-shared';
 
 export const convertAirportDMSToDD = (dms: string): number => {
   const hemisphere = dms.slice(-1);
@@ -55,6 +56,20 @@ export function mapAirportsToWaypoints(airports: Airport[]): RoutePoint[] {
   }
 
   return waypoints;
+}
+
+export function mapWaypointToRoutePoint(
+  waypoint: Waypoint,
+  shouldDisplay: boolean,
+  type: RoutePointType
+): RoutePoint {
+  const routePoint: RoutePoint = {
+    ...waypoint,
+    shouldDisplay,
+    type,
+  };
+
+  return routePoint;
 }
 
 export const mapAirportToRoutePoint = (airport: Airport): RoutePoint => {

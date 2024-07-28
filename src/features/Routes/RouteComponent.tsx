@@ -23,6 +23,7 @@ import { DeleteWaypointContextMenu } from './RoutesPanel/DeleteWaypointContextMe
 import { updateWaypointPositionFlat } from '../../redux/slices/routeSlice';
 import { PolylineEntity } from '../../components/ReusableComponents/cesium/PolylineEntity';
 import { RoutePoint } from './route.types';
+import { mapWaypointToRoutePoint } from '../../utility/utils';
 
 const RouteComponent: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,11 +34,10 @@ const RouteComponent: React.FC = () => {
   const isNavlogReady = useSelector((state: AppState) => state.navlog.isNavlogReady);
 
   const renderPoints: RoutePoint[] = isNavlogReady
-    ? (navlog.legs
+    ? navlog.legs
         .flatMap((leg) => [leg.legStartPoint, leg.legEndPoint])
-        .filter(
-          (point, index, self) => self.findIndex((p) => p.id === point.id) === index
-        ) as RoutePoint[])
+        .filter((point, index, self) => self.findIndex((p) => p.id === point.id) === index)
+        .map((wp) => mapWaypointToRoutePoint(wp, true, 'CUSTOM_WAYPOINT'))
     : routePoints;
 
   const [showAddWaypointMenu, setShowAddWaypointMenu] = useState(false);
