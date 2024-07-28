@@ -132,6 +132,7 @@ export const PointEntity: React.FC<PointEntityProps> = ({
     return () => {
       if (viewer && entity) {
         viewer.entities.remove(entity);
+        entityRef.current = null;
         if (onRightClick && rightClickHandler.current) {
           rightClickHandler.current.removeInputAction(ScreenSpaceEventType.RIGHT_CLICK);
           rightClickHandler.current.destroy();

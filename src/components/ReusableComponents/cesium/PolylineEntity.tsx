@@ -58,6 +58,7 @@ export const PolylineEntity: React.FC<PolylineEntityProps> = ({
     return () => {
       if (viewer && entity) {
         viewer.entities.remove(entity);
+        entityRef.current = null;
         handler.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
       }
     };

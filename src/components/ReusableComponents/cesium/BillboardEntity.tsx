@@ -118,6 +118,7 @@ export const BillboardEntity: React.FC<BillboardEntityProps> = ({
     return () => {
       if (viewer && entity) {
         viewer.entities.remove(entity);
+        entityRef.current = null;
         if (onLeftClick && leftClickHandler.current) {
           leftClickHandler.current.removeInputAction(ScreenSpaceEventType.LEFT_CLICK);
           leftClickHandler.current.destroy();
