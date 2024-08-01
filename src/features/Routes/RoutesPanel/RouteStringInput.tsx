@@ -1,9 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Airport } from '../../../redux/api/faa/faa.interface';
 import RouteStringBubbles from './RouteStringBubbles';
 import { AppState } from '../../../redux/store';
 import { useRef, useState } from 'react';
-import { useLazyGetAirportByIcaoCodeOrIdentLazyQuery } from '../../../redux/api/faa/faaSlice';
 import {
   clearRoutePoints,
   clearRouteString,
@@ -13,11 +11,13 @@ import {
 import { mapAirportToRoutePoint } from '../../../utility/utils';
 import { setSelectedState, setShowAirports } from '../../../redux/slices/airportsSlice';
 import { RoutePoint } from '../route.types';
+import { useLazyGetAirportByIcaoCodeOrIdentQuery } from '../../../redux/api/vfr3d/airportsSlice';
+import { AirportDTO } from 'vfr3d-shared';
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();
   const { routeString } = useSelector((state: AppState) => state.route);
   const formRef = useRef<HTMLFormElement>(null);
-  const [fetchAirport] = useLazyGetAirportByIcaoCodeOrIdentLazyQuery();
+  const [fetchAirport] = useLazyGetAirportByIcaoCodeOrIdentQuery();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isLastCodeValid, setIsLastCodeValid] = useState(true);
 
@@ -73,7 +73,7 @@ export const RouteStringInput: React.FC = () => {
       if (codes.length === 1) {
         const airport = await fetchAirportByCode(codes[0]);
         if (airport) {
-          dispatch(setSelectedState(airport.STATE));
+          dispatch(setSelectedState(airport.stateCode));
           dispatch(setShowAirports(true));
         }
       }
@@ -128,7 +128,7 @@ export const RouteStringInput: React.FC = () => {
     return code.length >= 3 && code.length <= 4;
   };
 
-  const fetchAirportByCode = async (code: string): Promise<Airport | undefined> => {
+  const fetchAirportByCode = async (code: string): Promise<AirportDTO | undefined> => {
     try {
       const { data: airport } = await fetchAirport(code);
       return airport;

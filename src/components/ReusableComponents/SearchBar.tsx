@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
-import { useGetAllAirportsQuery } from '../../redux/api/faa/faaSlice';
+import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -21,8 +21,8 @@ const SearchBar = () => {
     return allAirports
       .filter(
         (airport) =>
-          airport.ICAO_ID?.toLowerCase().startsWith(lowercaseQuery) ||
-          airport.IDENT?.toLowerCase().startsWith(lowercaseQuery)
+          airport.icaoId?.toLowerCase().startsWith(lowercaseQuery) ||
+          airport.arptId?.toLowerCase().startsWith(lowercaseQuery)
       )
       .slice(0, 10);
   }, [searchQuery, allAirports]);
@@ -59,7 +59,7 @@ const SearchBar = () => {
       if (event.key === 'Enter' && searchInputRef.current === event.target) {
         if (selectedOptionIndex !== -1) {
           const selectedAirport = filteredAirports[selectedOptionIndex];
-          handleAutocompleteSelect(selectedAirport.ICAO_ID || selectedAirport.IDENT);
+          handleAutocompleteSelect(selectedAirport.icaoId || selectedAirport.arptId || '');
         } else {
           handleSearch();
         }
@@ -137,15 +137,15 @@ const SearchBar = () => {
           <ul className="absolute z-50 w-full mt-10 overflow-y-auto rounded-md shadow-lg border-base-content bg-base-100 max-h-60">
             {filteredAirports.map((airport, index) => (
               <li
-                key={airport.GLOBAL_ID}
+                key={airport.siteNo}
                 className={`px-4 py-2 cursor-pointer ${
                   index === selectedOptionIndex
                     ? 'bg-primary text-primary-content'
                     : 'hover:bg-primary'
                 }`}
-                onClick={() => handleAutocompleteSelect(airport.ICAO_ID || airport.IDENT)}
+                onClick={() => handleAutocompleteSelect(airport.icaoId || airport.arptId || '')}
               >
-                {airport.ICAO_ID || airport.IDENT} - {airport.NAME}
+                {airport.icaoId || airport.arptId || ''} - {airport.arptName}
               </li>
             ))}
           </ul>

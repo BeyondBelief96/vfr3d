@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { faaApi } from '../api/faa/faaSlice';
 import { mapAirportToRoutePoint } from '../../utility/utils';
 import { Waypoint } from 'vfr3d-shared';
 import { Route, RoutePoint } from '../../features/Routes/route.types';
+import { airportsApi } from '../api/vfr3d/airportsSlice';
 
 interface RouteState {
   lineColor: string;
@@ -35,7 +35,7 @@ export const fetchAirportByCode = createAsyncThunk(
   async (code: string, { dispatch }) => {
     if (code.length >= 3 && code.length <= 4) {
       const { data: airport } = await dispatch(
-        faaApi.endpoints.getAirportByIcaoCodeOrIdent.initiate(code)
+        airportsApi.endpoints.getAirportByIcaoCodeOrIdent.initiate(code)
       );
       return airport;
     }
@@ -121,7 +121,7 @@ const routeSlice = createSlice({
       const airport = action.payload;
       if (airport && state.route) {
         const existingAirport = state.route.routePoints.find(
-          (point: Waypoint) => point.name === airport.IDENT || point.name === airport.ICAO_ID
+          (point: Waypoint) => point.name === airport.icaoId || point.name === airport.arptId
         );
         if (!existingAirport) {
           state.route.routePoints.push(mapAirportToRoutePoint(airport));

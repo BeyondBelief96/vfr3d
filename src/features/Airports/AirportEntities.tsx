@@ -1,15 +1,14 @@
 import React, { useEffect, useCallback } from 'react';
 import { ScreenSpaceEventHandler, ScreenSpaceEventType } from 'cesium';
 import { useCesium } from 'resium';
-import { Airport } from '../../redux/api/faa/faa.interface';
-import { MetarDTO } from 'vfr3d-shared';
+import { AirportDTO, MetarDTO } from 'vfr3d-shared';
 import AirportEntity from './AirportEntity';
 import { getAirportEntityIdFromAirport } from '../../utility/entityIdUtils';
 import { useAppDispatch } from '../../hooks/reduxHooks';
 import { setSelectedEntity } from '../../redux/slices/selectedEntitySlice';
 
 interface AirportEntitiesProps {
-  airports: Airport[];
+  airports: AirportDTO[];
   metarMap: Map<string, MetarDTO>;
 }
 
@@ -44,9 +43,9 @@ const AirportEntities: React.FC<AirportEntitiesProps> = ({ airports, metarMap })
     <>
       {airports.map((airport) => (
         <AirportEntity
-          key={airport.GLOBAL_ID}
+          key={airport.siteNo}
           airport={airport}
-          metar={metarMap.get(airport.ICAO_ID || 'K' + airport.IDENT)}
+          metar={metarMap.get(airport.icaoId || 'K' + airport.arptId)}
         />
       ))}
     </>

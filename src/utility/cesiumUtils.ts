@@ -1,7 +1,5 @@
 import { Cartesian3, Cartographic, Math as CesiumMath, Viewer } from 'cesium';
-import { Airport } from '../redux/api/faa/faa.interface';
-import { convertAirportDMSToDD } from './utils';
-import { PirepDTO, Waypoint } from 'vfr3d-shared';
+import { AirportDTO, PirepDTO, Waypoint } from 'vfr3d-shared';
 
 export const flyToPoint = (viewer: Viewer | undefined, point: Cartesian3) => {
   if (point && viewer) {
@@ -34,10 +32,15 @@ export const convertToCartesian3 = (
   return Cartesian3.fromDegrees(longitude, latitude, elevation);
 };
 
-export const mapAirportDataToCartesian3 = (airport: Airport): Cartesian3 | null => {
-  const longitude = convertAirportDMSToDD(airport.LONGITUDE);
-  const latitude = convertAirportDMSToDD(airport.LATITUDE);
-  return convertToCartesian3(longitude, latitude);
+export const mapAirportDataToCartesian3 = (airport: AirportDTO): Cartesian3 | null => {
+  const longitude = airport.longDecimal;
+  const latitude = airport.latDecimal;
+
+  if (latitude && longitude) {
+    return convertToCartesian3(longitude, latitude);
+  }
+
+  return null;
 };
 
 export const mapPirepToCartesian3 = (pirep: PirepDTO): Cartesian3 | null => {

@@ -1,21 +1,21 @@
 import React, { memo } from 'react';
 import { Cartesian2, Color, NearFarScalar } from 'cesium';
-import { MetarDTO } from 'vfr3d-shared';
+import { AirportDTO, MetarDTO } from 'vfr3d-shared';
 import { FlightCategories } from '../../utility/enums';
-import { Airport } from '../../redux/api/faa/faa.interface';
 import { PointEntity } from '../../components/ReusableComponents/cesium/PointEntity';
 import { mapAirportDataToCartesian3 } from '../../utility/cesiumUtils';
 import { getAirportEntityIdFromAirport } from '../../utility/entityIdUtils';
 import { useAppSelector } from '../../hooks/reduxHooks';
 
 interface AirportEntityProps {
-  airport: Airport;
+  airport: AirportDTO;
   metar?: MetarDTO;
 }
 
 const AirportEntity: React.FC<AirportEntityProps> = memo(({ airport, metar }) => {
   const showCloudBases = useAppSelector((state) => state.airport.showCloudBases);
   const position = mapAirportDataToCartesian3(airport);
+  console.log(position);
 
   if (!position) return null;
 
