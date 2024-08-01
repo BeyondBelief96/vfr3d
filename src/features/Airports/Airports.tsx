@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   useGetAirportsByIcaoCodesOrIdentsQuery,
   useGetAirportsByStatesQuery,
-} from '../../redux/api/faa/faaSlice';
+} from '../../redux/api/vfr3d/airportsSlice';
 import { useGetMetarsByStatesQuery } from '../../redux/api/vfr3d/weatherApi';
 import { AppState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,7 +46,7 @@ const Airports: React.FC = () => {
   });
 
   useEffect(() => {
-    const stateCodesFromAirports = searchedAirports?.map((airport) => airport.STATE) || [];
+    const stateCodesFromAirports = searchedAirports?.map((airport) => airport.stateCode) || [];
     const uniqueStateCodes = Array.from(new Set([...stateCodesFromAirports, selectedState]));
     setStatesToQuery(uniqueStateCodes);
   }, [searchedAirports, selectedState]);

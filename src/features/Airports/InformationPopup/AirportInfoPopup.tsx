@@ -9,18 +9,18 @@ import {
 import { ApiError } from '../../../redux/api/types';
 import EntityInfoPopup from '../../../components/ReusableComponents/EntityInfoPopup';
 import AirportHeader from './AirportInfoHeader';
-import { Airport } from '../../../redux/api/faa/faa.interface';
 import { setSelectedEntity } from '../../../redux/slices/selectedEntitySlice';
+import { AirportDTO } from 'vfr3d-shared';
 
 interface AirportInfoPopupProps {
-  selectedAirport: Airport;
+  selectedAirport: AirportDTO;
 }
 
 const AirportInfoPopup: React.FC<AirportInfoPopupProps> = ({ selectedAirport }) => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('info');
 
-  const icaoCodeOrIdent = selectedAirport?.ICAO_ID || selectedAirport?.IDENT;
+  const icaoCodeOrIdent = selectedAirport?.icaoId || selectedAirport?.arptId || '';
 
   const {
     data: metar,
@@ -58,7 +58,7 @@ const AirportInfoPopup: React.FC<AirportInfoPopupProps> = ({ selectedAirport }) 
     { id: 'weather', label: 'Weather' },
   ];
 
-  const renderContent = (airport: Airport) => {
+  const renderContent = (airport: AirportDTO) => {
     switch (activeTab) {
       case 'info':
         return <AirportInfo airport={airport} />;
@@ -78,7 +78,7 @@ const AirportInfoPopup: React.FC<AirportInfoPopupProps> = ({ selectedAirport }) 
     }
   };
 
-  const renderAirportHeader = (airport: Airport) => (
+  const renderAirportHeader = (airport: AirportDTO) => (
     <AirportHeader
       airport={airport}
       metar={metar}

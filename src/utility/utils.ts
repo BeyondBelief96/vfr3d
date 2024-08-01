@@ -1,7 +1,6 @@
 import { Color } from 'cesium';
-import { Airport } from '../redux/api/faa/faa.interface';
 import { RoutePoint, RoutePointType } from '../features/Routes/route.types';
-import { Waypoint } from 'vfr3d-shared';
+import { AirportDTO, Waypoint } from 'vfr3d-shared';
 
 export const convertAirportDMSToDD = (dms: string): number => {
   const hemisphere = dms.slice(-1);
@@ -16,18 +15,18 @@ export const convertAirportDMSToDD = (dms: string): number => {
   return decimalDegrees;
 };
 
-export function getMetarStationIdFromAirport(airport: Airport): string | undefined {
-  const { ICAO_ID, IDENT } = airport;
+export function getMetarStationIdFromAirport(airport: AirportDTO): string | undefined {
+  const { icaoId, arptId } = airport;
 
-  if (ICAO_ID) {
-    return ICAO_ID;
+  if (icaoId) {
+    return icaoId;
   }
 
-  if (IDENT) {
-    if (IDENT.startsWith('K') || IDENT.startsWith('P')) {
-      return IDENT;
+  if (arptId) {
+    if (arptId.startsWith('K') || arptId.startsWith('P')) {
+      return arptId;
     } else {
-      return `K${IDENT}`;
+      return `K${arptId}`;
     }
   }
 
@@ -48,7 +47,7 @@ export const colorSerializer = {
   },
 };
 
-export function mapAirportsToWaypoints(airports: Airport[]): RoutePoint[] {
+export function mapAirportsToWaypoints(airports: AirportDTO[]): RoutePoint[] {
   const waypoints: RoutePoint[] = [];
   for (let i = 0; i < airports.length - 1; i++) {
     const waypoint = mapAirportToRoutePoint(airports[i]);
@@ -72,13 +71,13 @@ export function mapWaypointToRoutePoint(
   return routePoint;
 }
 
-export const mapAirportToRoutePoint = (airport: Airport): RoutePoint => {
+export const mapAirportToRoutePoint = (airport: AirportDTO): RoutePoint => {
   const routePoint: RoutePoint = {
-    id: airport.GLOBAL_ID,
-    name: airport.ICAO_ID || airport.IDENT,
-    latitude: convertAirportDMSToDD(airport.LATITUDE),
-    longitude: convertAirportDMSToDD(airport.LONGITUDE),
-    altitude: airport.ELEVATION,
+    id: airport.siteNo,
+    name: airport.icaoId || airport.arptId || '',
+    latitude: airport.latDecimal ?? 0,
+    longitude: airport.longDecimal ?? 0,
+    altitude: airport.elev ?? 0,
     shouldDisplay: false,
     type: 'AIRPORT',
   };
