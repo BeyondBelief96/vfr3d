@@ -79,7 +79,6 @@ const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
             <InfoItem label="IDENT" value={airport.arptId} />
             <InfoItem label="ICAO Code" value={airport.icaoId} />
             <InfoItem label="Type" value={airport.siteTypeCode} />
-            <InfoItem label="Name" value={airport.arptName} />
           </Section>
 
           <Section title="Location">
