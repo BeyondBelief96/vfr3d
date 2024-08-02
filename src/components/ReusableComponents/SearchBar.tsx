@@ -2,15 +2,23 @@ import { useCallback, useRef, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
 import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice';
+import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
 
 const SearchBar = () => {
+  const { isAuthenticated } = useAuthenticatedQuery();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const { data: allAirports, isLoading, isError } = useGetAllAirportsQuery();
+  const {
+    data: allAirports,
+    isLoading,
+    isError,
+  } = useGetAllAirportsQuery(undefined, {
+    skip: !isAuthenticated,
+  });
 
   const filteredAirports = useMemo(() => {
     if (!searchQuery || !allAirports) {
