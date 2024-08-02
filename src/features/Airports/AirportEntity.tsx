@@ -15,7 +15,6 @@ interface AirportEntityProps {
 const AirportEntity: React.FC<AirportEntityProps> = memo(({ airport, metar }) => {
   const showCloudBases = useAppSelector((state) => state.airport.showCloudBases);
   const position = mapAirportDataToCartesian3(airport);
-  console.log(position);
 
   if (!position) return null;
 
