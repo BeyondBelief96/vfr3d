@@ -2,7 +2,6 @@ import Fuse from 'fuse.js';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
-
 import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
 import { fetchAdditionalAirports } from '../../redux/thunks/airports';
 import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice.api';
@@ -15,7 +14,7 @@ const SearchBar = () => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const { data: allAirports, isLoading, isError } = useGetAllAirportsQuery(searchQuery);
+  const { data: allAirports, isLoading, isError } = useGetAllAirportsQuery(searchQuery ?? 'KJW');
 
   useEffect(() => {
     if (isAuthenticated && searchQuery.length > 1) {
