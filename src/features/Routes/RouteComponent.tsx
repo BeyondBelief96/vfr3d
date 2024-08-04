@@ -75,7 +75,7 @@ const RouteComponent: React.FC = () => {
     event: ScreenSpaceEventHandler.PositionedEvent,
     pointId: string
   ) => {
-    if (!viewer || !scene || !camera) return;
+    if (!viewer || !scene || !camera || isNavlogReady) return;
     setShowDeleteWaypointMenu(true);
     setDeleteWaypointId(pointId);
     setDeleteWaypointMenuPosition(event.position);
