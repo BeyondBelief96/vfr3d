@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { airportsApi } from '../api/vfr3d/airportsSlice';
 import { AppState } from '../store';
+import { airportsApi } from '../api/vfr3d/airportsSlice.api';
 
 export const fetchAdditionalAirports = createAsyncThunk(
   'data/fetchAdditionalAirports',
@@ -8,7 +8,9 @@ export const fetchAdditionalAirports = createAsyncThunk(
     const state = getState() as AppState;
     const existingData = airportsApi.endpoints.getAllAirports.select(icaoIdOrArptId)(state);
     if (!existingData.isSuccess) {
-      const response = await dispatch(airportsApi.endpoints.getAllAirports.initiate(icaoIdOrArptId));
+      const response = await dispatch(
+        airportsApi.endpoints.getAllAirports.initiate(icaoIdOrArptId)
+      );
       return response.data;
     }
     return existingData;
