@@ -93,7 +93,7 @@ export const ContactMePage: React.FC = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <main className="flex items-center justify-center flex-grow">
+      <main className="flex items-center justify-center flex-grow p-4">
         <div className="container py-16">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
             <div className="flex items-center justify-center p-8 rounded-lg shadow-xl bg-base-100 bg-opacity-80">
