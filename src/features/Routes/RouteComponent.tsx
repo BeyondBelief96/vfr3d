@@ -19,7 +19,7 @@ import {
 import { Waypoint } from 'vfr3d-shared';
 import AddWaypointContextMenu from './AddWaypointContextMenu';
 import { useCesium } from 'resium';
-import { DeleteWaypointContextMenu } from './RoutesPanel/DeleteWaypointContextMenu';
+import { EditDeleteWaypointContextMenu } from './EditDeleteWaypointContextMenu';
 import { updateWaypointPositionFlat } from '../../redux/slices/routeSlice';
 import { PolylineEntity } from '../../components/ReusableComponents/cesium/PolylineEntity';
 import { RoutePoint } from './route.types';
@@ -190,7 +190,7 @@ const RouteComponent: React.FC = () => {
       )}
 
       {showDeleteWaypointMenu && deleteWaypointMenuPosition && (
-        <DeleteWaypointContextMenu
+        <EditDeleteWaypointContextMenu
           waypointId={deleteWaypointId}
           screenPosition={deleteWaypointMenuPosition}
           onClose={closeDeleteWaypointMenu}

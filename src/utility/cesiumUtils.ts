@@ -76,3 +76,41 @@ export const isSameLocationWaypointCartesian = (
 
   return latitudeDifference < epsilon && longitudeDifference < epsilon;
 };
+
+export function calculateMenuPosition(
+  x: number,
+  y: number,
+  menuWidth: number,
+  menuHeight: number,
+  offsetX: number = 0,
+  offsetY: number = 0
+): { left: number; top: number } {
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  // Apply offsets
+  let left = x + offsetX;
+  let top = y + offsetY;
+
+  // Adjust horizontal position if menu goes off the right edge
+  if (left + menuWidth > viewportWidth) {
+    left = Math.max(0, viewportWidth - menuWidth);
+  }
+
+  // Adjust horizontal position if menu goes off the left edge
+  if (left < 0) {
+    left = 0;
+  }
+
+  // Adjust vertical position if menu goes off the bottom edge
+  if (top + menuHeight > viewportHeight) {
+    top = Math.max(0, viewportHeight - menuHeight);
+  }
+
+  // Adjust vertical position if menu goes off the top edge
+  if (top < 0) {
+    top = 0;
+  }
+
+  return { left, top };
+}
