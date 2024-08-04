@@ -24,6 +24,7 @@ export const CameraController = () => {
         const zoomFactor = Math.pow(1.1, delta / 10);
 
         camera.zoomIn(camera.defaultZoomAmount * (zoomFactor - 1));
+        scene.screenSpaceCameraController.enableRotate = false;
 
         isPinchingRef.current = true;
       }
@@ -34,6 +35,7 @@ export const CameraController = () => {
     handler.setInputAction(() => {
       previousDistanceRef.current = null;
       isPinchingRef.current = false;
+      scene.screenSpaceCameraController.enableRotate = true;
     }, ScreenSpaceEventType.PINCH_END);
 
     // Prevent rotation during pinch
