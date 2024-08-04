@@ -23,7 +23,10 @@ const TafSection: React.FC<TafSectionProps> = ({ taf }) => {
         <div className="font-medium collapse-title peer-checked:bg-base-200 peer-checked:text-primary-content">
           Decoded TAF
         </div>
-        <div className="collapse-content peer-checked:bg-base-200 peer-checked:text-primary-content">
+        <div
+          className="collapse-content peer-checked:bg-base-200 peer-checked:text-primary-content"
+          onClick={(e) => e.stopPropagation()}
+        >
           <TafDecodedData taf={taf} />
         </div>
       </div>

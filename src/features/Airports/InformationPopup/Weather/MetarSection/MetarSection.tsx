@@ -24,7 +24,10 @@ const MetarSection: React.FC<MetarSectionProps> = ({ metar }) => {
         <div className="font-medium collapse-title peer-checked:bg-base-200 peer-checked:text-info">
           <DecodedMetarTitle flightCategory={metar.flightCategory ?? ''} />
         </div>
-        <div className="collapse-content peer-checked:bg-base-200 peer-checked:text-primary-content">
+        <div
+          className="collapse-content peer-checked:bg-base-200 peer-checked:text-primary-content"
+          onClick={(e) => e.stopPropagation()}
+        >
           <MetarDecodedData metar={metar} />
         </div>
       </div>

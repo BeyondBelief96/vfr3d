@@ -2,9 +2,10 @@ import Fuse from 'fuse.js';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
-import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice';
+
 import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
 import { fetchAdditionalAirports } from '../../redux/thunks/airports';
+import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice.api';
 
 const SearchBar = () => {
   const { isAuthenticated } = useAuthenticatedQuery();

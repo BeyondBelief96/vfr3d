@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AirportDTO } from 'vfr3d-shared';
-import UrlButton from '../../../components/ReusableComponents/UrlButton';
 import {
   useGetAirportGlobalIdQuery,
   useGetRunwayInformationByAirportGlobalIdQuery,
 } from '../../../redux/api/faa/faaSlice';
 import { useGetAirportDiagramUrlByAirportCodeQuery } from '../../../redux/api/vfr3d/airportDiagram.api';
 import { useGetChartSupplementUrlByAirportCodeQuery } from '../../../redux/api/vfr3d/chartsupplements.api';
-import { Runway } from '../../../redux/api/faa/faa.interface';
 import LoadingSpinner from '../../../components/ReusableComponents/LoadingSpinner';
+import { useGetFrequenciesByServicedFacilityQuery } from '../../../redux/api/vfr3d/frequencySlice.api';
+import { PdfButtons } from './AirportInfo/AirportPdfButtons';
+import { GeneralInformation } from './AirportInfo/GeneralInformation';
+import { LocationInformation } from './AirportInfo/LocationInformation';
+import { FrequencyInformation } from './AirportInfo/FrequencyInformation';
+import { OperationalInformation } from './AirportInfo/OperationalInformation';
+import { ContactInformation } from './AirportInfo/ContactInformation';
+import { RunwayInformation } from './AirportInfo/RunwayInformation';
 
 interface AirportInfoProps {
   airport: AirportDTO;
@@ -31,121 +37,77 @@ const AirportInfo: React.FC<AirportInfoProps> = ({ airport }) => {
     error: airportDiagramError,
     isLoading: isAirportDiagramLoading,
   } = useGetAirportDiagramUrlByAirportCodeQuery(icaoIdOrArptId);
+  const { data: frequencies } = useGetFrequenciesByServicedFacilityQuery(airport.arptId ?? '');
 
-  // Check if airport data is loading
   const isAirportDataLoading = isGlobalIdLoading || isRunwayInfoLoading;
-
-  // Check if PDF data is loading
   const isPdfDataLoading =
     isChartSupplementLoading || isChartSupplementFetching || isAirportDiagramLoading;
 
-  const InfoItem = ({ label, value }: { label: string; value: string | number | undefined }) =>
-    value ? (
-      <div className="flex items-center justify-between py-2 last:border-b-0">
-        <span className="font-medium">{label}:</span>
-        <span>{value}</span>
-      </div>
-    ) : null;
+  const [expandedSections, setExpandedSections] = useState({
+    general: false,
+    location: false,
+    frequencies: false,
+    operational: false,
+    contact: false,
+    runways: false,
+  });
 
-  const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <div className="mb-2">
-      <h3 className="text-lg font-semibold text-center">{title}</h3>
-      <div className="divider" />
-      <div>{children}</div>
-    </div>
-  );
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
 
   return (
-    <div className="rounded-lg shadow-lg bg-base-100">
-      <div className="flex justify-center mb-3 space-x-4">
-        {isPdfDataLoading ? (
-          <LoadingSpinner fullScreen={false} />
-        ) : (
-          <>
-            {chartSupplementUrl && chartSupplementUrl.pdfUrl && !chartSupplementError && (
-              <UrlButton url={chartSupplementUrl.pdfUrl} label="Chart Supplement" />
-            )}
-            {airportDiagramUrl && airportDiagramUrl.pdfUrl && !airportDiagramError && (
-              <UrlButton url={airportDiagramUrl.pdfUrl} label="Airport Diagram" />
-            )}
-          </>
-        )}
-      </div>
+    <>
+      <PdfButtons
+        isPdfDataLoading={isPdfDataLoading}
+        chartSupplementUrl={chartSupplementUrl}
+        chartSupplementError={chartSupplementError}
+        airportDiagramUrl={airportDiagramUrl}
+        airportDiagramError={airportDiagramError}
+      />
+
       {isAirportDataLoading ? (
         <LoadingSpinner fullScreen={false} />
       ) : (
         <>
-          <Section title="General Information">
-            <InfoItem label="IDENT" value={airport.arptId} />
-            <InfoItem label="ICAO Code" value={airport.icaoId} />
-            <InfoItem label="Type" value={airport.siteTypeCode} />
-          </Section>
+          <GeneralInformation
+            airport={airport}
+            expanded={expandedSections.general}
+            toggleSection={() => toggleSection('general')}
+          />
 
-          <Section title="Location">
-            <InfoItem label="Latitude" value={airport.latDecimal} />
-            <InfoItem label="Longitude" value={airport.longDecimal} />
-            <InfoItem label="Elevation" value={airport.elev ? `${airport.elev} ft` : undefined} />
-            <InfoItem label="City" value={airport.city} />
-            <InfoItem label="State" value={airport.stateName} />
-            <InfoItem label="Country" value={airport.countryCode} />
-          </Section>
+          <LocationInformation
+            airport={airport}
+            expanded={expandedSections.location}
+            toggleSection={() => toggleSection('location')}
+          />
 
-          <Section title="Operational Information">
-            <InfoItem label="Fuel Types" value={airport.fuelTypes} />
-            <InfoItem
-              label="Customs"
-              value={airport.customsFlag === 'Y' ? 'Available' : 'Not Available'}
-            />
-            <InfoItem
-              label="Landing Rights"
-              value={airport.lndgRightsFlag === 'Y' ? 'Available' : 'Not Available'}
-            />
-            <InfoItem label="Joint Use" value={airport.jointUseFlag === 'Y' ? 'Yes' : 'No'} />
-            <InfoItem
-              label="Military Landing"
-              value={airport.milLndgFlag === 'Y' ? 'Allowed' : 'Not Allowed'}
-            />
-          </Section>
+          <FrequencyInformation
+            frequencies={frequencies}
+            expanded={expandedSections.frequencies}
+            toggleSection={() => toggleSection('frequencies')}
+          />
 
-          <Section title="Contact Information">
-            <InfoItem label="Contact Title" value={airport.contactTitle} />
-            <InfoItem label="Contact Name" value={airport.contactName} />
-            <InfoItem label="Address" value={airport.contactAddress1} />
-            {airport.contactAddress2 && (
-              <InfoItem label="Address 2" value={airport.contactAddress2} />
-            )}
-            <InfoItem label="City" value={airport.contactCity} />
-            <InfoItem label="State" value={airport.contactState} />
-            <InfoItem
-              label="Zip Code"
-              value={`${airport.contactZipCode}${airport.conactZipPlusFour ? '-' + airport.conactZipPlusFour : ''}`}
-            />
-            <InfoItem label="Phone" value={airport.contactPhoneNumber} />
-          </Section>
+          <OperationalInformation
+            airport={airport}
+            expanded={expandedSections.operational}
+            toggleSection={() => toggleSection('operational')}
+          />
 
-          {runwayInformation && runwayInformation.length > 0 && (
-            <Section title="Runway Information">
-              {runwayInformation.map((runway: Runway) => (
-                <div key={runway.OBJECTID} className="mb-4 last:mb-0">
-                  <h4 className="mb-2 font-semibold">Runway {runway.DESIGNATOR}</h4>
-                  <div className="pl-4">
-                    <InfoItem label="Length" value={`${runway.LENGTH} ${runway.DIM_UOM}`} />
-                    <InfoItem label="Width" value={`${runway.WIDTH} ${runway.DIM_UOM}`} />
-                    <InfoItem label="Surface" value={runway.COMP_CODE} />
-                    {runway.LIGHTACTV !== null && (
-                      <InfoItem
-                        label="Lighting"
-                        value={runway.LIGHTACTV ? 'Available' : 'Not Available'}
-                      />
-                    )}
-                  </div>
-                </div>
-              ))}
-            </Section>
-          )}
+          <ContactInformation
+            airport={airport}
+            expanded={expandedSections.contact}
+            toggleSection={() => toggleSection('contact')}
+          />
+
+          <RunwayInformation
+            runwayInformation={runwayInformation}
+            expanded={expandedSections.runways}
+            toggleSection={() => toggleSection('runways')}
+          />
         </>
       )}
-    </div>
+    </>
   );
 };
 
