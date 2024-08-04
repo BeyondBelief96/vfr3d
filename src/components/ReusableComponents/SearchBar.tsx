@@ -1,8 +1,11 @@
-import { useCallback, useRef, useState, useMemo } from 'react';
+import Fuse from 'fuse.js';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
-import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice.api';
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
+
+import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
+import { fetchAdditionalAirports } from '../../redux/thunks/airports';
+import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice.api';
 
 const SearchBar = () => {
   const { isAuthenticated } = useAuthenticatedQuery();
@@ -12,28 +15,22 @@ const SearchBar = () => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const {
-    data: allAirports,
-    isLoading,
-    isError,
-  } = useGetAllAirportsQuery(undefined, {
-    skip: !isAuthenticated,
-  });
+  const { data: allAirports, isLoading, isError } = useGetAllAirportsQuery(searchQuery);
+
+  useEffect(() => {
+    if (isAuthenticated && searchQuery.length > 1) {
+      //@ts-expect-error for some reason, typescript isn't liking the dispatching of thunks
+      dispatch(fetchAdditionalAirports(searchQuery));
+    }
+  }, [searchQuery, dispatch, isAuthenticated]);
+
+  const fuse = useMemo(() => {
+    return new Fuse(allAirports ?? [], { keys: ['icaoId', 'arptId'], threshold: 0.3 });
+  }, [allAirports]);
 
   const filteredAirports = useMemo(() => {
-    if (!searchQuery || !allAirports) {
-      return [];
-    }
-
-    const lowercaseQuery = searchQuery.toLowerCase();
-    return allAirports
-      .filter(
-        (airport) =>
-          airport.icaoId?.toLowerCase().startsWith(lowercaseQuery) ||
-          airport.arptId?.toLowerCase().startsWith(lowercaseQuery)
-      )
-      .slice(0, 10);
-  }, [searchQuery, allAirports]);
+    return searchQuery ? fuse.search(searchQuery).map((result) => result.item) : [];
+  }, [searchQuery, fuse]);
 
   const handleSearch = useCallback(() => {
     dispatch(setSearchAirportQuery(searchQuery));

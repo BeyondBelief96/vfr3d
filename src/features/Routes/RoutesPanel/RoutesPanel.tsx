@@ -1,21 +1,16 @@
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import React, { useEffect, useState } from 'react';
-import { RouteStringInput } from './RouteStringInput';
 import Drawer from '../../../components/ReusableComponents/BottomDrawer';
+import LoadingSpinner from '../../../components/ReusableComponents/LoadingSpinner';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import { useCalculateNavLogMutation } from '../../../redux/api/vfr3d/navlog.api';
+import { setNavlogCalculationEnabled, setNavlogReady } from '../../../redux/slices/navlogSlice';
+import { NavlogControls } from './AltitudeAndDepartureControls';
+import { NavLogPDF } from './NavLogPdf';
 import { NavLogTable } from './NavLogTable';
 import AircraftPerformanceProfiles from './PerformanceProfiles/AircraftPerformanceProfiles';
-import { NavlogControls } from './AltitudeAndDepartureControls';
-import LoadingSpinner from '../../../components/ReusableComponents/LoadingSpinner';
-import { setNavlogCalculationEnabled, setNavlogReady } from '../../../redux/slices/navlogSlice';
-import { useCalculateNavLogMutation } from '../../../redux/api/vfr3d/navlog.api';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import { NavLogPDF } from './NavLogPdf';
 import { RoutePointsStep } from './RoutePointsStep';
-import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
-
-const ROUTE_PLANNER_TEXT = {
-  open: 'Open Route Planner',
-  close: 'Close Route Planner',
-};
+import { RouteStringInput } from './RouteStringInput';
 
 export const RoutesPanel: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -71,13 +66,7 @@ export const RoutesPanel: React.FC = () => {
   };
 
   return (
-    <Drawer
-      isOpen={isExpanded}
-      toggleOpen={toggleExpansion}
-      openText={ROUTE_PLANNER_TEXT.open}
-      closeText={ROUTE_PLANNER_TEXT.close}
-      initialArrowDirection="down"
-    >
+    <Drawer isOpen={isExpanded} toggleOpen={toggleExpansion}>
       <div className="flex justify-center mb-4 space-x-4">
         <button
           className={`btn btn-primary w-32 ${currentStep === 0 ? 'hidden' : ''}`}

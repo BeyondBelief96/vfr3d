@@ -2,21 +2,12 @@ import React from 'react';
 
 interface ExpandableArrowProps {
   isExpanded: boolean;
-  initialDirection?: 'up' | 'down';
   className?: string;
 }
 
-const ExpandableArrow: React.FC<ExpandableArrowProps> = ({
-  isExpanded,
-  initialDirection = 'up',
-  className,
-}) => {
-  const rotateDirection = initialDirection === 'down' ? isExpanded : !isExpanded;
-
+const ExpandableArrow: React.FC<ExpandableArrowProps> = ({ isExpanded, className }) => {
   return (
-    <span
-      className={`transition-transform ${rotateDirection ? 'rotate-180' : ''} ${className || ''}`}
-    >
+    <span className={`transition-transform ${isExpanded ? 'rotate-180' : ''} ${className || ''}`}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-5 w-5"
