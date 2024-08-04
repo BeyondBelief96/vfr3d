@@ -11,7 +11,7 @@ import {
 import { mapAirportToRoutePoint } from '../../../utility/utils';
 import { setSelectedState, setShowAirports } from '../../../redux/slices/airportsSlice';
 import { RoutePoint } from '../route.types';
-import { useLazyGetAirportByIcaoCodeOrIdentQuery } from '../../../redux/api/vfr3d/airportsSlice';
+import { useLazyGetAirportByIcaoCodeOrIdentQuery } from '../../../redux/api/vfr3d/airportsSlice.api';
 import { AirportDTO } from 'vfr3d-shared';
 export const RouteStringInput: React.FC = () => {
   const dispatch = useDispatch();

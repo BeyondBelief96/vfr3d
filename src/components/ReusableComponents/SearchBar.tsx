@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
-import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice';
+import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice.api';
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
 
 const SearchBar = () => {
