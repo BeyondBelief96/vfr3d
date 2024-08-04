@@ -28,10 +28,8 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, toggleOpen, children }) => {
         }`}
         onClick={toggleOpen}
       >
-        <div className="flex items-center justify-center h-8">
-          <span className="text-primary-content cursor-pointer">
-            {isOpen ? 'Close' : 'Open'} Route Planner
-          </span>
+        <div className="flex items-center justify-center h-8 cursor-pointer">
+          <span className="text-primary-content">{isOpen ? 'Close' : 'Open'} Route Planner</span>
           <ExpandableArrow isExpanded={isOpen} />
         </div>
         {isOpen && (
