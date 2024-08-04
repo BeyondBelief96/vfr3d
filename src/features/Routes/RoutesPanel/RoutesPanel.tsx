@@ -66,7 +66,7 @@ export const RoutesPanel: React.FC = () => {
   };
 
   return (
-    <Drawer isOpen={isExpanded} toggleOpen={toggleExpansion} initialArrowDirection="down">
+    <Drawer isOpen={isExpanded} toggleOpen={toggleExpansion}>
       <div className="flex justify-center mb-4 space-x-4">
         <button
           className={`btn btn-primary w-32 ${currentStep === 0 ? 'hidden' : ''}`}

@@ -5,16 +5,10 @@ import ExpandableArrow from './ExpandableArrow';
 interface DrawerProps {
   isOpen: boolean;
   toggleOpen: () => void;
-  initialArrowDirection?: 'up' | 'down';
   children: ReactNode;
 }
 
-const Drawer: React.FC<DrawerProps> = ({
-  isOpen,
-  toggleOpen,
-  initialArrowDirection = 'down',
-  children,
-}) => {
+const Drawer: React.FC<DrawerProps> = ({ isOpen, toggleOpen, children }) => {
   const handlers = useSwipeable({
     onSwipedDown: () => {
       if (isOpen) toggleOpen();
@@ -24,6 +18,7 @@ const Drawer: React.FC<DrawerProps> = ({
     },
     trackMouse: true,
   });
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-20 flex justify-center rounded-lg">
       <div
@@ -37,7 +32,7 @@ const Drawer: React.FC<DrawerProps> = ({
           <span className="text-primary-content cursor-pointer">
             {isOpen ? 'Close' : 'Open'} Route Planner
           </span>
-          <ExpandableArrow isExpanded={isOpen} initialDirection={initialArrowDirection} />
+          <ExpandableArrow isExpanded={isOpen} />
         </div>
         {isOpen && (
           <div
