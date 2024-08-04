@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   addCustomWaypointAtIndex,
@@ -7,6 +7,7 @@ import {
 } from '../../redux/slices/routeSlice';
 import { Cartesian3, Cartographic, Math, SceneTransforms } from 'cesium';
 import { useCesium } from 'resium';
+import { calculateMenuPosition } from '../../utility/cesiumUtils';
 
 interface RouteContextMenuProps {
   position: Cartesian3;
@@ -76,13 +77,13 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
     setName('');
   };
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     if (temporaryPointIdRef.current) {
       dispatch(removeCustomWaypointById(temporaryPointIdRef.current));
       temporaryPointIdRef.current = null;
     }
     onClose();
-  };
+  }, [dispatch, onClose]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -96,9 +97,32 @@ const AddWaypointContextMenu: React.FC<RouteContextMenuProps> = ({
 
     if (!screenPosition) return;
 
-    menuRef.current.style.left = `${screenPosition.x - 100}px`;
-    menuRef.current.style.top = `${screenPosition.y + 10}px`;
+    const menuRect = menuRef.current.getBoundingClientRect();
+    const { left, top } = calculateMenuPosition(
+      screenPosition.x,
+      screenPosition.y,
+      menuRect.width,
+      menuRect.height,
+      40,
+      0
+    );
+
+    menuRef.current.style.left = `${left}px`;
+    menuRef.current.style.top = `${top}px`;
   }, [viewer, position]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        handleCancel();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleCancel]);
 
   return (
     <div ref={menuRef} className="absolute z-50 flex flex-col p-4 rounded-md shadow-md bg-base-100">
