@@ -4,8 +4,8 @@ import { vfr3dApi } from './vfr3dSlice';
 
 export const airportsApi = vfr3dApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllAirports: builder.query<AirportDTO[], void>({
-      query: () => '/airports',
+    getAllAirports: builder.query<AirportDTO[], string>({
+      query: (icaoId = 'KA') => `/airports?icaoId=${icaoId}`,
     }),
     getAirportByIcaoCodeOrIdent: builder.query<AirportDTO, string>({
       query: (icaoCodeOrIdent) => `/airports/${icaoCodeOrIdent}`,

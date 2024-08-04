@@ -21,6 +21,7 @@
     "cesium": "^1.116.0",
     "daisyui": "^4.10.2",
     "dotenv": "^16.4.5",
+    "fuse.js": "^7.0.0",
     "react": "^18.2.0",
     "react-awesome-reveal": "^4.2.8",
     "react-color": "^2.19.3",

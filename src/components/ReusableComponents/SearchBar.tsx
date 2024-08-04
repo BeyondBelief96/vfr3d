@@ -1,8 +1,11 @@
-import { useCallback, useRef, useState, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
-import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice';
+import Fuse from 'fuse.js';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
+import { airportsApi } from '../../redux/api/vfr3d/airportsSlice';
+import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
+import { AppState } from '../../redux/store';
+import { fetchAdditionalAirports } from '../../redux/thunks/airports';
 
 const SearchBar = () => {
   const { isAuthenticated } = useAuthenticatedQuery();
@@ -12,28 +15,35 @@ const SearchBar = () => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const {
-    data: allAirports,
-    isLoading,
-    isError,
-  } = useGetAllAirportsQuery(undefined, {
-    skip: !isAuthenticated,
+  const allAirports = useSelector((state: AppState) => {
+    const existingData = airportsApi.endpoints.getAllAirports.select(searchQuery)(state);
+    return existingData.data || [];
   });
 
-  const filteredAirports = useMemo(() => {
-    if (!searchQuery || !allAirports) {
-      return [];
-    }
+  const isLoading = useSelector((state: AppState) => {
+    const existingData = airportsApi.endpoints.getAllAirports.select(searchQuery)(state);
+    return existingData.isLoading;
+  });
 
-    const lowercaseQuery = searchQuery.toLowerCase();
-    return allAirports
-      .filter(
-        (airport) =>
-          airport.icaoId?.toLowerCase().startsWith(lowercaseQuery) ||
-          airport.arptId?.toLowerCase().startsWith(lowercaseQuery)
-      )
-      .slice(0, 10);
-  }, [searchQuery, allAirports]);
+  const isError = useSelector((state: AppState) => {
+    const existingData = airportsApi.endpoints.getAllAirports.select(searchQuery)(state);
+    return existingData.error;
+  });
+
+  useEffect(() => {
+    if (isAuthenticated && searchQuery.length > 1) {
+      //@ts-expect-error for some reason, typescript isn't liking the dispatching of thunks
+      dispatch(fetchAdditionalAirports(searchQuery));
+    }
+  }, [searchQuery, dispatch]);
+
+  const fuse = useMemo(() => {
+    return new Fuse(allAirports ?? [], { keys: ['icaoId'], threshold: 0.3 });
+  }, [allAirports]);
+
+  const filteredAirports = useMemo(() => {
+    return searchQuery ? fuse.search(searchQuery).map((result) => result.item) : [];
+  }, [searchQuery, fuse]);
 
   const handleSearch = useCallback(() => {
     dispatch(setSearchAirportQuery(searchQuery));
