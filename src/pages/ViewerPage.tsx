@@ -14,6 +14,7 @@ import { setAccessToken } from '../redux/slices/authSlice';
 import { Pireps } from '../features/Pireps/Pireps';
 import AirsigmetComponent from '../features/Airsigmets/AirsigmetComponent';
 import EntityInfoPopupManager from '../components/ReusableComponents/EntityInfoPopupManager';
+import { CameraController } from '../components/CameraController';
 
 const ViewerPage = () => {
   const dispatch = useDispatch();
@@ -86,6 +87,7 @@ const ViewerPage = () => {
           animation={false}
           selectionIndicator={false}
         >
+          <CameraController />
           <Globe maximumScreenSpaceError={1.3} />
           <ImageryLayers />
           <Airports />
