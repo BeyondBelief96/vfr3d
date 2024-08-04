@@ -1,10 +1,9 @@
 import Fuse from 'fuse.js';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery';
-import { airportsApi } from '../../redux/api/vfr3d/airportsSlice';
+import { useGetAllAirportsQuery } from '../../redux/api/vfr3d/airportsSlice';
 import { setSearchAirportQuery, triggerSearch } from '../../redux/slices/searchSlice';
-import { AppState } from '../../redux/store';
 import { fetchAdditionalAirports } from '../../redux/thunks/airports';
 
 const SearchBar = () => {
@@ -15,30 +14,17 @@ const SearchBar = () => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const allAirports = useSelector((state: AppState) => {
-    const existingData = airportsApi.endpoints.getAllAirports.select(searchQuery)(state);
-    return existingData.data || [];
-  });
-
-  const isLoading = useSelector((state: AppState) => {
-    const existingData = airportsApi.endpoints.getAllAirports.select(searchQuery)(state);
-    return existingData.isLoading;
-  });
-
-  const isError = useSelector((state: AppState) => {
-    const existingData = airportsApi.endpoints.getAllAirports.select(searchQuery)(state);
-    return existingData.error;
-  });
+  const { data: allAirports, isLoading, isError } = useGetAllAirportsQuery(searchQuery);
 
   useEffect(() => {
     if (isAuthenticated && searchQuery.length > 1) {
       //@ts-expect-error for some reason, typescript isn't liking the dispatching of thunks
       dispatch(fetchAdditionalAirports(searchQuery));
     }
-  }, [searchQuery, dispatch]);
+  }, [searchQuery, dispatch, isAuthenticated]);
 
   const fuse = useMemo(() => {
-    return new Fuse(allAirports ?? [], { keys: ['icaoId'], threshold: 0.3 });
+    return new Fuse(allAirports ?? [], { keys: ['icaoId', 'arptId'], threshold: 0.3 });
   }, [allAirports]);
 
   const filteredAirports = useMemo(() => {
