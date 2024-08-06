@@ -14,7 +14,14 @@ const SearchBar = () => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const { data: allAirports, isLoading, isError } = useGetAllAirportsQuery(searchQuery ?? 'KJW');
+  const {
+    data: allAirports,
+    isLoading,
+    isError,
+  } = useGetAllAirportsQuery(searchQuery ?? 'KJW', {
+    skip: !isAuthenticated,
+  });
+  console.log(isError);
 
   useEffect(() => {
     if (isAuthenticated && searchQuery.length > 1) {
